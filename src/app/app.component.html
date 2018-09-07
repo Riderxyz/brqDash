@@ -1,0 +1,78 @@
+<nb-layout>
+  <nb-layout-column>
+    <h4>Panel Integration</h4>
+    <div class="p-grid">
+      <div class="p-col">
+        <nb-flip-card>
+          <nb-card-front>
+            <nb-card>
+              <nb-card-header>Dimensionamentos</nb-card-header>
+              <nb-card-body>
+                <ag-grid-angular style=" height: 30vh;" class="ag-theme-balham" [rowData]="rowData" [columnDefs]="columnDefs" (gridReady)="onGridReady($event)">
+                </ag-grid-angular>
+              </nb-card-body>
+            </nb-card>
+          </nb-card-front>
+          <nb-card-back>
+            <nb-card>
+              <nb-card-body>
+                Back
+              </nb-card-body>
+            </nb-card>
+          </nb-card-back>
+        </nb-flip-card>
+      </div>
+      <div class="p-col">
+        <nb-flip-card>
+          <nb-card-front>
+            <nb-card>
+              <nb-card-header>Entregas</nb-card-header>
+              <nb-card-body>
+                <ag-grid-angular style=" height: 30vh;" class="ag-theme-balham" [rowData]="rowData" [columnDefs]="columnDefs" (gridReady)="onGridReady($event)">
+                </ag-grid-angular>
+              </nb-card-body>
+            </nb-card>
+          </nb-card-front>
+          <nb-card-back>
+            <nb-card>
+              <nb-card-body>
+                Back
+              </nb-card-body>
+            </nb-card>
+          </nb-card-back>
+        </nb-flip-card>
+      </div>
+      <div class="p-col">
+        <nb-flip-card>
+          <nb-card-front>
+            <nb-card>
+              <nb-card-header>Refazeres</nb-card-header>
+              <nb-card-body>
+                <ag-grid-angular style=" height: 30vh;" class="ag-theme-balham" [rowData]="rowData" [columnDefs]="columnDefs" (gridReady)="onGridReady($event)">
+                </ag-grid-angular>
+              </nb-card-body>
+            </nb-card>
+          </nb-card-front>
+          <nb-card-back>
+            <nb-card>
+              <nb-card-body>
+                Back
+              </nb-card-body>
+            </nb-card>
+          </nb-card-back>
+        </nb-flip-card>
+      </div>
+    </div>
+    <div>
+      <nb-card>
+        <nb-card-header>Demandas</nb-card-header>
+        <nb-card-body>
+          <ag-grid-angular style=" height: 28vh;" class="ag-theme-balham" [rowData]="rowData" [columnDefs]="columnDefs" (gridReady)="onGridReady($event)">
+          </ag-grid-angular>
+        </nb-card-body>
+      </nb-card>
+
+    </div>
+  </nb-layout-column>
+
+</nb-layout>
