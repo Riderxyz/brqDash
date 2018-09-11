@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import * as lod from 'lodash';
+import * as env from './../environments/environment';
 
 @Component({
   selector: 'app-root',
