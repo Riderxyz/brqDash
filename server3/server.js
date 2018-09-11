@@ -1,3 +1,5 @@
+/*jshint esversion: 6 */
+
 var util = require('./public/utils/util');
 var config = require('./public/utils/config');
 var jwt = require('jsonwebtoken');
@@ -11,10 +13,11 @@ util.inicializarConfiguracao()
 util.inicializarPool();
 
 const restify = require('restify'),
-  port = process.env.PORT || 9000;
+  work = require('./Controller/workitem.controller'),
+  port = process.env.PORT || 9700;
 
 var server = restify.createServer({
-  name: 'OnDemand server'
+  name: 'BRQ Dash'
 });
 
 var url = require('url');
@@ -24,7 +27,8 @@ server.use(function (req, res, next) {
   res.header("Access-Control-Allow-Methods", "*")
   res.header("Access-Control-Allow-Headers", "*");
   return next();
-})
+});
+
 server.use(restify.plugins.bodyParser());
 
 // queueRouter.applyRoutes(server, '/queue/');
@@ -38,8 +42,11 @@ const cors = corsMiddleware({
   exposeHeaders: ['API-Token-Expiry']
 })
 
-server.pre(cors.preflight)
-server.use(cors.actual)
+server.pre(cors.preflight);
+server.use(cors.actual);
+
+work.getItens();
+server.get('/teste', work.getItens);
 
 server.listen(port, function () {
   util.inicializarConfiguracao();

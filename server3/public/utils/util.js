@@ -1,3 +1,4 @@
+/*jshint esversion: 6 */
 function utilController() {
   var fs = require('fs');
   var mysql = require('mysql');
@@ -72,7 +73,7 @@ function utilController() {
   vm.inicializarConfiguracao = function () {
     fs.readFile('./environment/config.json', 'utf8', function (err, data) {
       if (err) {
-        // console.log('*****  ERRO AO LER O ARQUIVO DE CONFIGURAÇÃO *****')
+         console.log('*****  ERRO AO LER O ARQUIVO DE CONFIGURAÇÃO *****')
         // console.log('DESCRIÇÃO DO ERRO ', err)
         throw err;
       }
