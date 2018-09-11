@@ -45,8 +45,7 @@ const cors = corsMiddleware({
 server.pre(cors.preflight);
 server.use(cors.actual);
 
-work.getItens();
-server.get('/teste', work.getItens);
+server.get('/teste/tipo/:tipo', work.getItens);
 
 server.listen(port, function () {
   util.inicializarConfiguracao();
