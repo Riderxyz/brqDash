@@ -1,7 +1,11 @@
 var util = require('./public/utils/util');
+var config = require('./public/utils/config');
 var jwt = require('jsonwebtoken');
 
+
 // var queueRouter = require('./routers/queue.router');
+
+console.log(config)
 
 util.inicializarConfiguracao()
 util.inicializarPool();
@@ -25,6 +29,17 @@ server.use(restify.plugins.bodyParser());
 
 // queueRouter.applyRoutes(server, '/queue/');
 
+const corsMiddleware = require('restify-cors-middleware')
+
+const cors = corsMiddleware({
+  preflightMaxAge: 5, //Optional
+  origins: ['http://api.myapp.com', 'http://web.myapp.com'],
+  allowHeaders: ['API-Token'],
+  exposeHeaders: ['API-Token-Expiry']
+})
+
+server.pre(cors.preflight)
+server.use(cors.actual)
 
 server.listen(port, function () {
   util.inicializarConfiguracao();
