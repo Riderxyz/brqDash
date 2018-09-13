@@ -19,6 +19,8 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
 
 import { AgGridModule } from 'ag-grid-angular';
 
+import { HttpClientModule } from '@angular/common/http';
+
 
 @NgModule({
   declarations: [
@@ -27,6 +29,7 @@ import { AgGridModule } from 'ag-grid-angular';
   ],
   imports: [
     NbCardModule,
+    HttpClientModule,
     TableModule,
     CardModule,
     Ng2SmartTableModule,

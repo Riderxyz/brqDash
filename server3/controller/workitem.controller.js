@@ -14,7 +14,7 @@ function workItemController() {
         //      const pool = new sql.ConnectionPool(config.config.MSCONFIG)
         console.log('req ', req.params);
         vm.pool.connect().then(SimplePool => {
-            return SimplePool.query`EXEC dbo.[usp_DashGetWorkItem]	@status = 'em estimativa' `;
+            return SimplePool.query("EXEC dbo.[usp_DashGetWorkItem]	@status = '"+req.params.tipo +"'");
         }).then(result => {
             vm.pool.close();
             res.send(200, result.recordsets[0])

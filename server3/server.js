@@ -7,7 +7,7 @@ var jwt = require('jsonwebtoken');
 
 // var queueRouter = require('./routers/queue.router');
 
-console.log(config)
+var url_servico = config.config.URLS.dev;
 
 util.inicializarConfiguracao()
 util.inicializarPool();
@@ -40,15 +40,18 @@ const cors = corsMiddleware({
   origins: ['http://api.myapp.com', 'http://web.myapp.com'],
   allowHeaders: ['API-Token'],
   exposeHeaders: ['API-Token-Expiry']
-})
+});
+
+
 
 server.pre(cors.preflight);
 server.use(cors.actual);
 
-server.get('/teste/tipo/:tipo', work.getItens);
+server.get(config.config.ENDPOINTS.getWorkItem, work.getItens);
 
 server.listen(port, function () {
   util.inicializarConfiguracao();
+
   // console.log('running on port ' + port);
   // console.log('started at: ' + (new Date()).getHours() + ':' + (new Date()).getMinutes() + ':' + (new Date()).getSeconds());
 

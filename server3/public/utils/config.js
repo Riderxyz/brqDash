@@ -6,6 +6,13 @@ function configController() {
       "value": "Versão 1.1 - Desenv",
       "descricao": "Versao atual da aplicação"
     },
+    URLS: {
+      dev: 'http://localhost:9700/',
+      local: 'http://localhost:9700/'
+    },
+    ENDPOINTS: {
+      getWorkItem: '/getWorkItem/tipo/:tipo'
+    },
     MSCONFIG: {
       user: 'mobileteam',
       password: 'mobileteam',
@@ -18,6 +25,8 @@ function configController() {
       }
     }
   };
+
+
 }
 
 module.exports = new configController();

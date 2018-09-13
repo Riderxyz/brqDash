@@ -11,7 +11,8 @@
             <nb-card>
               <nb-card-header>Dimensionamentos</nb-card-header>
               <nb-card-body>
-                <ag-grid-angular style=" height: 30vh;" class="ag-theme-balham" [rowData]="rowData" [columnDefs]="columnDefs" (gridReady)="onGridReady($event)">
+                <ag-grid-angular id='GridDimensionado' style=" height: 30vh;" class="ag-theme-balham" [rowData]="dataDimensionado"
+                  [columnDefs]="columnDefs" (gridReady)="onGridReadyDim($event)">
                 </ag-grid-angular>
               </nb-card-body>
             </nb-card>
@@ -31,7 +32,8 @@
             <nb-card>
               <nb-card-header>Entregas</nb-card-header>
               <nb-card-body>
-                <ag-grid-angular style=" height: 30vh;" class="ag-theme-balham" [rowData]="rowData" [columnDefs]="columnDefs" (gridReady)="onGridReady($event)">
+                <ag-grid-angular style=" height: 30vh;" class="ag-theme-balham" [rowData]="rowData" [columnDefs]="columnDefs"
+                  (gridReady)="onGridReady($event)">
                 </ag-grid-angular>
               </nb-card-body>
             </nb-card>
@@ -51,7 +53,8 @@
             <nb-card>
               <nb-card-header>Refazeres</nb-card-header>
               <nb-card-body>
-                <ag-grid-angular style=" height: 30vh;" class="ag-theme-balham" [rowData]="rowData" [columnDefs]="columnDefs" (gridReady)="onGridReady($event)">
+                <ag-grid-angular style=" height: 30vh;" class="ag-theme-balham" [rowData]="rowData" [columnDefs]="columnDefs"
+                  (gridReady)="onGridReady($event)">
                 </ag-grid-angular>
               </nb-card-body>
             </nb-card>
@@ -69,7 +72,8 @@
     <div style="height: 28vh;">
       <nb-card>
         <nb-card-body>
-          <ag-grid-angular style="height: 28vh;" class="ag-theme-balham" [rowData]="rowData" [columnDefs]="columnDefs" (gridReady)="onGridReady($event)">
+          <ag-grid-angular style="height: 28vh;" class="ag-theme-balham" [rowData]="rowData" [columnDefs]="columnDefs"
+            (gridReady)="onGridReady($event)">
           </ag-grid-angular>
         </nb-card-body>
       </nb-card>
