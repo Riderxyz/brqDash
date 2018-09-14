@@ -16,7 +16,7 @@ function configController() {
     MSCONFIG: {
       user: 'mobileteam',
       password: 'mobileteam',
-      server: 'SRV17524\\SRV17524_SQL2016',
+      server: '10.2.0.159\\SRV17524_SQL2016',
       database: 'TFS_Integradora',
       pool: {
         max: 10,

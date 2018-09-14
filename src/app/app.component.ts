@@ -3,6 +3,7 @@ import * as lod from 'lodash';
 import * as env from './../environments/environment';
 
 import { HttpClient } from '@angular/common/http';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-root',
@@ -23,21 +24,27 @@ export class AppComponent {
     {
       headerName: 'Demanda1',
       field: 'Demanda',
-      width: 140,
+      width: 70,
       autoHeight: true,
       cellRenderer: function (params) {
         console.log('obj', params);
-        return '<span><b>' + params.data.tfs + '<b><br>' + params.data.Title + '<br>' + params.data.AnalistaFornecedor + '</span>';
+        return '<span style="display: block;line-height: normal;padding:10px;"><div style="font-weight: 800;">' +
+          params.data.tfs + '</div>' + params.data.Title + '<br>' + params.data.AnalistaFornecedor + '</span>';
       }
     },
     {
       headerName: 'Tempo',
       field: 'Data_entrega',
-      width: 80,
+      width: 30,
       autoHeight: true,
       cellRenderer: function (params) {
-        console.log('obj', params);
-        return '<span>' + params.data.DataInicio_SLA_Dimensionamento + '</span>';
+        const d = moment(params.data.DataInicio_SLA_Dimensionamento).format('DD MMM - HH:MM');
+        const dateTime = new Date(params.data.DataInicio_SLA_Dimensionamento);
+        console.log('datetime', dateTime)
+        // const duration = moment.duration(dateTime);
+        // console.log('duração,', duration);
+        // const hours = duration.asHours();
+        return '<span>' + d + '</span>'
       }
     },
   ];
@@ -53,6 +60,7 @@ export class AppComponent {
 
   constructor(private http: HttpClient) {
     console.log('entrou');
+    moment.locale('pt');
 
     this.getWorkItens('em analise')
   }
