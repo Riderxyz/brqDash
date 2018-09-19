@@ -52,8 +52,8 @@ server.get(config.config.ENDPOINTS.getWorkItem, work.getItens);
 server.listen(port, function () {
   util.inicializarConfiguracao();
 
-  // console.log('running on port ' + port);
-  // console.log('started at: ' + (new Date()).getHours() + ':' + (new Date()).getMinutes() + ':' + (new Date()).getSeconds());
+   console.log('running on port ' + port);
+   console.log('started at: ' + (new Date()).getHours() + ':' + (new Date()).getMinutes() + ':' + (new Date()).getSeconds());
 
 });
 

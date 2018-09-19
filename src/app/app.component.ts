@@ -40,11 +40,9 @@ export class AppComponent {
       cellRenderer: function (params) {
         const d = moment(params.data.DataInicio_SLA_Dimensionamento).format('DD MMM - HH:MM');
         const dateTime = new Date(params.data.DataInicio_SLA_Dimensionamento);
-        console.log('datetime', dateTime)
-        // const duration = moment.duration(dateTime);
-        // console.log('duração,', duration);
-        // const hours = duration.asHours();
-        return '<span>' + d + '</span>'
+        console.log('datetime', dateTime);
+        const diffHours = Math.abs(dateTime.getTime() - (moment.now() / 3600000));
+        return '<span><div>' + d + '</div><div>' + diffHours + '</span>';
       }
     },
   ];
@@ -61,14 +59,14 @@ export class AppComponent {
   constructor(private http: HttpClient) {
     console.log('entrou');
     moment.locale('pt');
-
-    this.getWorkItens('em analise')
+    // Chamando aqui
+    this.getWorkItens('em analise');
   }
 
   private getWorkItens(tipo: string) {
     return this.http.get('http://localhost:9700/getWorkItem/tipo/' + tipo)
       .subscribe(data => {
-        console.log(data);
+        console.log('dados', data);
         this.DataDimensionado = data;
         this.gridApiDim.setRowData(data);
         return data;
@@ -93,6 +91,10 @@ export class AppComponent {
     this.gridApiDim = params.api;
     this.gridApiDim.sizeColumnsToFit();
     this.gridColumnApiDim = params.columnApi;
+  }
+
+  calcDifDateInTime(date1: Date, date2: Date) {
+    return Math.abs(date1.getTime() - date2.getTime()) / 3600000;
   }
 
 }
