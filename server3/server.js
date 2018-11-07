@@ -24,7 +24,7 @@ var url = require('url');
 
 server.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "*")
+  res.header("Access-Control-Allow-Methods", "*");
   res.header("Access-Control-Allow-Headers", "*");
   return next();
 });
@@ -48,12 +48,13 @@ server.pre(cors.preflight);
 server.use(cors.actual);
 
 server.get(config.config.ENDPOINTS.getWorkItem, work.getItens);
+server.get('/flavio', work.flavio);
 
 server.listen(port, function () {
   util.inicializarConfiguracao();
 
-  // console.log('running on port ' + port);
-  // console.log('started at: ' + (new Date()).getHours() + ':' + (new Date()).getMinutes() + ':' + (new Date()).getSeconds());
+  console.log('running on port ' + port);
+  console.log('started at: ' + (new Date()).getHours() + ':' + (new Date()).getMinutes() + ':' + (new Date()).getSeconds());
 
 });
 

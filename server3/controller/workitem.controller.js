@@ -14,13 +14,28 @@ function workItemController() {
         //      const pool = new sql.ConnectionPool(config.config.MSCONFIG)
         console.log('req ', req.params);
         vm.pool.connect().then(SimplePool => {
-            return SimplePool.query("EXEC dbo.[usp_DashGetWorkItem]	@status = '"+req.params.tipo +"'");
+            return SimplePool.query("EXEC dbo.[usp_DashGetWorkItem]");
         }).then(result => {
             vm.pool.close();
-            res.send(200, result.recordsets[0])
+            res.send(200, result.recordsets[0]);
         }).catch(err => {
             console.log(err);
         });
+        return next();
+    };
+
+    vm.flavio = function (req, res, next) {
+        //      const pool = new sql.ConnectionPool(config.config.MSCONFIG)
+        console.log('req ', req.params);
+        // vm.pool.connect().then(SimplePool => {
+        //     return SimplePool.query("EXEC dbo.[usp_DashGetWorkItem]");
+        // }).then(result => {
+        //     vm.pool.close();
+        //     res.send(200, result.recordsets[0]);
+        // }).catch(err => {
+        //     console.log(err);
+        // });
+        res.send(200, 'funcionou a chamada');
         return next();
     };
 

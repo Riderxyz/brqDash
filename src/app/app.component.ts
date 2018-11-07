@@ -15,41 +15,56 @@ export class AppComponent {
 
   private gridApi;
   private gridApiDim;
-  private gridColumnApi;
+  private gridColumnApi; //2956
   private gridColumnApiDim;
 
   private DataDimensionado = {};
 
   columnDefs = [
     {
-      headerName: 'Demanda1',
-      field: 'Demanda',
+      headerName: 'Esteira',
+      field: 'esteira',
       width: 70,
       autoHeight: true,
-      cellRenderer: function (params) {
-        console.log('obj', params);
-        return '<span style="display: block;line-height: normal;padding:10px;"><div style="font-weight: 800;">' +
-          params.data.tfs + '</div>' + params.data.Title + '<br>' + params.data.AnalistaFornecedor + '</span>';
-      }
+
     },
     {
-      headerName: 'Tempo',
-      field: 'Data_entrega',
-      width: 30,
+      headerName: 'Sistema',
+      field: 'sistema',
+      width: 50,
       autoHeight: true,
-      cellRenderer: function (params) {
-        const d = moment(params.data.DataInicio_SLA_Dimensionamento).format('DD MMM - HH:MM');
-        const dateTime = new Date(params.data.DataInicio_SLA_Dimensionamento);
-        console.log('datetime', dateTime)
-        // const duration = moment.duration(dateTime);
-        // console.log('duração,', duration);
-        // const hours = duration.asHours();
-        return '<span>' + d + '</span>'
-      }
+    },
+    {
+      headerName: 'TFS ID',
+      field: 'tfs',
+      width: 50,
+      autoHeight: true,
+    },
+    {
+      headerName: 'Criticidade',
+      field: 'criticidade',
+      width: 50,
+      autoHeight: true,
+    },
+    {
+      headerName: 'Status',
+      field: 'status',
+      width: 50,
+      autoHeight: true,
+    },
+    {
+      headerName: 'Tipo SLA',
+      field: 'tiposla',
+      width: 50,
+      autoHeight: true,
+    },
+    {
+      headerName: 'Restante',
+      field: 'data',
+      width: 50,
+      autoHeight: true,
     },
   ];
-
-
 
   rowData = [{
     'Demanda': 'TFS-2330',
@@ -62,11 +77,11 @@ export class AppComponent {
     console.log('entrou');
     moment.locale('pt');
 
-    this.getWorkItens('em analise')
+    this.getWorkItens();
   }
 
-  private getWorkItens(tipo: string) {
-    return this.http.get('http://localhost:9700/getWorkItem/tipo/' + tipo)
+  private getWorkItens() {
+    return this.http.get('http://localhost:9700/getWorkItem')
       .subscribe(data => {
         console.log(data);
         this.DataDimensionado = data;

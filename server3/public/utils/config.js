@@ -11,7 +11,7 @@ function configController() {
       local: 'http://localhost:9700/'
     },
     ENDPOINTS: {
-      getWorkItem: '/getWorkItem/tipo/:tipo'
+      getWorkItem: '/getWorkItem'
     },
     MSCONFIG: {
       user: 'mobileteam',
