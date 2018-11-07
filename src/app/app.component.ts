@@ -3,7 +3,10 @@ import * as lod from 'lodash';
 import * as env from './../environments/environment';
 
 import { HttpClient } from '@angular/common/http';
+
 import * as moment from 'moment';
+import * as mom from 'moment-business-time'
+import 'moment/locale/pt-br';
 
 @Component({
   selector: 'app-root',
@@ -82,9 +85,37 @@ export class AppComponent {
 
   constructor(private http: HttpClient) {
     console.log('entrou');
-    moment.locale('pt');
-    // Chamando aqui
-    this.getWorkItens('em analise');
+    moment.locale('pt-BR', {
+      workinghours: {
+        0: null,
+        1: ['09:00:00', '18:00:00'],
+        2: ['09:00:00', '18:00:00'],
+        3: ['09:00:00', '18:00:00'],
+        4: ['09:00:00', '18:00:00'],
+        5: ['09:00:00', '18:00:00'],
+        6: null
+      },
+      holidays: [
+        '*-12-25'
+      ]
+    });
+
+    let mins = mom('2015-02-27T16:22:00Z').workingDiff(moment('2015-02-20T12:00:00Z'), 'minutes', true);
+    console.log('TIME DIFF', mins)
+
+    let h = mins / 60;
+    let m = mins % 60;
+    console.log('simples ', this.getTimeFromMins(mins));
+
+    console.log(moment.utc().hours(h).minutes(m).format('hh:mm'));
+
+  }
+
+  getTimeFromMins(mins) {
+    const minutes = mins % 60;
+    const hours = (mins - minutes) / 60;
+
+    return hours + ':' + minutes;
   }
 
   private getWorkItens() {
