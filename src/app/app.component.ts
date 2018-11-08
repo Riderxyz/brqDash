@@ -8,7 +8,7 @@ import * as moment from 'moment';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['app.component.css']
 })
 export class AppComponent {
   title = 'dash';
@@ -20,6 +20,8 @@ export class AppComponent {
 
   private DataDimensionado = {};
 
+
+  rowClassRules: any;
   columnDefs = [
     {
       headerName: 'Esteira',
@@ -33,13 +35,6 @@ export class AppComponent {
       field: 'sistema',
       width: 50,
       autoHeight: true,
-      cellRenderer: function (params) {
-        const d = moment(params.data.DataInicio_SLA_Dimensionamento).format('DD MMM - HH:MM');
-        const dateTime = new Date(params.data.DataInicio_SLA_Dimensionamento);
-        console.log('datetime', dateTime);
-        const diffHours = Math.abs(dateTime.getTime() - (moment.now() / 3600000));
-        return '<span><div>' + d + '</div><div>' + diffHours + '</span>';
-      }
     },
     {
       headerName: 'TFS ID',
@@ -73,18 +68,19 @@ export class AppComponent {
     },
   ];
 
-  rowData = [{
-    'Demanda': 'TFS-2330',
-    'Tipo': 'Entrega',
-    'Data_entrega': '2017-02-03',
-    'Esteira': 'SharePoint'
-  }]
-
   constructor(private http: HttpClient) {
     console.log('entrou');
     moment.locale('pt');
     // Chamando aqui
-    this.getWorkItens('em analise');
+
+    this.rowClassRules = {
+      'sick-days-warning': function (params) {
+        let numSickDays = params.data.status;
+        return numSickDays = 'true';
+      },
+      'sick-days-breach': 'false'
+    };
+    this.getWorkItens();
   }
 
   private getWorkItens() {
@@ -98,10 +94,14 @@ export class AppComponent {
   }
 
   onGridReady(params) {
+    console.log('in ready')
     this.gridApi = params.api;
     this.gridApi.sizeColumnsToFit();
     this.gridColumnApi = params.columnApi;
 
+    this.gridApi.onCellValueChanged = function (event) {
+      this.gridApi.rowStyle = { background: 'coral' };
+    };
     params.api.addGlobalListener(function (type, event) {
       if (type.indexOf('column') >= 0) {
         //   console.log('Got column event: ', event);
@@ -111,14 +111,15 @@ export class AppComponent {
 
   onGridReadyDim(params) {
     console.log('set dim');
-
     this.gridApiDim = params.api;
     this.gridApiDim.sizeColumnsToFit();
     this.gridColumnApiDim = params.columnApi;
+    this.gridApiDim.rowStyle = { background: 'coral' };
   }
 
   calcDifDateInTime(date1: Date, date2: Date) {
     return Math.abs(date1.getTime() - date2.getTime()) / 3600000;
   }
+
 
 }

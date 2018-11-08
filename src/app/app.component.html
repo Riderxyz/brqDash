@@ -2,101 +2,29 @@
   <nb-layout-header>
     <h4>Demandas</h4>
   </nb-layout-header>
+<app-dashboard></app-dashboard>
   <nb-layout-column>
-
-
-    <div class="p-grid centralizar">
-      <div class="p-col-8">
-        <div style="display: flex;">
-          <nb-flip-card class="flipTamanho">
-            <nb-card-front>
-              <nb-card>
-                <nb-card-header>Dimensionamentos</nb-card-header>
-                <nb-card-body>
-                  <ag-grid-angular id='GridDimensionado' style=" height: 25vh;" class="ag-theme-balham" [rowData]="dataDimensionado"
-                    [columnDefs]="columnDefs" (gridReady)="onGridReadyDim($event)">
-                  </ag-grid-angular>
-                </nb-card-body>
-              </nb-card>
-            </nb-card-front>
-            <nb-card-back>
-              <nb-card>
-                <nb-card-body>
-                  Back
-                </nb-card-body>
-              </nb-card>
-            </nb-card-back>
-          </nb-flip-card>
-          <nb-flip-card class="flipTamanho">
-            <nb-card-front>
-              <nb-card>
-                <nb-card-header>Entregas</nb-card-header>
-                <nb-card-body>
-                  <ag-grid-angular style=" height: 25vh;" class="ag-theme-balham" [rowData]="rowData" [columnDefs]="columnDefs"
-                    (gridReady)="onGridReady($event)">
-                  </ag-grid-angular>
-                </nb-card-body>
-              </nb-card>
-            </nb-card-front>
-            <nb-card-back>
-              <nb-card>
-                <nb-card-body>
-                  Back
-                </nb-card-body>
-              </nb-card>
-            </nb-card-back>
-          </nb-flip-card>
-        </div>
-        <div style="display: flex;">
-          <nb-flip-card class="flipTamanho">
-            <nb-card-front>
-              <nb-card>
-                <nb-card-header>Dimensionamentos</nb-card-header>
-                <nb-card-body>
-                  <ag-grid-angular id='GridDimensionado' style=" height: 25vh;" class="ag-theme-balham" [rowData]="dataDimensionado"
-                    [columnDefs]="columnDefs" (gridReady)="onGridReadyDim($event)">
-                  </ag-grid-angular>
-                </nb-card-body>
-              </nb-card>
-            </nb-card-front>
-            <nb-card-back>
-              <nb-card>
-                <nb-card-body>
-                  Back
-                </nb-card-body>
-              </nb-card>
-            </nb-card-back>
-          </nb-flip-card>
-          <nb-flip-card class="flipTamanho">
-            <nb-card-front>
-              <nb-card>
-                <nb-card-header>Entregas</nb-card-header>
-                <nb-card-body>
-                  <ag-grid-angular style=" height: 25vh;" class="ag-theme-balham" [rowData]="rowData" [columnDefs]="columnDefs"
-                    (gridReady)="onGridReady($event)">
-                  </ag-grid-angular>
-                </nb-card-body>
-              </nb-card>
-            </nb-card-front>
-            <nb-card-back>
-              <nb-card>
-                <nb-card-body>
-                  Back
-                </nb-card-body>
-              </nb-card>
-            </nb-card-back>
-          </nb-flip-card>
-        </div>
-      </div>
-      <div class="p-col-4">
-        <nb-card>
-          <nb-card-header>Dimensionamentos</nb-card-header>
-          <nb-card-body>
-            <ag-grid-angular style="height: 66vh;" class="ag-theme-balham" [rowData]="rowData" [columnDefs]="columnDefs"
-              (gridReady)="onGridReady($event)">
-            </ag-grid-angular>
-          </nb-card-body>
-        </nb-card>
+    <div class="p-grid">
+      <div class="p-col">
+        <nb-flip-card>
+          <nb-card-front>
+            <nb-card>
+              <nb-card-header>O.N.S.</nb-card-header>
+              <nb-card-body>
+                <ag-grid-angular id='GridDimensionado' style="height: 53vh;" class="ag-theme-balham" [rowData]="dataDimensionado"
+                  [columnDefs]="columnDefs" (gridReady)="onGridReadyDim($event)" [rowClassRules]="rowClassRules">
+                </ag-grid-angular>
+              </nb-card-body>
+            </nb-card>
+          </nb-card-front>
+          <nb-card-back>
+            <nb-card>
+              <nb-card-body>
+                Back
+              </nb-card-body>
+            </nb-card>
+          </nb-card-back>
+        </nb-flip-card>
       </div>
     </div>
   </nb-layout-column>
