@@ -3,7 +3,10 @@ import * as lod from 'lodash';
 import * as env from './../environments/environment';
 
 import { HttpClient } from '@angular/common/http';
+
 import * as moment from 'moment';
+import * as mom from 'moment-business-time'
+import 'moment/locale/pt-br';
 
 @Component({
   selector: 'app-root',
@@ -81,6 +84,13 @@ export class AppComponent {
       'sick-days-breach': 'false'
     };
     this.getWorkItens();
+  }
+
+  getTimeFromMins(mins) {
+    const minutes = mins % 60;
+    const hours = (mins - minutes) / 60;
+
+    return hours + ':' + minutes;
   }
 
   private getWorkItens() {
