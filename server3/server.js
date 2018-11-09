@@ -42,13 +42,10 @@ const cors = corsMiddleware({
   exposeHeaders: ['API-Token-Expiry']
 });
 
-
-
 server.pre(cors.preflight);
 server.use(cors.actual);
 
 server.get(config.config.ENDPOINTS.getWorkItem, work.getItens);
-server.get('/flavio', work.flavio);
 
 server.listen(port, function () {
   util.inicializarConfiguracao();

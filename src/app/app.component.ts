@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import * as lod from 'lodash';
 import * as env from './../environments/environment';
+import { interval } from 'rxjs/observable/interval';
 
 import { HttpClient } from '@angular/common/http';
 
@@ -18,11 +19,12 @@ export class AppComponent {
 
   private gridApi;
   private gridApiDim;
-  private gridColumnApi; //2956
+  private gridColumnApi;
   private gridColumnApiDim;
 
   private DataDimensionado = {};
 
+  limites: any = {};
 
   rowClassRules: any;
   columnDefs = [
@@ -72,16 +74,30 @@ export class AppComponent {
   ];
 
   constructor(private http: HttpClient) {
-    console.log('entrou');
     moment.locale('pt');
-    // Chamando aqui
+    this.limites.warning = 1500;
+    this.limites.danger = 320;
+    this.limites.crazy = 60;
+    const source = interval(10000);
+    const subscribe = source
+      .subscribe(val => {
+        this.getWorkItens();
+      });
 
+    const that = this;
     this.rowClassRules = {
-      'sick-days-warning': function (params) {
-        let numSickDays = params.data.status;
-        return numSickDays = 'true';
+      'warning': function (params) {
+        const minutos = that.hourToMinute(params.data.data);
+        return ((minutos >= that.limites.danger) && (minutos <= that.limites.warning));
       },
-      'sick-days-breach': 'false'
+      'danger': function (params) {
+        const minutos = that.hourToMinute(params.data.data);
+        return ((minutos >= that.limites.crazy) && (minutos <= that.limites.danger));
+      },
+      'crazy': function (params) {
+        const minutos = that.hourToMinute(params.data.data);
+        return (minutos <= that.limites.crazy);
+      }
     };
     this.getWorkItens();
   }
@@ -94,7 +110,7 @@ export class AppComponent {
   }
 
   private getWorkItens() {
-    return this.http.get('http://localhost:9700/getWorkItem')
+    return this.http.get('http://10.2.1.127:9700/getWorkItem')
       .subscribe(data => {
         console.log('dados', data);
         this.DataDimensionado = data;
@@ -127,9 +143,13 @@ export class AppComponent {
     this.gridApiDim.rowStyle = { background: 'coral' };
   }
 
-  calcDifDateInTime(date1: Date, date2: Date) {
-    return Math.abs(date1.getTime() - date2.getTime()) / 3600000;
-  }
+  // calcDifDateInTime(date1: Date, date2: Date) {
+  //   return Math.abs(date1.getTime() - date2.getTime()) / 3600000;
+  // }
 
+  hourToMinute(hh: string): number {
+    const arrayHora = hh.split(':');
+    return (Number(arrayHora[0]) * 60) + Number(arrayHora[1]);
+  }
 
 }
