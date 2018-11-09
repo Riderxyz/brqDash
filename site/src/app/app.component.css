@@ -1,0 +1,36 @@
+.flipTamanho{
+
+  width: 100%;
+  padding-left: 5px;
+}
+.centralizar{
+  align-items: center;
+  justify-items: center;
+}
+
+.sick-days-warning {
+    background-color: sandybrown !important;
+    
+
+}
+
+.warning {
+    background-color: yellow !important;
+    font-weight: normal;
+    color: rgb(48, 12, 116);
+    font-size: 1em;
+}
+
+.danger {
+    background-color: red !important;
+    font-weight: bolder;
+    color: white;
+    font-size: 1.2em;
+}
+
+.crazy {
+    background-color: black !important;
+    font-weight: bolder;
+    color: white;
+    font-size: 1.2em;
+}
