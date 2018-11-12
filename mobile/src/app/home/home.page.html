@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      BRQ SLA
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list>
+    <div class="{{setstyle(item)}}" *ngFor="let item of data">
+      <ion-label>
+        <h2>{{item.tfs}}</h2>
+        <h4>{{item.status}}</h4>
+        <h2>{{item.data}}</h2>
+      </ion-label>
+    </div>
+  </ion-list>
+</ion-content>
