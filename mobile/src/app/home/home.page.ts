@@ -40,6 +40,8 @@ export class HomePage {
       } else {
         if (minutos <= this.limites.crazy) {
           retorno = 'crazy';
+        } else {
+          retorno = 'normal'
         }
       }
     }
@@ -47,12 +49,21 @@ export class HomePage {
   }
 
   private getWorkItens() {
-    console.log('chamando....');
-
     return this.http.get('http://10.2.1.127:9700/getWorkItem')
-      .subscribe(data => {
-        this.data = data;
-        return data;
+      .subscribe((obs_data: []) => {
+        // this.data = data;
+        obs_data.forEach((element: any) => {
+          element.id = element.tfs.split('-')[1];
+          if (element.status === 'Em estimativa') {
+            element.status = 'Estimativa';
+          } else {
+            if (element.status === 'Em desenvolvimento') {
+              element.status = 'Desenv';
+            }
+          }
+          this.data.push(element);
+        });
+        return this.data;
       });
   }
 
