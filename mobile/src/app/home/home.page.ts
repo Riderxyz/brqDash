@@ -50,7 +50,7 @@ export class HomePage {
 
   private getWorkItens() {
     return this.http.get('http://10.2.1.127:9700/getWorkItem')
-      .subscribe((obs_data: []) => {
+      .subscribe((obs_data: [{}]) => {
         // this.data = data;
         obs_data.forEach((element: any) => {
           element.id = element.tfs.split('-')[1];

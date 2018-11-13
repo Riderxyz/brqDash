@@ -1,7 +1,7 @@
 {
-  "name": "mobile",
+  "name": "brq_sla",
   "version": "0.0.1",
-  "author": "Ionic Framework",
+  "author": "NIlton Cesar Jacintho",
   "homepage": "http://ionicframework.com/",
   "scripts": {
     "ng": "ng",
