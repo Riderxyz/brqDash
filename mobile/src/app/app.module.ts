@@ -11,13 +11,22 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { HttpClientModule } from '@angular/common/http';
 
+import { AngularFireModule } from 'angularfire2';
+import { environment } from '../environments/environment';
+import { AngularFireDatabase } from 'angularfire2/database';
+
+
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [BrowserModule,
     HttpClientModule,
+    AngularFireModule.initializeApp(environment.db),
+    // AngularFireAuthModule,
     IonicModule.forRoot(), AppRoutingModule],
   providers: [
+    AngularFireDatabase,
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }

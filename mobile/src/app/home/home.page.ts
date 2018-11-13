@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MobileService } from './../mobile.service';
 import { interval } from 'rxjs/observable/interval';
 import { HttpClient } from '@angular/common/http';
+import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 
 @Component({
   selector: 'app-home',
@@ -15,21 +16,25 @@ export class HomePage {
   warning = false;
   limites: any = {};
 
-  constructor(mobSrv: MobileService, private http: HttpClient) {
+  demandas$: AngularFireList<any[]>;
+
+  constructor(mobSrv: MobileService,
+    private http: HttpClient,
+    public af: AngularFireDatabase) {
     const source = interval(10000);
     this.limites.warning = 600;
     this.limites.danger = 360;
     this.limites.crazy = 120;
     const subscribe = source
       .subscribe(val => {
-        // this.getWorkItens();
+        this.getWorkItens();
       });
     this.getWorkItens();
   }
 
   setstyle(params) {
     let retorno = '';
-    console.log(params);
+    //  console.log(params);
 
     const minutos = this.hourToMinute(params.data);
     if ((minutos >= this.limites.danger) && (minutos <= this.limites.warning)) {
@@ -41,7 +46,7 @@ export class HomePage {
         if (minutos <= this.limites.crazy) {
           retorno = 'crazy';
         } else {
-          retorno = 'normal'
+          retorno = 'normal';
         }
       }
     }
@@ -49,22 +54,26 @@ export class HomePage {
   }
 
   private getWorkItens() {
-    return this.http.get('http://10.2.1.127:9700/getWorkItem')
-      .subscribe((obs_data: [{}]) => {
-        // this.data = data;
-        obs_data.forEach((element: any) => {
-          element.id = element.tfs.split('-')[1];
-          if (element.status === 'Em estimativa') {
-            element.status = 'Estimativa';
-          } else {
-            if (element.status === 'Em desenvolvimento') {
-              element.status = 'Desenv';
-            }
+    console.log('chamando....');
+    this.data = [];
+    const ref = this.af.database.ref('brq-sla/ONS');
+    ref.on('value', itemSnapshot => {
+      //  console.log(itemSnapshot.toJSON());
+      itemSnapshot.forEach(itemSnap => {
+        const element = itemSnap.val();
+        element.id = element.tfs.split('-')[1];
+        if (element.status === 'Em estimativa') {
+          element.status = 'Estimativa';
+        } else {
+          if (element.status === 'Em desenvolvimento') {
+            element.status = 'Desenv';
           }
-          this.data.push(element);
-        });
-        return this.data;
+        }
+        this.data.push(element);
+        return false;
       });
+    });
+    return this.data;
   }
 
   hourToMinute(hh: string): number {
