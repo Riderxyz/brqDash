@@ -27,47 +27,38 @@ export class AppComponent {
   columnDefs = [
     {
       headerName: 'Esteira',
-      field: 'esteira',
-      width: 70,
-      autoHeight: true,
-
-    },
-    {
-      headerName: 'Sistema',
-      field: 'sistema',
+      field: 'Esteira',
       width: 50,
-      autoHeight: true,
-    },
-    {
-      headerName: 'TFS ID',
-      field: 'tfs',
-      width: 50,
-      autoHeight: true,
-    },
-    {
-      headerName: 'Criticidade',
-      field: 'criticidade',
-      width: 50,
-      autoHeight: true,
-    },
-    {
-      headerName: 'Status',
-      field: 'status',
-      width: 50,
-      autoHeight: true,
-    },
-    {
-      headerName: 'Tipo SLA',
-      field: 'tiposla',
-      width: 50,
-      autoHeight: true,
+      height: 190,
+      cellRenderer: this.MontarColunaEsteira,
     },
     {
       headerName: 'Restante',
       field: 'data',
-      width: 50,
+      width: 25,
       autoHeight: true,
+      cellRenderer: this.MontarColunaRestante,
     },
+    // {
+    //   headerName: 'Criticidade',
+    //   field: 'criticidade',
+    //   width: 25,
+    //   autoHeight: true,
+    //   cellRenderer: this.MontarColunaCriticidade,
+    // },
+    // {
+    //   headerName: 'Status',
+    //   field: 'status',
+    //   width: 50,
+    //   autoHeight: true,
+    // },
+    // {
+    //   headerName: 'Tipo SLA',
+    //   field: 'tiposla',
+    //   width: 50,
+    //   autoHeight: true,
+    // },
+
   ];
 
   constructor(private http: HttpClient) {
@@ -94,9 +85,44 @@ export class AppComponent {
       'crazy': function (params) {
         const minutos = that.hourToMinute(params.data.data);
         return (minutos <= that.limites.crazy);
+      },
+      'normal': function (params) {
+        const minutos = that.hourToMinute(params.data.data);
+        console.log(that.hourToMinute(params.data.data));
+        console.log(that.limites.warning);
+        console.log(minutos > that.limites.warning);
+
+
+        return (minutos > that.limites.warning);
       }
     };
     this.getWorkItens();
+  }
+
+  MontarColunaCriticidade(param) {
+    let html = '<br><span style=" font-size: 2.9em;" >' + param.data.criticidade + '</span>';
+    html += '<br>';
+    html += '<span style=" font-size: 2.5em" >' + param.data.status + '</span>';
+    return html;
+  }
+
+  MontarColunaEsteira(param) {
+    console.log(param);
+    // tslint:disable-next-line:max-line-length
+    let html = '<br><span style="font-size: 4em;padding-top:10px;" >' + param.data.esteira + ' - ' + param.data.tfs + '</span>';
+    html += '<br>';
+    // html += '<span style=" font-size: 2.0em" >' + param.data.titulo + '</span>';
+    html = '<br><span style=" font-size: 2.9em;" >' + param.data.criticidade + ' - ' + param.data.status + '</span>';
+    return html;
+  }
+
+  MontarColunaRestante(param) {
+    console.log(param);
+
+    let html = '<br><span style=" font-size: 4em;padding-top:10px;" >' + param.data.data + '</span>';
+    html += '<br>';
+    html += '<span style="font-size: 2.5em" > ' + moment(param.data.datafim).format('DD-MMM') + '</span>';
+    return html;
   }
 
   getTimeFromMins(mins) {

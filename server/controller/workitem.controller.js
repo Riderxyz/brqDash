@@ -24,7 +24,7 @@ function workItemController() {
 
     vm.getItens = function (req, res, next) {
         vm.pool.connect().then(SimplePool => {
-            return SimplePool.query("EXEC dbo.[usp_DashGetWorkItem]");
+            return SimplePool.query("EXEC dbo.[usp_DashGetWorkItemTeste]");
         }).then(result => {
             vm.pool.close();
             var ons_db = ref.child("ONS");
@@ -38,7 +38,7 @@ function workItemController() {
 
     vm.updateRealTime = function () {
         vm.pool.connect().then(SimplePool => {
-            return SimplePool.query("EXEC dbo.[usp_DashGetWorkItem]");
+            return SimplePool.query("EXEC dbo.[usp_DashGetWorkItemTeste]");
         }).then(result => {
             vm.pool.close();
             var ons_db = ref.child("ONS");

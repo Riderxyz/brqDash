@@ -50,7 +50,7 @@ server.use(cors.actual);
 var interval = setInterval(function (str1, str2) {
   console.log("atualizando Realtime DB");
   work.updateRealTime();
-}, 5000, "BRQ", "SLA");
+}, 55000, "BRQ", "SLA");
 
 
 server.get(config.config.ENDPOINTS.getWorkItem, work.getItens);

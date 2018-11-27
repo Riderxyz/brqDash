@@ -37,7 +37,7 @@
               <nb-card-body>
                 <ag-grid-angular id='GridDimensionado' style="height: 65vh;" class="ag-theme-balham" [rowData]="dataDimensionado"
                   [columnDefs]="columnDefs" (gridReady)="onGridReadyDim($event)" [rowClassRules]="rowClassRules"
-                  [enableSorting]="true">
+                  [rowHeight]="120" [enableSorting]="true">
                 </ag-grid-angular>
               </nb-card-body>
             </nb-card>
