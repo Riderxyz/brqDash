@@ -13,6 +13,7 @@ import 'moment/locale/pt-br';
 })
 export class AppComponent {
   title = 'dash';
+  that = this;
 
   private gridApi;
   private gridApiDim;
@@ -27,46 +28,17 @@ export class AppComponent {
   columnDefs = [
     {
       headerName: 'Esteira',
-      field: 'esteira',
-      width: 70,
-      autoHeight: true,
-
-    },
-    {
-      headerName: 'Sistema',
-      field: 'sistema',
+      field: 'Esteira',
       width: 50,
-      autoHeight: true,
-    },
-    {
-      headerName: 'TFS ID',
-      field: 'tfs',
-      width: 50,
-      autoHeight: true,
-    },
-    {
-      headerName: 'Criticidade',
-      field: 'criticidade',
-      width: 50,
-      autoHeight: true,
-    },
-    {
-      headerName: 'Status',
-      field: 'status',
-      width: 50,
-      autoHeight: true,
-    },
-    {
-      headerName: 'Tipo SLA',
-      field: 'tiposla',
-      width: 50,
-      autoHeight: true,
+      height: 190,
+      cellRenderer: this.MontarColunaEsteira,
     },
     {
       headerName: 'Restante',
       field: 'data',
-      width: 50,
+      width: 25,
       autoHeight: true,
+      cellRenderer: this.MontarColunaRestante,
     },
   ];
 
@@ -76,6 +48,7 @@ export class AppComponent {
     this.limites.danger = 360;
     this.limites.crazy = 120;
     const source = interval(10000);
+
     const subscribe = source
       .subscribe(val => {
         this.getWorkItens();
@@ -94,9 +67,36 @@ export class AppComponent {
       'crazy': function (params) {
         const minutos = that.hourToMinute(params.data.data);
         return (minutos <= that.limites.crazy);
+      },
+      'normal': function (params) {
+        const minutos = that.hourToMinute(params.data.data);
+        return (minutos > that.limites.warning);
       }
     };
     this.getWorkItens();
+  }
+
+  MontarColunaCriticidade(param) {
+    let html = '<br><span style=" font-size: 2.5em;" >' + param.data.criticidade + '</span>';
+    html += '<br>';
+    html += '<span style=" font-size: 2.5em" >' + param.data.status + '</span>';
+    return html;
+  }
+
+  MontarColunaEsteira(param) {
+    let html = '<br><span style="font-size: 3.7em;padding-top:10px;" >' + param.data.esteira + ' - ' + param.data.tfs + '</span>';
+    html += '<br>';
+    html += '<span style=" font-size: 3.0em;" >' + param.data.criticidade + ' - ' + param.data.status + '</span>';
+    return html;
+  }
+
+  MontarColunaRestante(param) {
+    const temp_d = param.data.data.split(':');
+    const hh = +temp_d[0] + 'hs ' + temp_d[1] + ' mins'
+    let html = '<br><span style=" font-size: 3.7em;padding-top:10px;" >' + hh + '</span>';
+    html += '<br>';
+    html += '<span style="font-size: 3.0em" > ' + moment(param.data.datafim).format('DD-MMM') + '</span>';
+    return html;
   }
 
   getTimeFromMins(mins) {
@@ -106,10 +106,15 @@ export class AppComponent {
     return hours + ':' + minutes;
   }
 
+  formatdata(data): string {
+    let temp_d = data.split(':');
+    return +temp_d[0] + 'hs ' + temp_d[1] + ' mins'
+
+  }
+
   private getWorkItens() {
     return this.http.get('http://10.2.1.127:9700/getWorkItem')
       .subscribe(data => {
-        console.log('dados', data);
         this.DataDimensionado = data;
         this.gridApiDim.setRowData(data);
         return data;
@@ -117,7 +122,6 @@ export class AppComponent {
   }
 
   onGridReady(params) {
-    console.log('in ready')
     this.gridApi = params.api;
     this.gridApi.sizeColumnsToFit();
     this.gridColumnApi = params.columnApi;
@@ -133,16 +137,11 @@ export class AppComponent {
   }
 
   onGridReadyDim(params) {
-    console.log('set dim');
     this.gridApiDim = params.api;
     this.gridApiDim.sizeColumnsToFit();
     this.gridColumnApiDim = params.columnApi;
     this.gridApiDim.rowStyle = { background: 'coral' };
   }
-
-  // calcDifDateInTime(date1: Date, date2: Date) {
-  //   return Math.abs(date1.getTime() - date2.getTime()) / 3600000;
-  // }
 
   hourToMinute(hh: string): number {
     const arrayHora = hh.split(':');
