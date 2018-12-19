@@ -39,26 +39,6 @@ export class AppComponent {
       autoHeight: true,
       cellRenderer: this.MontarColunaRestante,
     },
-    // {
-    //   headerName: 'Criticidade',
-    //   field: 'criticidade',
-    //   width: 25,
-    //   autoHeight: true,
-    //   cellRenderer: this.MontarColunaCriticidade,
-    // },
-    // {
-    //   headerName: 'Status',
-    //   field: 'status',
-    //   width: 50,
-    //   autoHeight: true,
-    // },
-    // {
-    //   headerName: 'Tipo SLA',
-    //   field: 'tiposla',
-    //   width: 50,
-    //   autoHeight: true,
-    // },
-
   ];
 
   constructor(private http: HttpClient) {
@@ -96,7 +76,7 @@ export class AppComponent {
         return (minutos > that.limites.warning);
       }
     };
-    this.getWorkItens();
+    //this.getWorkItens();
   }
 
   MontarColunaCriticidade(param) {
@@ -137,7 +117,7 @@ export class AppComponent {
       .subscribe(data => {
         console.log('dados', data);
         this.DataDimensionado = data;
-        this.gridApiDim.setRowData(data);
+        this.gridApi.setRowData(data);
         return data;
       });
   }
@@ -165,10 +145,6 @@ export class AppComponent {
     this.gridColumnApiDim = params.columnApi;
     this.gridApiDim.rowStyle = { background: 'coral' };
   }
-
-  // calcDifDateInTime(date1: Date, date2: Date) {
-  //   return Math.abs(date1.getTime() - date2.getTime()) / 3600000;
-  // }
 
   hourToMinute(hh: string): number {
     const arrayHora = hh.split(':');

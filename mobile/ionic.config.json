@@ -1,7 +1,5 @@
 {
-  "name": "mobile",
-  "integrations": {
-    "cordova": {}
-  },
+  "name": "brq-dash-mobile",
+  "integrations": {},
   "type": "angular"
 }

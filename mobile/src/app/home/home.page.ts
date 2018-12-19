@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
-import { MobileService } from './../mobile.service';
-import { interval } from 'rxjs/observable/interval';
 import { HttpClient } from '@angular/common/http';
 import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
+import { interval } from 'rxjs';
+import { MobileService } from '../mobile-service.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
-  styleUrls: ['home.page.css'],
+  styleUrls: ['home.page.scss'],
 })
 export class HomePage {
 
@@ -18,13 +18,16 @@ export class HomePage {
 
   demandas$: AngularFireList<any[]>;
 
-  constructor(mobSrv: MobileService,
+  constructor(
+    public mobSrv: MobileService,
     private http: HttpClient,
     public af: AngularFireDatabase) {
     const source = interval(10000);
     this.limites.warning = 600;
     this.limites.danger = 360;
     this.limites.crazy = 120;
+    console.log('Iniciando');
+
     const subscribe = source
       .subscribe(val => {
         this.getWorkItens();
@@ -34,8 +37,6 @@ export class HomePage {
 
   setstyle(params) {
     let retorno = '';
-    //  console.log(params);
-
     const minutos = this.hourToMinute(params.data);
     if ((minutos >= this.limites.danger) && (minutos <= this.limites.warning)) {
       retorno = 'warning';
@@ -58,7 +59,6 @@ export class HomePage {
     this.data = [];
     const ref = this.af.database.ref('brq-sla/ONS');
     ref.on('value', itemSnapshot => {
-      //  console.log(itemSnapshot.toJSON());
       itemSnapshot.forEach(itemSnap => {
         const element = itemSnap.val();
         element.id = element.tfs.split('-')[1];
