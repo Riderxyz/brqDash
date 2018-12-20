@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Firebase } from '@ionic-native/firebase';
-import { Platform } from 'ionic-angular';
+import { Platform, AlertController } from 'ionic-angular';
 import { Subject } from 'rxjs/Subject';
 @Injectable()
 export class FcmProvider {
@@ -8,28 +8,37 @@ export class FcmProvider {
   showBadgesNumber = new Subject<any>()
   constructor(
     public firebaseSrv: Firebase,
+    private alertCtrl: AlertController,
     private platform: Platform) { }
 
   async getToken() {
     let token;
-    if (this.platform.is('android')) {
+    if (this.platform.is('cordova')) {
       token = await this.firebaseSrv.getToken()
+      console.log('O q temos aqui? Heub?', token);
+    } else {
+      this.alertCtrl.create({
+        title: 'N ira receber Push'
+      }).present()
     }
-    console.log('O q temos aqui? Heub?', token);
+
   }
   listenToNotifications() {
     return this.firebaseSrv.onNotificationOpen()
   }
 
   setBadge(qtd) {
-  this.showBadgesNumber.next()
-  return this.firebaseSrv.setBadgeNumber(qtd)
+    this.showBadgesNumber.next()
+    return this.firebaseSrv.setBadgeNumber(qtd)
   }
 
   cleanBadge() {
-   return this.firebaseSrv.setBadgeNumber(0)
+    return this.firebaseSrv.setBadgeNumber(0)
   }
-  showMeBadge(){
-   return this.firebaseSrv.getBadgeNumber()
+  showMeBadge() {
+    return this.firebaseSrv.getBadgeNumber()
+  }
+  get checkPlatform() {
+    return (this.platform.is('cordova'))
   }
 }

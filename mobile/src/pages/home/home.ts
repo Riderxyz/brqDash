@@ -1,6 +1,6 @@
 
 import { Component } from '@angular/core';
-import { NavController, Platform, AlertController } from 'ionic-angular';
+import { NavController, Platform, AlertController, ToastController } from 'ionic-angular';
 import { Firebase } from '@ionic-native/firebase';
 import { FcmProvider } from '../../services/fcm.service';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
@@ -15,7 +15,7 @@ import { interval } from 'rxjs';
 export class HomePage {
   badges: number = null;
   demandas$: AngularFireList<any[]>;
-
+  finalizado = new Subject<any>();
   data: any = [];
   danger = true;
   warning = false;
@@ -27,36 +27,40 @@ export class HomePage {
     public fcm: FcmProvider,
     public alertCtrl: AlertController,
     public af: AngularFireDatabase,
+    public toast: ToastController,
     public firebaseSrv: Firebase) {
 
-    const source = interval(10000);
+    const source = interval(9000);
     this.limites.warning = 600;
     this.limites.danger = 360;
     this.limites.crazy = 120;
 
-    const subscribe = source
-    .subscribe(val => {
-      this.getWorkItens();
-    });
-  this.getWorkItens();
+    /*   const subscribe = source
+        .subscribe(val => {
+          this.getWorkItens('automatico');
+        }); */
+    this.getWorkItens('automatico');
 
     this.fcm.showBadgesNumber.asObservable().subscribe((numero) => {
       this.logBadges();
     })
-
   }
   startPush() {
     console.log('Dentro do push em home');
-    this.firebaseSrv.setBadgeNumber(5).then((res) => {
-      console.log('Res de badge', res);
-    }).catch((err) => {
-      console.log(err);
-    })
-    this.fcm.showMeBadge().then((res: any) => {
-      console.log('Res de badge', res);
-      this.badges = res;
-    })
-    this.fcm.getToken();
+    if (this.fcm.checkPlatform) {
+      this.fcm.setBadge(5).then((res) => {
+        console.log('Res de badge', res);
+      }).catch((err) => {
+        console.log(err);
+      })
+      this.fcm.showMeBadge().then((res: any) => {
+        console.log('Res de badge', res);
+        this.badges = res;
+      })
+      this.fcm.getToken();
+    }
+
+
   }
 
   logBadges() {
@@ -94,7 +98,7 @@ export class HomePage {
     return retorno;
   }
 
-  private getWorkItens() {
+  private getWorkItens(callType, event?) {
     console.log('chamando....');
     this.data = [];
     const ref = this.af.database.ref('brq-sla/ONS');
@@ -102,17 +106,30 @@ export class HomePage {
       itemSnapshot.forEach(itemSnap => {
         const element = itemSnap.val();
         element.id = element.tfs.split('-')[1];
-        if (element.status === 'Em estimativa') {
-          element.status = 'Estimativa';
-        } else {
-          if (element.status === 'Em desenvolvimento') {
-            element.status = 'Desenv';
-          }
-        }
+        /*   if (element.status === 'Em estimativa') {
+            element.status = 'Estimativa';
+          } else {
+            if (element.status === 'Em desenvolvimento') {
+              element.status = 'Desenv';
+            }
+          } */
+        const arrayHora = element.data.split(':');
+        element.dataHora = arrayHora[0].substring(1, 3) + 'hs'
+        element.dataMinuto = arrayHora[1] + 'mins'
         this.data.push(element);
         return false;
       });
     });
+    if (callType === 'refresh') {
+      this.toast.create({
+        message: 'Demandas atualizadas automaticamente',
+        duration: 1000,
+        position: 'top'
+      }).present();
+      event.complete()
+    } else {
+      this.finalizado.next(callType)
+    }
     return this.data;
   }
 
@@ -121,7 +138,19 @@ export class HomePage {
     return (Number(arrayHora[0]) * 60) + Number(arrayHora[1]);
   }
 
+  doRefresh(event) {
+    this.getWorkItens('refresh', event);
+    this.finalizado.asObservable().subscribe((fim) => {
+      this.toast.create({
+        message: 'Demandas atualizadas',
+        duration: 3000,
+        position: 'top'
+      }).present();
+      console.log(event);
+      event.complete()
+    })
 
+  }
 }
 
 

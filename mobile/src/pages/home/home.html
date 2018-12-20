@@ -1,24 +1,18 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="royal">
     <ion-title text-center>
-      Teste de Security
+      BRQ_Dash
     </ion-title>
   </ion-navbar>
 </ion-header>
-
-<ion-content text-center>
+<!-- #3D3784 -->
+<ion-content class="fundo">
   <ion-grid>
-    <ion-row>
-      <ion-col text-center>
-        Esta tela é apenas para Testes do brqDash
-      </ion-col>
-    </ion-row>
     <ion-row>
       <ion-col>
         <button ion-button full color="royal" (click)="startPush()">Iniciar teste de Push</button>
       </ion-col>
     </ion-row>
-
     <ion-row>
       <ion-col>
         <button ion-button full color="royal" (click)="logBadges()">Quantas badges {{badges}}</button>
@@ -28,39 +22,59 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <ion-list>
-    <ion-card class="{{setstyle(item)}}" *ngFor="let item of data">
-      <ion-card-header>
-        <ion-row>
-          <ion-col col-2 style="border: 2px">
-            <span><b>{{item.tfs}}</b></span>
-          </ion-col>
-          <ion-col col-9>
-            <span><b>{{item.tiposla}}</b></span>
-          </ion-col>
-        </ion-row>
-      </ion-card-header>
-      <ion-card-content>
-        <ion-row>
-          <ion-col col-8>
-            <span>{{item.status}}</span>
-          </ion-col>
-          <ion-col col-1>
-            <span>{{item.esteira}}</span>
-          </ion-col>
-          <ion-col col-1>
-            <span>{{item.data}}</span>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <span style="width: 200px;word-wrap: break-word;">{{item.titulo}}</span>
-          </ion-col>
-        </ion-row>
-      </ion-card-content>
-    </ion-card>
+  <ion-list padding color="nebular">
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    <ion-item *ngFor="let item of data" class="cardsDemanda {{setstyle(item)}}">
+      <div class="headerItem">
+        <h5>{{item.esteira}}</h5>
+        <h5>{{item.tfs}}</h5>
+      </div>
+      <div class="contentItem">
+        <h6>{{item.tiposla}}</h6>
+        <h6>{{item.status}}</h6>
+      </div>
+
+      <h6>{{item.dataHora}} {{item.dataMinuto}}</h6>
+      <div>
+        <span style="word-wrap: break-word;">{{item.titulo}}</span>
+      </div>
+
+      <!--    <ion-card class="cardsDemanda {{setstyle(item)}}"> -->
+      <!--  <ion-card-header>
+          <ion-grid>
+            <ion-row>
+              <ion-col col-2 style="border: 2px">
+                <span><b>{{item.tfs}}</b></span>
+              </ion-col>
+              <ion-col col-9>
+                <span><b>{{item.tiposla}}</b></span>
+              </ion-col>
+            </ion-row>
+          </ion-grid> 
+</ion-card-header> -->
+      <!--        <ion-card-content>
+          <ion-grid>
+            <ion-row>
+              <ion-col col-8>
+                <span>{{item.status}}</span>
+              </ion-col>
+              <ion-col col-1>
+                <span>{{item.esteira}}</span>
+              </ion-col>
+              <ion-col col-1>
+                <span>{{item.}}</span>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <span style="width: 200px;word-wrap: break-word;">{{item.titulo}}</span>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card> -->
+    </ion-item>
   </ion-list>
-
-
-
 </ion-content>

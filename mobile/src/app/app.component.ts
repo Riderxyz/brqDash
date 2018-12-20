@@ -22,21 +22,29 @@ export class MyApp {
     public firebase: Firebase,
     public fcm: FcmProvider) {
     platform.ready().then(() => {
-      this.fcm.listenToNotifications().pipe(
-        tap((msg) => {
-          const toast = alertCtrl.create({
-            title: msg.title,
-            subTitle: msg.body
-          });
-          toast.present();
-        })
-      ).subscribe((push) => {
-        console.log('O q tenho aqui na linha 33 do appComponent?', push);
-        if (push.callPushBadge === 'HomePage') {
-          console.log('Funciona! Vindo da linha 35');
-          this.fcm.setBadge(50)
-        }
-      });
+      if (fcm.checkPlatform) {
+        this.fcm.listenToNotifications().pipe(
+          tap((msg) => {
+            const toast = alertCtrl.create({
+              title: msg.title,
+              subTitle: msg.body
+            });
+            toast.present();
+          })
+        ).subscribe((push) => {
+          console.log('O q tenho aqui na linha 33 do appComponent?', push);
+          if (push.callPushBadge === 'HomePage') {
+            console.log('Funciona! Vindo da linha 35');
+            this.fcm.setBadge(50)
+          }
+        });
+      } else {
+        this.alertCtrl.create({
+          title: 'N ira receber Push'
+        }).present()
+      }
+
+
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
