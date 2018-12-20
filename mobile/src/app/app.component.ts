@@ -1,26 +1,47 @@
 import { Component } from '@angular/core';
+import { Platform, AlertController } from 'ionic-angular';
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { Platform } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { HomePage } from '../pages/home/home';
+import { Firebase } from '@ionic-native/firebase';
+import { tap } from 'rxjs/operators';
+import { FcmProvider } from '../services/fcm.service';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: 'app.component.html'
+  templateUrl: 'app.html'
 })
-export class AppComponent {
-  constructor(
-    private platform: Platform,
-    private splashScreen: SplashScreen,
-    private statusBar: StatusBar
-  ) {
-    this.initializeApp();
-  }
+export class MyApp {
+  rootPage: any = HomePage;
 
-  initializeApp() {
-    this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
+  constructor(
+    platform: Platform,
+    statusBar: StatusBar,
+    splashScreen: SplashScreen,
+    public alertCtrl: AlertController,
+    public firebase: Firebase,
+    public fcm: FcmProvider) {
+    platform.ready().then(() => {
+      this.fcm.listenToNotifications().pipe(
+        tap((msg) => {
+          const toast = alertCtrl.create({
+            title: msg.title,
+            subTitle: msg.body
+          });
+          toast.present();
+        })
+      ).subscribe((push) => {
+        console.log('O q tenho aqui na linha 33 do appComponent?', push);
+        if (push.callPushBadge === 'HomePage') {
+          console.log('Funciona! Vindo da linha 35');
+          this.fcm.setBadge(50)
+        }
+      });
+      // Okay, so the platform is ready and our plugins are available.
+      // Here you can do any higher level native things you might need.
+      statusBar.styleDefault();
+      splashScreen.hide();
     });
   }
 }
+

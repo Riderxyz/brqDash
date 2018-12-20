@@ -1,5 +1,7 @@
 {
-  "name": "brq-dash-mobile",
-  "integrations": {},
-  "type": "angular"
+  "name": "TFS_5178_Ionic",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
 }
