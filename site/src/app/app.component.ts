@@ -73,7 +73,7 @@ export class AppComponent {
         return (minutos > that.limites.warning);
       }
     };
-    this.getWorkItens();
+    //this.getWorkItens();
   }
 
   MontarColunaCriticidade(param) {
@@ -116,7 +116,7 @@ export class AppComponent {
     return this.http.get('http://10.2.1.127:9700/getWorkItem')
       .subscribe(data => {
         this.DataDimensionado = data;
-        this.gridApiDim.setRowData(data);
+        this.gridApi.setRowData(data);
         return data;
       });
   }

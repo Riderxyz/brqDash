@@ -1,0 +1,7 @@
+{
+  "name": "TFS_5178_Ionic",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}

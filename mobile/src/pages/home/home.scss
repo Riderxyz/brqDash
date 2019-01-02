@@ -1,0 +1,57 @@
+page-home {
+    .headerItem {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+    }
+
+    .contentItem {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+    }
+
+    .cardsDemanda {
+        .item-inner {
+            margin-bottom: 1.5em;
+            border-style: solid;
+            border-radius: 0.5em;
+        }
+    }
+
+    .normal {
+        .item-inner {
+            background-color: rgb(208, 199, 241) !important;
+            font-weight: normal;
+            color: rgb(48, 12, 116);
+            font-size: 1em;
+        }
+    }
+
+    .warning {
+        .item-inner {
+            background-color: yellow !important;
+            font-weight: normal;
+            color: rgb(48, 12, 116);
+            font-size: 1em;
+        }
+    }
+
+    .danger {
+        .item-inner {
+            background-color: red !important;
+            font-weight: bolder;
+            color: white;
+            font-size: 1.2em;
+        }
+    }
+
+    .crazy {
+        .item-inner {
+            background-color: black !important;
+            font-weight: bolder;
+            color: white;
+            font-size: 1.2em;
+        }
+    }
+}

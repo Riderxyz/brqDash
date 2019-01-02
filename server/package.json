@@ -13,6 +13,7 @@
     "body-parser": "^1.18.3",
     "caller-id": "^0.1.0",
     "chalk": "^2.3.0",
+    "firebase-admin": "^6.1.0",
     "jsftp": "^2.0.0",
     "morgan": "^1.9.0",
     "morgan-body": "^2.0.2",
