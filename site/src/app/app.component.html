@@ -1,10 +1,10 @@
+<!--The content below is only a placeholder and can be replaced.-->
 <div class="mainscr">
-  <div class="row">
-    <div class="col-8">
-      <ag-grid-angular id='GridDimensionado' style="height: 92vh;" class="ag-theme-balham" [rowData]="dataDimensionado"
-        [columnDefs]="columnDefs" (gridReady)="onGridReadyDim($event)" [rowClassRules]="rowClassRules" [rowHeight]="100"
-        [enableSorting]="true">
-      </ag-grid-angular>
-    </div>
+  <div class="float">
+    +
+  </div>
+  <div>
+    <ag-grid-angular id='GridDimensionado' style="height: 92vh; width: 100%" class="ag-theme-balham" [gridOptions]="gridOptions">
+    </ag-grid-angular>
   </div>
 </div>
