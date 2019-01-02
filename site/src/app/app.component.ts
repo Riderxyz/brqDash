@@ -1,3 +1,4 @@
+import { DataFirebase } from './../models/data.model';
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
@@ -6,6 +7,7 @@ import 'moment/locale/pt-br';
 import { interval } from 'rxjs';
 import { GridOptions } from 'ag-grid-community';
 import { AngularFireDatabase } from '@angular/fire/database';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -87,9 +89,9 @@ export class AppComponent {
   }
 
   MontarColunaEsteira(param) {
-    let html = '<br><span style="font-size: 3.7em;padding-top:10px;>' + param.data.esteira + ' - ' + param.data.tfs + '</span>';
+    let html = '<br><span style="font-size: 2.7em;padding-top:10px;">' + param.data.esteira + ' - ' + param.data.tfs + '</span>';
     html += '<br>';
-    html += '<span style=" font-size: 3.0em; margin-top:5px" >' + param.data.criticidade + ' - ' + param.data.status + '</span>';
+    html += '<span style="font-size: 2.0em;">' + param.data.titulo + '</span>';
     return html;
   }
 
