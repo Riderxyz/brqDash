@@ -21,7 +21,6 @@ export class HomePage {
   danger = true;
   warning = false;
   limites: any = {};
-  teste = '';
   source = interval(60000);
 
   constructor(
@@ -62,6 +61,12 @@ export class HomePage {
       });
 
     });
+  }
+  showDescricao(desc) {
+    console.log(desc)
+    this.alertCtrl.create({
+      title: desc
+    }).present()
   }
 
   ionViewDidEnter() {
@@ -143,7 +148,6 @@ export class HomePage {
   }
 
   private async getWorkItens(callType, event?) {
-    this.teste = this.teste && 'ee-'
     this.data = [];
     const d = [];
     const ref = this.af.database.ref('brq-sla/ONS');
