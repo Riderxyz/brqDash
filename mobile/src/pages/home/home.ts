@@ -17,9 +17,12 @@ export class HomePage {
   demandas$: AngularFireList<any[]>;
   finalizado = new Subject<any>();
   data: any = [];
+  datateste = [];
   danger = true;
   warning = false;
   limites: any = {};
+  teste = '';
+  source = interval(60000);
 
   constructor(
     public navCtrl: NavController,
@@ -30,23 +33,64 @@ export class HomePage {
     public toast: ToastController,
     public firebaseSrv: Firebase) {
 
-    const source = interval(9000);
     this.limites.warning = 600;
     this.limites.danger = 360;
     this.limites.crazy = 120;
 
-    /*   const subscribe = source
-        .subscribe(val => {
-          this.getWorkItens('automatico');
-        }); */
-    this.getWorkItens('automatico');
+    this.fcm.showBadgesNumber.asObservable()
+      .subscribe((numero) => {
+        this.logBadges();
+      })
 
-    this.fcm.showBadgesNumber.asObservable().subscribe((numero) => {
-      this.logBadges();
-    })
+
+
+    this.af.list('brq-sla/ONS').valueChanges().subscribe((itemSnap) => {
+      this.data = [];
+      itemSnap.forEach((element: any) => {
+        element.id = element.tfs.split('-')[1];
+        /*   if (element.status === 'Em estimativa') {
+            element.status = 'Estimativa';
+          } else {
+            if (element.status === 'Em desenvolvimento') {
+              element.status = 'Desenv';
+            }
+          } */
+        const arrayHora = element.data.split(':');
+        element.dataHora = arrayHora[0].substring(1, 3) + 'hs'
+        element.dataMinuto = arrayHora[1] + 'mins'
+        this.data.push(element);
+      });
+
+    });
   }
+
+  ionViewDidEnter() {
+    // this.getWorkItens('automatico')
+    //   .then(d => {
+    //     console.log('CHAMANDO PELO GET AUTOMATICO', d);
+    //     d.forEach(element => {
+    //       this.datateste.push(element)
+    //     });
+    //     console.log(this.datateste)
+    //     this.datateste = [
+    //       { area: "MapaInformacao", criticidade: "3 - Medium", data: "004:47", dataHora: "04hs", dataMinuto: "47mins", esteira: "MAPAINFORMACAO", id: "6230", sistema: "MAPAINFORMACAO", status: "Em desenvolvimento", tfs: "TFS-6230", tiposla: "EVOLUTIVA", titulo: "Evolutivas do Mapa - BreadCrumb Icone- versão2" }
+    //       , { area: "MapaInformacao", criticidade: "3 - Medium", data: "004:47", dataHora: "04hs", dataMinuto: "47mins", esteira: "MAPAINFORMACAO", id: "6230", sistema: "MAPAINFORMACAO", status: "Em desenvolvimento", tfs: "TFS-6230", tiposla: "EVOLUTIVA", titulo: "Evolutivas do Mapa - BreadCrumb Icone- versão2" }];
+
+    //   })
+
+    // const subscribe = this.source
+    //   .subscribe(val => {
+    //     this.getWorkItens('automatico')
+    //       .then(d => {
+    //         this.data = d;
+
+    //       })
+    //   });
+  }
+
+
+
   startPush() {
-    console.log('Dentro do push em home');
     if (this.fcm.checkPlatform) {
       this.fcm.setBadge(5).then((res) => {
         console.log('Res de badge', res);
@@ -98,25 +142,20 @@ export class HomePage {
     return retorno;
   }
 
-  private getWorkItens(callType, event?) {
-    console.log('chamando....');
+  private async getWorkItens(callType, event?) {
+    this.teste = this.teste && 'ee-'
     this.data = [];
+    const d = [];
     const ref = this.af.database.ref('brq-sla/ONS');
     ref.on('value', itemSnapshot => {
       itemSnapshot.forEach(itemSnap => {
         const element = itemSnap.val();
         element.id = element.tfs.split('-')[1];
-        /*   if (element.status === 'Em estimativa') {
-            element.status = 'Estimativa';
-          } else {
-            if (element.status === 'Em desenvolvimento') {
-              element.status = 'Desenv';
-            }
-          } */
         const arrayHora = element.data.split(':');
         element.dataHora = arrayHora[0].substring(1, 3) + 'hs'
         element.dataMinuto = arrayHora[1] + 'mins'
-        this.data.push(element);
+        d.push(element);
+        this.datateste.push(element)
         return false;
       });
     });
@@ -130,7 +169,7 @@ export class HomePage {
     } else {
       this.finalizado.next(callType)
     }
-    return this.data;
+    return d;
   }
 
   hourToMinute(hh: string): number {

@@ -17,9 +17,9 @@ export class FcmProvider {
       token = await this.firebaseSrv.getToken()
       console.log('O q temos aqui? Heub?', token);
     } else {
-      this.alertCtrl.create({
-        title: 'N ira receber Push'
-      }).present()
+      // this.alertCtrl.create({
+      //   title: 'N ira receber Push'
+      // }).present()
     }
 
   }

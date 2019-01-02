@@ -39,9 +39,9 @@ export class MyApp {
           }
         });
       } else {
-        this.alertCtrl.create({
-          title: 'N ira receber Push'
-        }).present()
+        // this.alertCtrl.create({
+        //   title: 'N ira receber Push'
+        // }).present()
       }
 
 
