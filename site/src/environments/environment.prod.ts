@@ -5,4 +5,4 @@ export const environment = {
     NORMAL: 'Normal',
     ENTREGA: 'Entrega'
   }
-};
+}
