@@ -77,13 +77,11 @@ export class AppComponent {
       field: 'status',
       width: 25,
       autoHeight: true,
-      /* cellRenderer: this.MontarColunaRestante, */
+      cellRenderer: this.MontarColunaStatus,
     },
   ];
   constructor(private http: HttpClient, public db: AngularFireDatabase) {
     this.db.list('brq-sla/ONS').valueChanges().subscribe((res) => {
-      console.log('o que temos aqui hein?', res);
-      this.DataDimensionado = res;
       this.gridApi.setRowData(res);
     });
     moment.locale('pt');
@@ -122,33 +120,12 @@ export class AppComponent {
         params.api.sizeColumnsToFit();
       }
     };
-
-    /*     const that = this;
-        this.rowClassRules = {
-          'warning': (params) => {
-            const minutos = that.hourToMinute(params.data.data);
-            return ((minutos >= that.limites.danger) && (minutos <= that.limites.warning));
-          },
-          'danger': (params) => {
-            const minutos = that.hourToMinute(params.data.data);
-            return ((minutos >= that.limites.crazy) && (minutos <= that.limites.danger));
-          },
-          'crazy': (params) => {
-            const minutos = that.hourToMinute(params.data.data);
-            return (minutos <= that.limites.crazy);
-          },
-          'normal': (params) => {
-            const minutos = that.hourToMinute(params.data.data);
-            return (minutos > that.limites.warning);
-          }
-        }; */
   }
 
 
-  MontarColunaCriticidade(param) {
-    let html = '<br><span style=" font-size: 2.5em;" >' + param.data.criticidade + '</span>';
-    html += '<br>';
-    html += '<span style=" font-size: 2.5em" >' + param.data.status + '</span>';
+  MontarColunaStatus(param) {
+    const dados: DataFirebase = param.data;
+    const html = '<br><span style=" font-size: 2.5em;" >' + dados.status + '</span>';
     return html;
   }
 
