@@ -2,7 +2,7 @@
 <nb-layout>
   <nb-layout-column style="padding:.5rem;">
     <div class="float" (click)="showModalFiltro()">
-      <i class="nb-plus"></i>
+      <i class="nb-search"></i>
     </div>
     <ag-grid-angular id='GridDimensionado' style="height: calc(100vh - 20px);width: 100%;" class="ag-theme-balham"
       [gridOptions]="gridOptions">
@@ -11,16 +11,18 @@
 
 
     <ng-template #ModalShowFiltro let-data let-ref="dialogRef">
-      <nb-card style="width: 80%;">
-        <nb-card-header>Escolha um filtro</nb-card-header>
-        <nb-card-body>
+      <nb-card>
+        <nb-card-header>Escolha um filtro:</nb-card-header>
+        <nb-card-body style="overflow:visible">
           <div class="p-grid">
-
+              <div class="p-col-12">
+            <p-multiSelect defaultLabel="Selecione" [options]="esteiras" [(ngModel)]="esteirasSelecionadas" autoWidth="false" [style]="{'width':'100%'}" filterPlaceHolder="Procure por nome"></p-multiSelect>
+              </div>
           </div>
         </nb-card-body>
         <nb-card-footer style="display: flex;justify-content: space-between;">
           <button nbButton hero status="danger" (click)="ref.close()">Cancelar</button>
-          <button nbButton hero status="success">Salvar</button>
+          <button nbButton hero status="success" (click)="filtrarLista(esteirasSelecionadas,ref)">Salvar</button>
         </nb-card-footer>
       </nb-card>
     </ng-template>

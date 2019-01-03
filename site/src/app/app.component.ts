@@ -7,6 +7,7 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import { NbDialogService } from '@nebular/theme';
 import { DataFirebaseModel } from './../models/data.model';
 import { GetDataSrv } from 'src/service/getData.service';
+import {SelectItem} from 'primeng/api';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +15,8 @@ import { GetDataSrv } from 'src/service/getData.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  esteiras: SelectItem[];
+  esteirasSelecionadas: any[];
 
   title = 'dash';
   @ViewChild('ModalShowFiltro') Modal_Filtro: TemplateRef<any>;
@@ -81,8 +84,11 @@ export class AppComponent {
   constructor(public db: AngularFireDatabase, public dialogService: NbDialogService, public dataSrv: GetDataSrv) {
     this.dataSrv.ListarItems.subscribe((res: any) => {
       this.dataSrv.DataJson = res;
+      this.dataSrv.DataJSalva = res;
 
       this.gridApi.setRowData(res);
+
+      this.esteiras =this.dataSrv.listaEsteiras();
     });
 
     moment.locale('pt');
@@ -186,4 +192,9 @@ export class AppComponent {
     this.dialogService.open(this.Modal_Filtro);
   }
 
+  filtrarLista(esteira, refs){
+    console.log("fatiou, passou",esteira);
+    this.gridApi.setRowData(this.dataSrv.filtroEsteira(esteira));
+    refs.close();
+  }
 }

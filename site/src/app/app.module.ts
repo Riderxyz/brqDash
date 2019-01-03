@@ -4,6 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 
 import { RouterModule, Routes } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 // Nebular
 import { NbSidebarModule, NbLayoutModule, NbSidebarService, NbCardModule, NbDialogModule } from '@nebular/theme';
@@ -17,6 +18,8 @@ import { AppComponent } from './app.component';
 import { TableModule } from 'primeng/table';
 import { CardModule } from 'primeng/card';
 import { PanelModule } from 'primeng/panel';
+import {DropdownModule} from 'primeng/dropdown';
+import {MultiSelectModule} from 'primeng/multiselect';
 //Ag-Grid
 import { AgGridModule } from 'ag-grid-angular';
 
@@ -41,6 +44,7 @@ const AppRoutes: Routes = [
       AppRoutes, { enableTracing: false }
     ),
     HttpClientModule,
+    FormsModule,
     // AngularFire
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
@@ -49,6 +53,8 @@ const AppRoutes: Routes = [
     CardModule,
     AgGridModule.withComponents([]),
     PanelModule,
+    DropdownModule,
+    MultiSelectModule,
     // Nebular
     NebularModule,
     NbThemeModule.forRoot({ name: 'cosmic' }),
