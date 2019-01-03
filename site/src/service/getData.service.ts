@@ -15,12 +15,16 @@ export class GetDataSrv {
   }
 
 
-
-  get ListarExteiras() {
-
-
-
-    return '';
+  list() {
+    const MXR = this.DataJson.filter((item, index) => {
+      console.log('Linha 21', item.esteira);
+      console.log('Linha 21', index);
+      return this.DataJson.indexOf(item) === index;
+    });
+    console.log(MXR);
+    /*  this.DataJson.forEach((element: DataFirebaseModel) => {
+       console.log(element.esteira);
+     }); */
   }
 
 

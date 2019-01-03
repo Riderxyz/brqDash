@@ -81,8 +81,7 @@ export class AppComponent {
   constructor(public db: AngularFireDatabase, public dialogService: NbDialogService, public dataSrv: GetDataSrv) {
     this.dataSrv.ListarItems.subscribe((res: any) => {
       this.dataSrv.DataJson = res;
-      console.log(res.esteira);
-      console.log(Object.keys(res));
+
       this.gridApi.setRowData(res);
     });
 
@@ -93,7 +92,6 @@ export class AppComponent {
       headerHeight: 0,
       rowHeight: 100,
       getRowStyle: (params) => {
-
         const minutos = this.hourToMinute(params.data.data);
         // Normal
         if (minutos > this.limites.warning.limite) {
@@ -115,7 +113,7 @@ export class AppComponent {
         this.gridApi = params.api;
         params.api.addGlobalListener((type, event) => {
           if (type.indexOf('rowDataChanged') >= 0) {
-            console.log('Got column event: ', event);
+            // console.log('Got column event: ', event);
           }
         });
         params.api.sizeColumnsToFit();
@@ -184,6 +182,7 @@ export class AppComponent {
   }
 
   showModalFiltro() {
+    this.dataSrv.list();
     this.dialogService.open(this.Modal_Filtro);
   }
 
