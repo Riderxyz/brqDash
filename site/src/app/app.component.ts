@@ -16,18 +16,47 @@ import { AngularFireDatabase } from '@angular/fire/database';
 export class AppComponent {
 
   title = 'dash';
-  that = this;
 
   public gridApi;
   private gridApiDim;
-  private gridColumnApi;
-  private gridColumnApiDim;
   public gridOptions: GridOptions;
-  private DataDimensionado: any = [];
+  private gridColumnApiDim: any;
+  public DataDimensionado: any = [];
 
-  limites: any = {};
+  limites = {
+    normal: {
+      classe: {
+        background: 'white !important',
+        color: 'black!important'
+      },
+      limite: null
+    },
+    warning: {
+      classe: {
+        background: 'yellow!important',
+        color: '#300c74',
+        font: 'normal'
+      },
+      limite: 600
+    },
+    danger: {
+      classe: {
+        background: 'red !important',
+        color: '#fff'
+      },
+      limite: 360
+    },
+    crazy: {
+      classe: {
+        background: 'black !important',
+        font: 'bolder',
+        color: '#fff'
+      },
+      limite: 120
+    }
+  };
 
-  /* rowClassRules: any; */
+  rowClassRules: any;
   columnDefs = [
     {
       headerName: 'Esteira',
@@ -54,19 +83,34 @@ export class AppComponent {
   constructor(private http: HttpClient, public db: AngularFireDatabase) {
     this.db.list('brq-sla/ONS').valueChanges().subscribe((res) => {
       console.log('o que temos aqui hein?', res);
+      this.DataDimensionado = res;
       this.gridApi.setRowData(res);
     });
     moment.locale('pt');
-    this.limites.warning = 600;
-    this.limites.danger = 360;
-    this.limites.crazy = 120;
-
     this.gridOptions = {
       columnDefs: this.columnDefs,
-      /* rowClassRules: this.rowClassRules(), */
       enableSorting: true,
       headerHeight: 0,
       rowHeight: 100,
+      getRowStyle: (params) => {
+        const minutos = this.hourToMinute(params.data.data);
+        // Normal
+        if (minutos > this.limites.warning.limite) {
+          return this.limites.normal.classe;
+        }
+        // Warning
+        if (((minutos >= this.limites.danger.limite) && (minutos <= this.limites.warning.limite))) {
+          return this.limites.warning.classe;
+        }
+        // Danger
+        if (((minutos >= this.limites.crazy.limite) && (minutos <= this.limites.danger.limite))) {
+          return this.limites.danger.classe;
+        }
+        if ((minutos <= this.limites.crazy.limite)) {
+          return this.limites.crazy.classe;
+        }
+      },
+
       onGridReady: (params) => {
         this.gridApi = params.api;
         this.gridColumnApiDim = params.columnApi;
@@ -78,6 +122,26 @@ export class AppComponent {
         params.api.sizeColumnsToFit();
       }
     };
+
+    /*     const that = this;
+        this.rowClassRules = {
+          'warning': (params) => {
+            const minutos = that.hourToMinute(params.data.data);
+            return ((minutos >= that.limites.danger) && (minutos <= that.limites.warning));
+          },
+          'danger': (params) => {
+            const minutos = that.hourToMinute(params.data.data);
+            return ((minutos >= that.limites.crazy) && (minutos <= that.limites.danger));
+          },
+          'crazy': (params) => {
+            const minutos = that.hourToMinute(params.data.data);
+            return (minutos <= that.limites.crazy);
+          },
+          'normal': (params) => {
+            const minutos = that.hourToMinute(params.data.data);
+            return (minutos > that.limites.warning);
+          }
+        }; */
   }
 
 
@@ -117,60 +181,36 @@ export class AppComponent {
 
   }
 
-
-  rowClassRules() {
-    const that = this;
-    return {
-      'warning': (params) => {
-        const minutos = that.hourToMinute(params.data.data);
-        return ((minutos >= that.limites.danger) && (minutos <= that.limites.warning));
-      },
-      'danger': (params) => {
-        const minutos = that.hourToMinute(params.data.data);
-        return ((minutos >= that.limites.crazy) && (minutos <= that.limites.danger));
-      },
-      'crazy': (params) => {
-        const minutos = that.hourToMinute(params.data.data);
-        return (minutos <= that.limites.crazy);
-      },
-      'normal': (params) => {
-        const minutos = that.hourToMinute(params.data.data);
-        return (minutos > that.limites.warning);
-      }
-    };
-  }
-
-  private getWorkItens() {
-    /*     return this.http.get('http://10.2.1.127:9700/getWorkItem')
-          .subscribe(data => {
-            console.log(data);
-            // this.DataDimensionado = data;
-            // this.gridApi.setRowData(data);
-            return data;
-          }); */
-  }
-
-  /*   onGridReady(params) {
-      this.gridApi = params.api;
-      this.gridApi.sizeColumnsToFit();
-      this.gridColumnApi = params.columnApi;
-
-      this.gridApi.onCellValueChanged = function (event) {
-        this.gridApi.rowStyle = { background: 'coral' };
-      };
-      params.api.addGlobalListener(function (type, event) {
-        if (type.indexOf('column') >= 0) {
-          //   console.log('Got column event: ', event);
+  /*
+    rowClassRules() {
+      const that = this;
+      return {
+        'warning': (params) => {
+          const minutos = that.hourToMinute(params.data.data);
+          return ((minutos >= that.limites.danger) && (minutos <= that.limites.warning));
+        },
+        'danger': (params) => {
+          const minutos = that.hourToMinute(params.data.data);
+          return ((minutos >= that.limites.crazy) && (minutos <= that.limites.danger));
+        },
+        'crazy': (params) => {
+          const minutos = that.hourToMinute(params.data.data);
+          return (minutos <= that.limites.crazy);
+        },
+        'normal': (params) => {
+          const minutos = that.hourToMinute(params.data.data);
+          return (minutos > that.limites.warning);
         }
-      });
-    }
-
-    onGridReadyDim(params) {
-      this.gridApiDim = params.api;
-      this.gridApiDim.sizeColumnsToFit();
-      this.gridColumnApiDim = params.columnApi;
-      this.gridApiDim.rowStyle = { background: 'coral' };
+      };
     } */
+
+  onGridReady(params) {
+    this.gridApiDim = params.api;
+    this.gridApiDim.sizeColumnsToFit();
+    this.gridColumnApiDim = params.columnApi;
+    console.log('Eu existo!');
+
+  }
 
   hourToMinute(hh: string): number {
     const arrayHora = hh.split(':');
