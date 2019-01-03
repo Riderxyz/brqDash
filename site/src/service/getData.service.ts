@@ -16,12 +16,14 @@ export class GetDataSrv {
     return this.db.list('brq-sla/ONS').valueChanges();
   }
 
-
   list() {
-    const MXR = this.DataJson.filter((item, index) => {
-      console.log('Linha 21', item.esteira);
-      console.log('Linha 21', index);
-      return this.DataJson.indexOf(item) === index;
+
+
+    const pip = ['a', 'a', 's', 'q', 'a', 's'];
+    const MXR = pip.filter((item, index) => {
+      console.log('Linha 21', item);
+      console.log('Linha 23', index);
+      return pip.indexOf(item) >= index;
     });
     console.log(MXR);
     /*  this.DataJson.forEach((element: DataFirebaseModel) => {

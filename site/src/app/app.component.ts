@@ -189,7 +189,7 @@ export class AppComponent {
 
   showModalFiltro() {
     this.dataSrv.list();
-    this.dialogService.open(this.Modal_Filtro);
+    // this.dialogService.open(this.Modal_Filtro);
   }
 
   filtrarLista(esteira, refs){

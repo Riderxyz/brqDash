@@ -20,7 +20,7 @@ import { CardModule } from 'primeng/card';
 import { PanelModule } from 'primeng/panel';
 import {DropdownModule} from 'primeng/dropdown';
 import {MultiSelectModule} from 'primeng/multiselect';
-//Ag-Grid
+// Ag-Grid
 import { AgGridModule } from 'ag-grid-angular';
 
 import { HttpClientModule } from '@angular/common/http';
