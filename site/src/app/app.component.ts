@@ -7,7 +7,7 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import { NbDialogService } from '@nebular/theme';
 import { DataFirebaseModel } from './../models/data.model';
 import { GetDataSrv } from 'src/service/getData.service';
-import {SelectItem} from 'primeng/api';
+import { SelectItem } from 'primeng/api';
 
 @Component({
   selector: 'app-root',
@@ -88,7 +88,7 @@ export class AppComponent {
 
       this.gridApi.setRowData(res);
 
-      this.esteiras =this.dataSrv.listaEsteiras();
+      this.esteiras = this.dataSrv.listaEsteiras();
     });
 
     moment.locale('pt');
@@ -143,7 +143,7 @@ export class AppComponent {
 
   MontarColunaRestante(param) {
     const temp_d = param.data.data.split(':');
-    const hh = +temp_d[0] + 'hs ' + temp_d[1] + ' mins';
+    const hh = +temp_d[0] + 'h' + temp_d[1] + 'm';
     let html = '<br><span style=" font-size: 3.7em;padding-top:10px;" >' + hh + '</span>';
     html += '<br>';
     html += '<span style="font-size: 3.0em" > ' + moment(param.data.datafim).format('DD-MMM') + '</span>';
@@ -188,12 +188,12 @@ export class AppComponent {
   }
 
   showModalFiltro() {
-    this.dataSrv.list();
-    // this.dialogService.open(this.Modal_Filtro);
+    // this.dataSrv.list();
+    this.dialogService.open(this.Modal_Filtro);
   }
 
-  filtrarLista(esteira, refs){
-    console.log("fatiou, passou",esteira);
+  filtrarLista(esteira, refs) {
+    console.log("fatiou, passou", esteira);
     this.gridApi.setRowData(this.dataSrv.filtroEsteira(esteira));
     refs.close();
   }

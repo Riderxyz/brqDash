@@ -1,7 +1,7 @@
 import { DataFirebaseModel } from './../models/data.model';
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
-import { map,filter,uniq,orderBy } from 'lodash';
+import { map, filter, uniq, orderBy } from 'lodash';
 
 @Injectable()
 export class GetDataSrv {
@@ -16,37 +16,23 @@ export class GetDataSrv {
     return this.db.list('brq-sla/ONS').valueChanges();
   }
 
-  list() {
-
-
-    const pip = ['a', 'a', 's', 'q', 'a', 's'];
-    const MXR = pip.filter((item, index) => {
-      console.log('Linha 21', item);
-      console.log('Linha 23', index);
-      return pip.indexOf(item) >= index;
-    });
-    console.log(MXR);
-    /*  this.DataJson.forEach((element: DataFirebaseModel) => {
-       console.log(element.esteira);
-     }); */
-  }
-
-  filtroEsteira(esteiras){
-    let result = [];
+  filtroEsteira(esteiras) {
+    const result = [];
     esteiras.forEach(esteira => {
-      filter(this.DataJSalva,{'esteira': esteira.name}).forEach(x =>{
+      filter(this.DataJSalva, { 'esteira': esteira.name }).forEach(x => {
         result.push(x);
-      })
-      
+      });
+
     });
     console.log(result);
-    this.DataJson = orderBy(result,['data','esteira']);//filter(this.DataJson,{'esteira': esteira});
+    this.DataJson = orderBy(result, ['data', 'esteira']);
+    // filter(this.DataJson,{'esteira': esteira});
     return this.DataJson;
   }
 
-  listaEsteiras(){
-    return map(uniq(map(this.DataJson,'esteira')),function(item,index){
-      return { label: item, value:{ id: index, name: item }};
+  listaEsteiras() {
+    return map(uniq(map(this.DataJson, 'esteira')), (item, index) => {
+      return { label: item, value: { id: index, name: item } };
     });
   }
 
