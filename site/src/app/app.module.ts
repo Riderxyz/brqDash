@@ -1,20 +1,25 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NbThemeModule } from '@nebular/theme';
+
 import { NgModule } from '@angular/core';
 
-import { RouterModule, Router, Routes, CanActivate } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
-import { NbSidebarModule, NbLayoutModule, NbSidebarService, NbCardModule } from '@nebular/theme';
+// Nebular
+import { NbSidebarModule, NbLayoutModule, NbSidebarService, NbCardModule, NbDialogModule } from '@nebular/theme';
+import { NbThemeModule, NbDialogService } from '@nebular/theme';
+import { NebularModule } from 'src/Modules/Nebular.module';
+
 
 import { AppComponent } from './app.component';
 
+// PrimeNg
 import { TableModule } from 'primeng/table';
 import { CardModule } from 'primeng/card';
 import { PanelModule } from 'primeng/panel';
-
+//Ag-Grid
 import { AgGridModule } from 'ag-grid-angular';
-import { NebularModule } from 'src/Modules/Nebular.module';
+
 import { HttpClientModule } from '@angular/common/http';
 
 // AngularFire
@@ -39,14 +44,17 @@ const AppRoutes: Routes = [
     // AngularFire
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
+    // PrimeNG
     TableModule,
     CardModule,
     AgGridModule.withComponents([]),
     PanelModule,
+    // Nebular
     NebularModule,
     NbThemeModule.forRoot({ name: 'cosmic' }),
     NbLayoutModule,
     NbSidebarModule,
+    NbDialogModule.forRoot(),
     BrowserModule,
     BrowserAnimationsModule
   ],

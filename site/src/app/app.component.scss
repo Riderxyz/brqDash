@@ -35,10 +35,10 @@
   color: white;
 }
 
-.mainscr {
-  padding: 10px;
-  background-color: darkblue;
-  height: 100vh;
+::ng-deep nb-dialog-container {
+  display: flex;
+  justify-content: center;
+  align-items: center
 }
 
 .float {
@@ -53,6 +53,10 @@
   justify-content: center;
   z-index: 100;
   font-size: 3em;
-  align-items: flex-end;
+  align-items: center;
   border-radius: 50px;
+
+  .nb-plus {
+    font-weight: bolder;
+  }
 }

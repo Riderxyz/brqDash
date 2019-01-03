@@ -1,14 +1,46 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <nb-layout>
   <nb-layout-column style="padding:.5rem;">
-    <!-- <div class="mainscr"> -->
-    <div class="float">
-      +
+    <div class="float" (click)="showModalFiltro()">
+      <i class="nb-plus"></i>
     </div>
     <ag-grid-angular id='GridDimensionado' style="height: calc(100vh - 20px);width: 100%;" class="ag-theme-balham"
       [gridOptions]="gridOptions">
     </ag-grid-angular>
 
-    <!-- </div> -->
+
+
+    <ng-template #ModalShowFiltro let-data let-ref="dialogRef">
+      <nb-card style="width: 80%;">
+        <nb-card-header>Escolha um filtro</nb-card-header>
+        <nb-card-body>
+          <div class="p-grid">
+
+          </div>
+        </nb-card-body>
+        <nb-card-footer style="display: flex;justify-content: space-between;">
+          <button nbButton hero status="danger" (click)="ref.close()">Cancelar</button>
+          <button nbButton hero status="success">Salvar</button>
+        </nb-card-footer>
+      </nb-card>
+    </ng-template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   </nb-layout-column>
 </nb-layout>

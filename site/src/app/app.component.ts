@@ -1,12 +1,12 @@
-import { DataFirebase } from './../models/data.model';
-import { Component } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
-import { interval } from 'rxjs';
 import { GridOptions } from 'ag-grid-community';
 import { AngularFireDatabase } from '@angular/fire/database';
+import { NbDialogService } from '@nebular/theme';
+import { DataFirebaseModel } from './../models/data.model';
+import { GetDataSrv } from 'src/service/getData.service';
 
 @Component({
   selector: 'app-root',
@@ -16,11 +16,9 @@ import { AngularFireDatabase } from '@angular/fire/database';
 export class AppComponent {
 
   title = 'dash';
-
+  @ViewChild('ModalShowFiltro') Modal_Filtro: TemplateRef<any>;
   public gridApi;
-  private gridApiDim;
   public gridOptions: GridOptions;
-  private gridColumnApiDim: any;
   public DataDimensionado: any = [];
 
   limites = {
@@ -80,10 +78,14 @@ export class AppComponent {
       cellRenderer: this.MontarColunaStatus,
     },
   ];
-  constructor(private http: HttpClient, public db: AngularFireDatabase) {
-    this.db.list('brq-sla/ONS').valueChanges().subscribe((res) => {
+  constructor(public db: AngularFireDatabase, public dialogService: NbDialogService, public dataSrv: GetDataSrv) {
+    this.dataSrv.ListarItems.subscribe((res: any) => {
+      this.dataSrv.DataJson = res;
+      console.log(res.esteira);
+      console.log(Object.keys(res));
       this.gridApi.setRowData(res);
     });
+
     moment.locale('pt');
     this.gridOptions = {
       columnDefs: this.columnDefs,
@@ -91,6 +93,7 @@ export class AppComponent {
       headerHeight: 0,
       rowHeight: 100,
       getRowStyle: (params) => {
+
         const minutos = this.hourToMinute(params.data.data);
         // Normal
         if (minutos > this.limites.warning.limite) {
@@ -108,10 +111,8 @@ export class AppComponent {
           return this.limites.crazy.classe;
         }
       },
-
       onGridReady: (params) => {
         this.gridApi = params.api;
-        this.gridColumnApiDim = params.columnApi;
         params.api.addGlobalListener((type, event) => {
           if (type.indexOf('rowDataChanged') >= 0) {
             console.log('Got column event: ', event);
@@ -124,7 +125,7 @@ export class AppComponent {
 
 
   MontarColunaStatus(param) {
-    const dados: DataFirebase = param.data;
+    const dados: DataFirebaseModel = param.data;
     const html = '<br><span style=" font-size: 2.5em;" >' + dados.status + '</span>';
     return html;
   }
@@ -158,40 +159,32 @@ export class AppComponent {
 
   }
 
-  /*
-    rowClassRules() {
-      const that = this;
-      return {
-        'warning': (params) => {
-          const minutos = that.hourToMinute(params.data.data);
-          return ((minutos >= that.limites.danger) && (minutos <= that.limites.warning));
-        },
-        'danger': (params) => {
-          const minutos = that.hourToMinute(params.data.data);
-          return ((minutos >= that.limites.crazy) && (minutos <= that.limites.danger));
-        },
-        'crazy': (params) => {
-          const minutos = that.hourToMinute(params.data.data);
-          return (minutos <= that.limites.crazy);
-        },
-        'normal': (params) => {
-          const minutos = that.hourToMinute(params.data.data);
-          return (minutos > that.limites.warning);
-        }
-      };
-    } */
-
-  onGridReady(params) {
-    this.gridApiDim = params.api;
-    this.gridApiDim.sizeColumnsToFit();
-    this.gridColumnApiDim = params.columnApi;
-    console.log('Eu existo!');
-
+  formatarLinha(params) {
+    const minutos = this.hourToMinute(params.data.data);
+    // Normal
+    if (minutos > this.limites.warning.limite) {
+      return this.limites.normal.classe;
+    }
+    // Warning
+    if (((minutos >= this.limites.danger.limite) && (minutos <= this.limites.warning.limite))) {
+      return this.limites.warning.classe;
+    }
+    // Danger
+    if (((minutos >= this.limites.crazy.limite) && (minutos <= this.limites.danger.limite))) {
+      return this.limites.danger.classe;
+    }
+    if ((minutos <= this.limites.crazy.limite)) {
+      return this.limites.crazy.classe;
+    }
   }
 
   hourToMinute(hh: string): number {
     const arrayHora = hh.split(':');
     return (Number(arrayHora[0]) * 60) + Number(arrayHora[1]);
+  }
+
+  showModalFiltro() {
+    this.dialogService.open(this.Modal_Filtro);
   }
 
 }
