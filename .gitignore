@@ -6,3 +6,5 @@ mobile/node_modules/
 mobile/dist/
 node_modules/\.bin/
 node_modules/
+
+site/package-lock\.json

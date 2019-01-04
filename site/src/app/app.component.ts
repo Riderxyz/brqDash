@@ -85,7 +85,7 @@ export class AppComponent {
     this.dataSrv.ListarItems.subscribe((res: any) => {
       this.dataSrv.DataJson = res;
       this.dataSrv.DataJSalva = res;
-
+      console.log('res', res);
       this.gridApi.setRowData(res);
 
       this.esteiras = this.dataSrv.listaEsteiras();
@@ -143,10 +143,10 @@ export class AppComponent {
 
   MontarColunaRestante(param) {
     const temp_d = param.data.data.split(':');
-    const hh = +temp_d[0] + 'h' + temp_d[1] + 'm';
+    const hh = +temp_d[0] + 'h ' + temp_d[1] + 'm';
     let html = '<br><span style=" font-size: 3.7em;padding-top:10px;" >' + hh + '</span>';
     html += '<br>';
-    html += '<span style="font-size: 3.0em" > ' + moment(param.data.datafim).format('DD-MMM') + '</span>';
+    html += '<span style="font-size: 3.0em" > ' + param.data.datafim + '</span>';
     return html;
   }
 
@@ -159,7 +159,7 @@ export class AppComponent {
 
   formatdata(data): string {
     const temp_d = data.split(':');
-    return +temp_d[0] + 'hs ' + temp_d[1] + ' mins';
+    return +temp_d[0] + 'h ' + temp_d[1] + 'm';
 
   }
 
@@ -193,7 +193,6 @@ export class AppComponent {
   }
 
   filtrarLista(esteira, refs) {
-    console.log("fatiou, passou", esteira);
     this.gridApi.setRowData(this.dataSrv.filtroEsteira(esteira));
     refs.close();
   }
