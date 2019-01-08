@@ -69,14 +69,14 @@ export class AppComponent {
     {
       headerName: 'Restante',
       field: 'data',
-      width: 25,
+      width: 20,
       autoHeight: true,
       cellRenderer: this.MontarColunaRestante,
     },
     {
       headerName: 'Status',
       field: 'status',
-      width: 25,
+      width: 30,
       autoHeight: true,
       cellRenderer: this.MontarColunaStatus,
     },
@@ -130,14 +130,14 @@ export class AppComponent {
 
   MontarColunaStatus(param) {
     const dados: DataFirebaseModel = param.data;
-    const html = '<br><span style=" font-size: 2.5em;" >' + dados.status + '</span>';
+    const html = '<br><span style=" font-size: 3.0em;" >' + dados.status + '</span>';
     return html;
   }
 
   MontarColunaEsteira(param) {
-    let html = '<br><span style="font-size: 2.7em;padding-top:10px;">' + param.data.esteira + ' - ' + param.data.tfs + '</span>';
+    let html = '<br><span style="font-size: 3.7em;padding-top:10px;">' + param.data.esteira + ' - ' + param.data.tfs + '</span>';
     html += '<br>';
-    html += '<span style="font-size: 2.0em;">' + param.data.titulo + '</span>';
+    html += '<span style="font-size: 3.0em;">' + param.data.titulo + '</span>';
     return html;
   }
 
@@ -146,7 +146,7 @@ export class AppComponent {
     const hh = +temp_d[0] + 'h ' + temp_d[1] + 'm';
     let html = '<br><span style=" font-size: 3.7em;padding-top:10px;" >' + hh + '</span>';
     html += '<br>';
-    html += '<span style="font-size: 3.0em" > ' + param.data.datafim + '</span>';
+    html += '<span style="font-size: 3.0em" >  ' + param.data.datafim + '</span>';
     return html;
   }
 
