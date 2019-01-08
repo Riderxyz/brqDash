@@ -130,12 +130,12 @@ export class AppComponent {
 
   MontarColunaStatus(param) {
     const dados: DataFirebaseModel = param.data;
-    const html = '<br><span style=" font-size: 3.0em;" >' + dados.status + '</span>';
+    const html = '<br><span style=" font-size: 3.8em;" >' + dados.status + '</span>';
     return html;
   }
 
   MontarColunaEsteira(param) {
-    let html = '<br><span style="font-size: 3.7em;padding-top:10px;">' + param.data.esteira + ' - ' + param.data.tfs + '</span>';
+    let html = '<br><span style="font-size: 4.3em;padding-top:10px;">' + param.data.esteira + ' - ' + param.data.tfs + '</span>';
     html += '<br>';
     html += '<span style="font-size: 3.0em;">' + param.data.titulo + '</span>';
     return html;
@@ -144,7 +144,7 @@ export class AppComponent {
   MontarColunaRestante(param) {
     const temp_d = param.data.data.split(':');
     const hh = +temp_d[0] + 'h ' + temp_d[1] + 'm';
-    let html = '<br><span style=" font-size: 3.7em;padding-top:10px;" >' + hh + '</span>';
+    let html = '<br><span style=" font-size: 4.4em;padding-top:10px;" >' + hh + '</span>';
     html += '<br>';
     html += '<span style="font-size: 3.0em" >  ' + param.data.datafim + '</span>';
     return html;

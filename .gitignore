@@ -8,3 +8,7 @@ node_modules/\.bin/
 node_modules/
 
 site/package-lock\.json
+
+site/src/app/Untitled-1\.txt
+
+serverNest/
