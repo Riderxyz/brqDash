@@ -62,7 +62,7 @@ export class AppComponent {
     {
       headerName: 'Esteira',
       field: 'esteira',
-      width: 50,
+      width: 80,
       /* height: 190, */
       cellRenderer: this.MontarColunaEsteira,
     },
@@ -188,11 +188,12 @@ export class AppComponent {
   }
 
   showModalFiltro() {
-    // this.dataSrv.list();
+    console.log(this.dataSrv.DataJson);
     this.dialogService.open(this.Modal_Filtro);
   }
 
   filtrarLista(esteira, refs) {
+    console.log('fatiou, passou', esteira);
     this.gridApi.setRowData(this.dataSrv.filtroEsteira(esteira));
     refs.close();
   }

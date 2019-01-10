@@ -9,7 +9,7 @@ export class GetDataSrv {
 
 
   private _DataJson: DataFirebaseModel[] = [];
-  public DataJSalva: DataFirebaseModel[] = [];
+  private _DataJSalva: DataFirebaseModel[] = [];
   constructor(public db: AngularFireDatabase) { }
 
   get ListarItems() {
@@ -45,6 +45,16 @@ export class GetDataSrv {
   public get DataJson(): DataFirebaseModel[] {
 
     return this._DataJson;
+  }
+
+  public set DataJSalva(value: DataFirebaseModel[]) {
+
+    this._DataJSalva = value;
+  }
+
+  public get DataJSalva(): DataFirebaseModel[] {
+
+    return this._DataJSalva;
   }
 
 }
