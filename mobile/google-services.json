@@ -1,104 +1,36 @@
 {
   "project_info": {
-    "project_number": "911746189843",
-    "firebase_url": "https://brq-push-test.firebaseio.com",
-    "project_id": "brq-push-test",
-    "storage_bucket": "brq-push-test.appspot.com"
+    "project_number": "227345514410",
+    "firebase_url": "https://brq-sla.firebaseio.com",
+    "project_id": "brq-sla",
+    "storage_bucket": "brq-sla.appspot.com"
   },
-  "client": [
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:911746189843:android:bbc6c9ef48608bcd",
-        "android_client_info": {
-          "package_name": "br.org.ons.contatos"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "911746189843-gt51uj3mvun2jaaroiaj9cbnp1p12dgg.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCNd1CWsnS2FYKXk6Fdrtv-DzkaJ1XAGN8"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
-        }
+  "client": [{
+    "client_info": {
+      "mobilesdk_app_id": "1:227345514410:android:c3523366d8cbfa80",
+      "android_client_info": {
+        "package_name": "brq.dash.mobile"
       }
     },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:911746189843:android:a4c7d76dfe4a1bd3",
-        "android_client_info": {
-          "package_name": "br.org.ons.teste"
-        }
+    "oauth_client": [{
+      "client_id": "227345514410-fch789fo4nhhmsdss536lqobbqkttjhk.apps.googleusercontent.com",
+      "client_type": 3
+    }],
+    "api_key": [{
+      "current_key": "AIzaSyBO-YFpTiQArIQj3cdosB1xWaGdq1zp_8A"
+    }],
+    "services": {
+      "analytics_service": {
+        "status": 1
       },
-      "oauth_client": [
-        {
-          "client_id": "911746189843-gt51uj3mvun2jaaroiaj9cbnp1p12dgg.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCNd1CWsnS2FYKXk6Fdrtv-DzkaJ1XAGN8"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:911746189843:android:c3523366d8cbfa80",
-        "android_client_info": {
-          "package_name": "brq.dash.mobile"
-        }
+      "appinvite_service": {
+        "status": 1,
+        "other_platform_oauth_client": []
       },
-      "oauth_client": [
-        {
-          "client_id": "911746189843-gt51uj3mvun2jaaroiaj9cbnp1p12dgg.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCNd1CWsnS2FYKXk6Fdrtv-DzkaJ1XAGN8"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
-        }
+      "ads_service": {
+        "status": 2
       }
     }
-  ],
+  }],
   "configuration_version": "1"
 }

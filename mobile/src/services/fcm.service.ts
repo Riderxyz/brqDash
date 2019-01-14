@@ -19,25 +19,27 @@ export class FcmProvider {
   }
 
   async getToken() {
-    
-    if (this.platform.is('cordova')) {
+    if (this.checkPlatform) {
       this.DeviceId = await this.firebaseSrv.getToken()
       console.log('O q temos aqui? Heub?', this.DeviceId);
     }
   }
 
   async saveDevideId() {
-    if (this.platform.is('cordova')) {
-      console.log('O q temos aqui? Heub?', this.DeviceId);
+    if (this.checkPlatform) {
+      console.log('O q temos aqui? afinal?', this.DeviceId);
       const payload = {
         Id: this.DeviceId
       }
-      this.db.object(this.Envio).set(payload).then((res) => {
-        console.log('O q se sucedeu? Funcionou?', res);
-      }).catch((err) => {
-        console.log('Deu ruim', err);
+      const inclusao = await this.db.object(this.Envio).set(payload)
+      console.log(inclusao);
 
-      })
+      /* 
+             .then((res) => {
+               console.log('O q se sucedeu? Funcionou?', res);
+             }).catch((err) => {
+               console.log('Deu ruim', err);
+             }) */
     } else {
       // this.alertCtrl.create({
       //   title: 'N ira receber Push'

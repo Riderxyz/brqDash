@@ -27,7 +27,7 @@ export const pushNotification = functions.database.ref('/brq-sla/ONS').onWrite(
       }
     }
 
-    const cleanupTokens = (response, tokens) => {
+    const LimparTokenList = (response, tokens) => {
       // For each notification we check if there was an error.
       const tokensToRemove = {};
       response.results.forEach((result, index) => {
@@ -36,10 +36,10 @@ export const pushNotification = functions.database.ref('/brq-sla/ONS').onWrite(
           console.error('Não conseguiu enviar para:', tokens[index], error);
           console.log('o q vem dentro do codigo de erro?', error.code)
           // Cleanup the tokens who are not registered anymore.
-          /*   if (error.code === 'messaging/invalid-registration-token' ||
-              error.code === 'messaging/registration-token-not-registered') {
-              tokensToRemove[`/fcmTokens/${tokens[index]}`] = null;
-            } */
+          if (error.code === 'messaging/invalid-registration-token' ||
+            error.code === 'messaging/registration-token-not-registered') {
+            tokensToRemove[`/deviceId/${tokens[index]}`] = null;
+          }
         }
       });
       return admin.database().ref().update(tokensToRemove);
@@ -48,10 +48,17 @@ export const pushNotification = functions.database.ref('/brq-sla/ONS').onWrite(
     const allTokens = await admin.database().ref('deviceId').once('value');
     if (allTokens.exists()) {
       // Listing all device tokens to send a notification to.
+
       const tokens = Object.keys(allTokens.val());
+      const dataFromPush = {
+        tokenFunction: allTokens,
+        tokenList: allTokens.val(),
+        tokensToDeploy: tokens
+      }
+      console.log('O q eu preciso saber', dataFromPush);
       // Send notifications to all tokens.
       const response = await admin.messaging().sendToDevice(tokens, payload);
-      await cleanupTokens(response, tokens);
+      await LimparTokenList(response, tokens);
       console.log('Notifications have been sent and tokens cleaned up.', response);
     }
 
@@ -59,16 +66,3 @@ export const pushNotification = functions.database.ref('/brq-sla/ONS').onWrite(
 
 
   });
-
-
-
-  // Listing all device tokens to send a notification to.
-  /*  */
-
-  // Send notifications to all tokens.
-  /* const response = await admin.messaging().sendToDevice(tokens, payload); */
-
-  /* console.log('Notifications have been sent and tokens cleaned up.'); */
-
-
-})
