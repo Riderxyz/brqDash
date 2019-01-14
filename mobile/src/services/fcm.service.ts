@@ -14,7 +14,7 @@ export class FcmProvider {
     private alertCtrl: AlertController,
     private platform: Platform,
     private db: AngularFireDatabase) {
-    this.Envio = 'deviceId'
+    this.Envio = '/DeviceId'
     this.saveDevideId()
   }
 
@@ -28,11 +28,10 @@ export class FcmProvider {
   async saveDevideId() {
     if (this.checkPlatform) {
       console.log('O q temos aqui? afinal?', this.DeviceId);
-      const payload = {
-        Id: this.DeviceId
-      }
-      const inclusao = await this.db.object(this.Envio).set(payload)
-      console.log(inclusao);
+      const payload = await this.firebaseSrv.getToken();
+      console.log(payload)
+      //const inclusao = await this.db.object(this.Envio).set(payload)
+      //console.log(inclusao);
 
       /* 
              .then((res) => {
@@ -41,6 +40,8 @@ export class FcmProvider {
                console.log('Deu ruim', err);
              }) */
     } else {
+      console.log('N esta em um celular');
+
       // this.alertCtrl.create({
       //   title: 'N ira receber Push'
       // }).present()
