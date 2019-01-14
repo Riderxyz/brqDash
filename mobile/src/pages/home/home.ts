@@ -194,6 +194,15 @@ export class HomePage {
     })
 
   }
+
+  teste(){
+    console.log('WTF?');
+    
+    this.fcm.saveDevideId().then((s)=> {
+      console.log('O q é aqui?', s);
+      
+    })
+  }
 }
 
 
