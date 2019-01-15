@@ -22,8 +22,7 @@ export class HomePage {
   danger = true;
   warning = false;
   limites: any = {};
-  source = interval(60000);
-
+  source = interval(60000)
   constructor(
     public navCtrl: NavController,
     public platform: Platform,
@@ -33,29 +32,24 @@ export class HomePage {
     public toast: ToastController,
     public loading: LoadingController,
     public firebaseSrv: Firebase) {
-    this.teste()
     this.limites.warning = 600;
     this.limites.danger = 360;
     this.limites.crazy = 120;
-
     this.fcm.showBadgesNumber.asObservable()
       .subscribe((numero) => {
         this.logBadges();
       })
+      this.fcm.SaveTokenToFirebase.asObservable()
+      .subscribe(() => {
+        console.log(`Disparando Save do Token`);
 
-
+        this.fcm.saveDevideId();
+      })
 
     this.af.list('brq-sla/ONS').valueChanges().subscribe((itemSnap) => {
       this.data = [];
       itemSnap.forEach((element: any) => {
         element.id = element.tfs.split('-')[1];
-        /*   if (element.status === 'Em estimativa') {
-            element.status = 'Estimativa';
-          } else {
-            if (element.status === 'Em desenvolvimento') {
-              element.status = 'Desenv';
-            }
-          } */
         const arrayHora = element.data.split(':');
         element.dataHora = arrayHora[0].substring(1, 3) + 'hs'
         element.dataMinuto = arrayHora[1] + 'mins'
@@ -64,21 +58,14 @@ export class HomePage {
 
     });
   }
+  ionViewDidEnter() {
+
+  }
   showDescricao(desc) {
     console.log(desc)
     this.alertCtrl.create({
       title: desc
     }).present()
-  }
-
-  ionViewDidEnter() {
-
-  }
-
-  teste() {
-    console.log('WTF?');
-    const res = this.fcm.saveDevideId();
-    console.log(res);
   }
 
   startPush() {
@@ -137,9 +124,8 @@ export class HomePage {
     return (Number(arrayHora[0]) * 60) + Number(arrayHora[1]);
   }
 
+  show() {
 
-
+    this.fcm.saveDevideId()
+  }
 }
-
-
-

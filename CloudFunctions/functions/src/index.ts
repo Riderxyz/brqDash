@@ -5,6 +5,7 @@ admin.initializeApp()
 // // https://firebase.google.com/docs/functions/typescript
 export const pushNotification = functions.database.ref('/brq-sla/ONS').onWrite(
   async (snapshot, context) => {
+
     try {
       const limites = {
         warning: 600,
@@ -15,21 +16,18 @@ export const pushNotification = functions.database.ref('/brq-sla/ONS').onWrite(
       const colorHexFull = '#' + (Math.random() * 0xFFFFFF << 0).toString(16);
       console.log('FUNCIONA!!!!', colorHexFull);
       const allTokens = await admin.database().ref('/DeviceId').once('value');
-      const tokens = Object.keys(allTokens.val());
-      const dataFromPush = {
-        tokenList: allTokens.val(),
-        tokensToDeploy: tokens,
-        dados: snapshot.after.val()
-      }
-      console.log('Eu preciso disso =>!!!!', dataFromPush);
+      const tokensPos = Object.keys(allTokens.val());
       const GerarBody = () => {
         let exteiras = ''
-        snapshot.after.val()
         dataValue.forEach(element => {
           exteiras += element.esteira + ' - ' + element.tfs + '    '
 
         });
         return exteiras
+      }
+      const hourToMinute = (hh: string): number => {
+        const arrayHora = hh.split(':');
+        return (Number(arrayHora[0]) * 60) + Number(arrayHora[1]);
       }
       const payload = {
         notification: {
@@ -39,80 +37,108 @@ export const pushNotification = functions.database.ref('/brq-sla/ONS').onWrite(
           title: "Funciona!",
         }
       }
-      const response = await admin.messaging().sendToDevice(tokens, payload);
+      //Limpar Lista de Tokens
+      const LimparTokenList = (response, tokens) => {
+        // For each notification we check if there was an error.
+        const tokensToRemove = {};
+        response.results.forEach((result, index) => {
+          const error = result.error;
+          if (error) {
+            console.log('o q vem dentro do codigo de erro?', error.code)
+            // Cleanup the tokens who are not registered anymore.
+            if (error.code === 'messaging/invalid-registration-token' ||
+              error.code === 'messaging/registration-token-not-registered') {
+              tokensToRemove[`/deviceId/${tokens[index]}`] = null;
+            }
+          }
+        });
+        return admin.database().ref().update(tokensToRemove);
+      }
+      const iox = 'dOLsUIl3SWQ:APA91bF9Irxq1DeTAvVABPdIJbaMdLgIq4fqZJhFrM_H1vy8__W79ei2zzMiAwF5029yUcOTCIqyTfc9SiD3aFjqnbgU3pMxSGhoyhXG4KcGBDpzaJLxHWiRDBGHrT_cffAy3uncEhPJ'
+
+      //Escolhe o Tipo de Notificação
+      const pushType = (time: string): string => {
+        let retorno = '';
+        const minutos = hourToMinute(time);
+        if ((minutos >= limites.danger) && (minutos <= limites.warning)) {
+          retorno = 'warning';
+        } else {
+          if ((minutos >= limites.crazy) && (minutos <= limites.danger)) {
+            retorno = 'danger';
+          } else {
+            if (minutos <= limites.crazy) {
+              retorno = 'crazy';
+            } else {
+              retorno = 'normal';
+            }
+          }
+        }
+        return retorno;
+      }
+      // Enviar notificação
+      const SendPush = (pushColor: string) => {
+        allTokens.val().forEach(element => {
+          payload.notification.color = pushColor
+          admin.messaging().sendToDevice(element, payload).then((res) => {
+            console.log('Enviei as notificações', res);
+            LimparTokenList(res, tokensPos).then((final) => {
+              console.log('O que a limpeza retornou?', final);
+            }).catch((err) => {
+              console.error('Erro na Limpeza', err)
+            })
+          }).catch((err) => {
+            console.error('Erro no envio', err)
+          })
+          console.log('Notifications have been sent')
+        });
+      }
+
+
+      const dataFromPush = {
+        tokenList: allTokens.val(),
+        Posicao_Token: tokensPos
+      }
+      console.log('Eu preciso disso =>!!!!', dataFromPush);
+
+
+
+      dataValue.forEach(element => {
+        pushType(element.data)
+
+        switch (pushType(element.data)) {
+          case 'warning':
+            // envia cor amarela
+            SendPush('#ffff00')
+            break;
+          case 'danger':
+            // envia cor Vermelha
+            SendPush('#ff0000')
+            break;
+          case 'crazy':
+            // envia cor Vermelha
+            SendPush('#000000')
+            break;
+          default:
+            break;
+        }
+      });
+
+
+
+
+
+      //const push = await admin.messaging().sendToDevice(iox, payload);
       console.log('O body gerado para o Payload', GerarBody());
 
-      console.log('Notifications have been sent', response)
-      /*     const pushType = () => {
-            let retorno = '';
-            const minutos = hourToMinute("009:22");
-            if ((minutos >= limites.danger) && (minutos <= limites.warning)) {
-              retorno = 'warning';
-            } else {
-              if ((minutos >= limites.crazy) && (minutos <= limites.danger)) {
-                retorno = 'danger';
-              } else {
-                if (minutos <= limites.crazy) {
-                  retorno = 'crazy';
-                } else {
-                  retorno = 'normal';
-                }
-              }
-            }
-            return retorno;
-          }
-     */
-      const hourToMinute = (hh: string): number => {
-        const arrayHora = hh.split(':');
-        return (Number(arrayHora[0]) * 60) + Number(arrayHora[1]);
-      }
-      /*      //const promises = []
-           
-           const payload = {
-             notification: {
-               body: "O que temos aqui, hum?",
-               tap: "true",
-               color: colorHexFull,
-               title: "Funciona!",
-             }
-           }
-     
-           const LimparTokenList = (response, tokens) => {
-             // For each notification we check if there was an error.
-             const tokensToRemove = {};
-             response.results.forEach((result, index) => {
-               const error = result.error;
-               if (error) {
-                 console.error('Não conseguiu enviar para:', tokens[index], error);
-                 console.log('o q vem dentro do codigo de erro?', error.code)
-                 // Cleanup the tokens who are not registered anymore.
-                 if (error.code === 'messaging/invalid-registration-token' ||
-                   error.code === 'messaging/registration-token-not-registered') {
-                   tokensToRemove[`/deviceId/${tokens[index]}`] = null;
-                 }
-               }
-             });
-             return admin.database().ref().update(tokensToRemove);
-           }
-           const allTokens = await admin.database().ref('deviceId').once('value');
-           if (allTokens.exists()) {
-             // Listing all device tokens to send a notification to.
-             const tokens = Object.keys(allTokens.val());
-             const dataFromPush = {
-               tokenFunction: allTokens,
-               tokenList: allTokens.val(),
-               tokensToDeploy: tokens
-             }
-             console.log('O q eu preciso saber', dataFromPush);
-             // Get the list of device tokens.
-             // Send notifications to all tokens.
-             // const response = await admin.messaging().sendToDevice(tokens, payload);
-             // await LimparTokenList(response, tokens);
-             // console.log('Notifications have been sent and tokens cleaned up.', response)
-           } */
+      //const promises = [];
+      // Listing all device tokens to send a notification to.
+      // Get the list of device tokens.
+      // Send notifications to all tokens.
+      // const response = await admin.messaging().sendToDevice(tokens, payload);
+      // await LimparTokenList(response, tokens);
+      // console.log('Notifications have been sent and tokens cleaned up.', response)
     }
     catch (error) {
       console.log('O que deu errado aqui?', error);
-
     }
   })

@@ -12,6 +12,8 @@ import { Firebase } from '@ionic-native/firebase';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabase } from '@angular/fire/database';
 
+
+
 const db = {
   'type': 'service_account',
   'project_id': 'brq-sla',
@@ -26,10 +28,12 @@ const db = {
   'client_x509_cert_url': 'https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-qkham%40brq-sla.iam.gserviceaccount.com'
 }
 
+
+
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,
+    HomePage
   ],
   imports: [
     BrowserModule,
@@ -39,14 +43,14 @@ const db = {
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage,
+    HomePage
   ],
   providers: [
     StatusBar,
     AngularFireDatabase,
-    SplashScreen,
     FcmProvider,
     Firebase,
+    SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
