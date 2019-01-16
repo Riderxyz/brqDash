@@ -7,6 +7,37 @@ export const pushNotification = functions.database.ref('/brq-sla/ONS').onWrite(
   async (snapshot, context) => {
 
     try {
+      type NotificationMessagePayload = {
+        tag?: string;
+        body?: string;
+        icon?: string;
+        badge?: string;
+        color?: string;
+        sound?: string;
+        title?: string;
+        bodyLocKey?: string;
+        bodyLocArgs?: string;
+        clickAction?: string;
+        titleLocKey?: string;
+        titleLocArgs?: string;
+        [key: string]: string | undefined;
+      };
+    
+      type MessagingPayload = {
+        data?: admin.messaging.DataMessagePayload;
+        notification?: admin.messaging.NotificationMessagePayload;
+      };
+    
+      type MessagingOptions = {
+        dryRun?: boolean;
+        priority?: string;
+        timeToLive?: number;
+        collapseKey?: string;
+        mutableContent?: boolean;
+        contentAvailable?: boolean;
+        restrictedPackageName?: string;
+        [key: string]: any | undefined;
+      };
       const limites = {
         warning: 600,
         danger: 360,
@@ -29,14 +60,7 @@ export const pushNotification = functions.database.ref('/brq-sla/ONS').onWrite(
         const arrayHora = hh.split(':');
         return (Number(arrayHora[0]) * 60) + Number(arrayHora[1]);
       }
-      const payload = {
-        notification: {
-          body: GerarBody(),
-          tap: "true",
-          color: colorHexFull,
-          title: "Funciona!",
-        }
-      }
+  
       //Limpar Lista de Tokens
       const LimparTokenList = (response, tokens) => {
         // For each notification we check if there was an error.
@@ -48,14 +72,15 @@ export const pushNotification = functions.database.ref('/brq-sla/ONS').onWrite(
             // Cleanup the tokens who are not registered anymore.
             if (error.code === 'messaging/invalid-registration-token' ||
               error.code === 'messaging/registration-token-not-registered') {
+                console.log('O que sera removido',tokensToRemove[`/deviceId/${tokens[index]}`]);
               tokensToRemove[`/deviceId/${tokens[index]}`] = null;
+              
+              
             }
           }
         });
         return admin.database().ref().update(tokensToRemove);
       }
-      const iox = 'dOLsUIl3SWQ:APA91bF9Irxq1DeTAvVABPdIJbaMdLgIq4fqZJhFrM_H1vy8__W79ei2zzMiAwF5029yUcOTCIqyTfc9SiD3aFjqnbgU3pMxSGhoyhXG4KcGBDpzaJLxHWiRDBGHrT_cffAy3uncEhPJ'
-
       //Escolhe o Tipo de Notificação
       const pushType = (time: string): string => {
         let retorno = '';
@@ -77,6 +102,16 @@ export const pushNotification = functions.database.ref('/brq-sla/ONS').onWrite(
       }
       // Enviar notificação
       const SendPush = (pushColor: string) => {
+
+        const payload = {
+          notification: {
+            body: GerarBody(),
+            tap: "true",
+            color: null,
+            title: "Funciona!",
+          }
+        }
+
         allTokens.val().forEach(element => {
           payload.notification.color = pushColor
           admin.messaging().sendToDevice(element, payload).then((res) => {

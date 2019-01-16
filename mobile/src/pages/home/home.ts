@@ -125,7 +125,6 @@ export class HomePage {
   }
 
   show() {
-
     this.fcm.saveDevideId()
   }
 }
