@@ -2,6 +2,8 @@ import { DataFirebaseModel } from './../models/data.model';
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { map, filter, uniq, orderBy } from 'lodash';
+import { environment } from 'src/environments/environment';
+import { Subject } from 'rxjs';
 
 @Injectable()
 export class GetDataSrv {
@@ -10,6 +12,8 @@ export class GetDataSrv {
 
   private _DataJson: DataFirebaseModel[] = [];
   private _DataJSalva: DataFirebaseModel[] = [];
+  private _localRequisitado =  environment.NomeDashBoard;
+  public ControleRemoto$ = new Subject<any>();
   constructor(public db: AngularFireDatabase) { }
 
   get ListarItems() {
@@ -36,6 +40,23 @@ export class GetDataSrv {
     });
   }
 
+
+  async DashBoardAtivo() {
+    this.db.object('/dashBoardAtivo/' + this._localRequisitado).set({
+      dash: 'Desenvolvimento',
+      status: 'online',
+      id:  Math.random().toString(36).substr(2, 9)
+    });
+
+  }
+
+
+ async controleRemoto() {
+  this.db.object('/dashBoardAtivo/' + this._localRequisitado).valueChanges().subscribe((res) => {
+    console.log(`Dafuck?`, res);
+  });
+
+  }
 
   public set DataJson(value: DataFirebaseModel[]) {
 

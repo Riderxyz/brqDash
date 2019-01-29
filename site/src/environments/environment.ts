@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  NomeDashBoard: 'DashBoard_Desenvolvimento',
   TIPOS_DEMANDAS: {
     DIMENSIONADA: 'Dimensionada',
     NORMAL: 'Normal',

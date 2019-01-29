@@ -82,15 +82,20 @@ export class AppComponent {
     },
   ];
   constructor(public db: AngularFireDatabase, public dialogService: NbDialogService, public dataSrv: GetDataSrv) {
+
+
     this.dataSrv.ListarItems.subscribe((res: any) => {
       this.dataSrv.DataJson = res;
       this.dataSrv.DataJSalva = res;
-      console.log('res', res);
       this.gridApi.setRowData(res);
 
       this.esteiras = this.dataSrv.listaEsteiras();
     });
 
+
+    this.dataSrv.ControleRemoto$.subscribe((items)=> {
+
+    });
     moment.locale('pt');
     this.gridOptions = {
       columnDefs: this.columnDefs,
@@ -188,7 +193,8 @@ export class AppComponent {
   }
 
   showModalFiltro() {
-    console.log(this.dataSrv.DataJson);
+  //  console.log(this.dataSrv.DataJson);
+    this.dataSrv.DashBoardAtivo();
     this.dialogService.open(this.Modal_Filtro);
   }
 

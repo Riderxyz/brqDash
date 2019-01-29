@@ -97,7 +97,6 @@ export class HomePage {
     this.fcm.cleanBadge().then((res) => {
       console.log('Resultado da linha 47', res);
       this.logBadges()
-
     })
   }
 
