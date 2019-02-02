@@ -22,12 +22,12 @@ export const pushNotification = functions.database.ref('/brq-sla/ONS').onWrite(
         titleLocArgs?: string;
         [key: string]: string | undefined;
       };
-    
+
       type MessagingPayload = {
         data?: admin.messaging.DataMessagePayload;
         notification?: admin.messaging.NotificationMessagePayload;
       };
-    
+
       type MessagingOptions = {
         dryRun?: boolean;
         priority?: string;
@@ -60,7 +60,7 @@ export const pushNotification = functions.database.ref('/brq-sla/ONS').onWrite(
         const arrayHora = hh.split(':');
         return (Number(arrayHora[0]) * 60) + Number(arrayHora[1]);
       }
-  
+
       //Limpar Lista de Tokens
       const LimparTokenList = (response, tokens) => {
         // For each notification we check if there was an error.
@@ -72,10 +72,10 @@ export const pushNotification = functions.database.ref('/brq-sla/ONS').onWrite(
             // Cleanup the tokens who are not registered anymore.
             if (error.code === 'messaging/invalid-registration-token' ||
               error.code === 'messaging/registration-token-not-registered') {
-                console.log('O que sera removido',tokensToRemove[`/deviceId/${tokens[index]}`]);
+              console.log('O que sera removido', tokensToRemove[`/deviceId/${tokens[index]}`]);
               tokensToRemove[`/deviceId/${tokens[index]}`] = null;
-              
-              
+
+
             }
           }
         });

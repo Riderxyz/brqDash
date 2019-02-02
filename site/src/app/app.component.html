@@ -1,23 +1,21 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <nb-layout>
-  <nb-layout-column style="padding:.5rem;">
+  <nb-layout-column style="padding:.5rem;" [hidden]="ShowWhenSizable">
     <div class="float" (click)="showModalFiltro()">
       <i class="nb-search"></i>
     </div>
     <ag-grid-angular id='GridDimensionado' style="height: calc(100vh - 20px);width: 100%;" class="ag-theme-balham"
       [gridOptions]="gridOptions">
     </ag-grid-angular>
-
-
-
     <ng-template #ModalShowFiltro let-data let-ref="dialogRef">
       <nb-card>
         <nb-card-header>Escolha um filtro:</nb-card-header>
         <nb-card-body style="overflow:visible">
           <div class="p-grid">
-              <div class="p-col-12">
-            <p-multiSelect defaultLabel="Selecione" [options]="esteiras" [(ngModel)]="esteirasSelecionadas" autoWidth="false" [style]="{'width':'100%'}" filterPlaceHolder="Procure por nome"></p-multiSelect>
-              </div>
+            <div class="p-col-12">
+              <p-multiSelect defaultLabel="Selecione" [options]="esteiras" [(ngModel)]="esteirasSelecionadas" autoWidth="false"
+                [style]="{'width':'100%'}" filterPlaceHolder="Procure por nome"></p-multiSelect>
+            </div>
           </div>
         </nb-card-body>
         <nb-card-footer style="display: flex;justify-content: space-between;">
@@ -26,21 +24,88 @@
         </nb-card-footer>
       </nb-card>
     </ng-template>
+  </nb-layout-column>
+
+  <nb-layout-column style="padding:.5rem;" [hidden]="!ShowWhenSizable">
+    <!--           <nb-card *ngFor="let demanda of DataList">
+            <nb-card-header>
+              <h1>{{ demanda.area }} - {{demanda.tfs}}</h1>
+            </nb-card-header>
+            <nb-card-body>
+              <h5>
+                Descrição: {{demanda.titulo}}
+              </h5>
+              <br>
+              <div class="timeLeft" >
+                <div class="timeString">
+                 <h4>Tempo restante:</h4>
+                </div>
+                <div class="timeReal">
+                  <div class="timeData">
+                   <h4>{{demanda.data}}</h4>
+                  </div>
+                  <div class="timeDataFim">
+                    <h4>{{demanda.datafim}}</h4>
+                  </div>
+                </div>
+              </div>
+            </nb-card-body>
+          </nb-card> -->
 
 
 
 
+    <div class="card" *ngFor="let demanda of DataList">
+      <nb-card>
+        <nb-card-header>
+          <h1>{{ demanda.area }} - {{demanda.tfs}}</h1>
+        </nb-card-header>
+        <nb-card-body>
+          <h5>
+            Descrição: {{demanda.titulo}}
+          </h5>
+          <br>
+          <div class="timeLeft">
+            <div class="timeString">
+              <h4>Tempo restante:</h4>
+            </div>
+            <div class="timeReal">
+              <div class="timeData">
+                <h4>{{demanda.data}}</h4>
+              </div>
+              <div class="timeDataFim">
+                <h4>{{demanda.datafim}}</h4>
+              </div>
+            </div>
+          </div>
+        </nb-card-body>
+      </nb-card>
+    </div>
 
-
-
-
-
-
-
-
-
-
-
+    <!--           <div class="card" *ngFor="let demanda of DataList">
+              <div class="card-header">
+                  <h1>{{ demanda.area }} - {{demanda.tfs}}</h1>
+              </div>
+              <div class="card-body">
+                  <h5>
+                      Descrição: {{demanda.titulo}}
+                    </h5>
+                    <br>
+                    <div class="timeLeft" >
+                      <div class="timeString">
+                       <h4>Tempo restante:</h4>
+                      </div>
+                      <div class="timeReal">
+                        <div class="timeData">
+                         <h4>{{demanda.data}}</h4>
+                        </div>
+                        <div class="timeDataFim">
+                          <h4>{{demanda.datafim}}</h4>
+                        </div>
+                      </div>
+                    </div>
+              </div>
+            </div> -->
 
 
 

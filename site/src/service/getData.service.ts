@@ -44,7 +44,7 @@ export class GetDataSrv {
   async DashBoardAtivo() {
     this.db.object('/dashBoardAtivo/' + this._localRequisitado).set({
       dash: 'Desenvolvimento',
-      status: 'online',
+      status: '',
       id:  Math.random().toString(36).substr(2, 9)
     });
 

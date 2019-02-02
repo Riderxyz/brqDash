@@ -1,5 +1,4 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
 import { GridOptions } from 'ag-grid-community';
@@ -8,7 +7,8 @@ import { NbDialogService } from '@nebular/theme';
 import { DataFirebaseModel } from './../models/data.model';
 import { GetDataSrv } from 'src/service/getData.service';
 import { SelectItem } from 'primeng/api';
-
+import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
+import { timer } from 'rxjs';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -17,13 +17,13 @@ import { SelectItem } from 'primeng/api';
 export class AppComponent {
   esteiras: SelectItem[];
   esteirasSelecionadas: any[];
-
+  DataList: DataFirebaseModel[] = [];
   title = 'dash';
+  ShowWhenSizable: boolean;
   @ViewChild('ModalShowFiltro') Modal_Filtro: TemplateRef<any>;
   public gridApi;
   public gridOptions: GridOptions;
   public DataDimensionado: any = [];
-
   limites = {
     normal: {
       classe: {
@@ -81,19 +81,35 @@ export class AppComponent {
       cellRenderer: this.MontarColunaStatus,
     },
   ];
-  constructor(public db: AngularFireDatabase, public dialogService: NbDialogService, public dataSrv: GetDataSrv) {
-
-
-    this.dataSrv.ListarItems.subscribe((res: any) => {
-      this.dataSrv.DataJson = res;
+  constructor(
+    public db: AngularFireDatabase,
+    public dialogService: NbDialogService,
+    public dataSrv: GetDataSrv,
+    public breakpointObserver: BreakpointObserver) {
+    this.dataSrv.ListarItems.subscribe((res: DataFirebaseModel[]) => {
+      this.DataList = [];
+      this.dataSrv.DataJson = [];
+      this.dataSrv.DataJSalva = [];
+      res.forEach((element, key) => {
+        const temp_d = element.data.split(':');
+        const hh = +temp_d[0] + 'h ' + temp_d[1] + 'm';
+        element.data = hh;
+        this.DataList.push(element);
+        this.dataSrv.DataJson.push(element);
+        this.dataSrv.DataJSalva.push(element);
+        this.gridApi.setRowData(this.DataList);
+      });
+      /* this.dataSrv.DataJson = res;
       this.dataSrv.DataJSalva = res;
-      this.gridApi.setRowData(res);
 
+      this.gridApi.setRowData(res);
+      this.DataList = res; */
       this.esteiras = this.dataSrv.listaEsteiras();
     });
 
 
-    this.dataSrv.ControleRemoto$.subscribe((items)=> {
+
+    this.dataSrv.ControleRemoto$.subscribe((items) => {
 
     });
     moment.locale('pt');
@@ -127,9 +143,27 @@ export class AppComponent {
             // console.log('Got column event: ', event);
           }
         });
-        params.api.sizeColumnsToFit();
+         params.api.sizeColumnsToFit();
       }
     };
+
+    timer(2000, 500).subscribe(() => {
+      this.gridOptions.api.sizeColumnsToFit();
+    });
+
+    this.breakpointObserver
+      .observe(['(min-width: 500px)'])
+      .subscribe((state: BreakpointState) => {
+        if (state.matches) {
+          console.log('Viewport is 500px or over!');
+          this.ShowWhenSizable = false;
+          this.gridOptions.api.sizeColumnsToFit();
+        } else {
+          console.log('Viewport is getting smaller!');
+          this.ShowWhenSizable = true;
+         // this.gridOptions.api.sizeColumnsToFit();
+        }
+      });
   }
 
 
@@ -149,7 +183,7 @@ export class AppComponent {
   MontarColunaRestante(param) {
     const temp_d = param.data.data.split(':');
     const hh = +temp_d[0] + 'h ' + temp_d[1] + 'm';
-    let html = '<br><span style=" font-size: 4.4em;padding-top:10px;" >' + hh + '</span>';
+    let html = '<br><span style=" font-size: 4.4em;padding-top:10px;" >' + param.data.data + '</span>';
     html += '<br>';
     html += '<span style="font-size: 3.0em" >  ' + param.data.datafim + '</span>';
     return html;
@@ -193,7 +227,7 @@ export class AppComponent {
   }
 
   showModalFiltro() {
-  //  console.log(this.dataSrv.DataJson);
+    //  console.log(this.dataSrv.DataJson);
     this.dataSrv.DashBoardAtivo();
     this.dialogService.open(this.Modal_Filtro);
   }

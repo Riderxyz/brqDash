@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { LayoutModule } from '@angular/cdk/layout';
 import { NgModule } from '@angular/core';
 
 import { RouterModule, Routes } from '@angular/router';
@@ -45,6 +45,8 @@ const AppRoutes: Routes = [
     ),
     HttpClientModule,
     FormsModule,
+    // CDK
+    LayoutModule,
     // AngularFire
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
