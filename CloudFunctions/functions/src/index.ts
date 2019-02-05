@@ -52,7 +52,6 @@ export const pushNotification = functions.database.ref('/brq-sla/ONS').onWrite(
         let exteiras = ''
         dataValue.forEach(element => {
           exteiras += element.esteira + ' - ' + element.tfs + '    '
-
         });
         return exteiras
       }
@@ -74,8 +73,6 @@ export const pushNotification = functions.database.ref('/brq-sla/ONS').onWrite(
               error.code === 'messaging/registration-token-not-registered') {
               console.log('O que sera removido', tokensToRemove[`/deviceId/${tokens[index]}`]);
               tokensToRemove[`/deviceId/${tokens[index]}`] = null;
-
-
             }
           }
         });
@@ -134,9 +131,6 @@ export const pushNotification = functions.database.ref('/brq-sla/ONS').onWrite(
         Posicao_Token: tokensPos
       }
       console.log('Eu preciso disso =>!!!!', dataFromPush);
-
-
-
       dataValue.forEach(element => {
         pushType(element.data)
 
