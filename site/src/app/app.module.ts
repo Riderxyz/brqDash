@@ -18,8 +18,8 @@ import { AppComponent } from './app.component';
 import { TableModule } from 'primeng/table';
 import { CardModule } from 'primeng/card';
 import { PanelModule } from 'primeng/panel';
-import {DropdownModule} from 'primeng/dropdown';
-import {MultiSelectModule} from 'primeng/multiselect';
+import { DropdownModule } from 'primeng/dropdown';
+import { MultiSelectModule } from 'primeng/multiselect';
 // Ag-Grid
 import { AgGridModule } from 'ag-grid-angular';
 
@@ -29,7 +29,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { environment } from './../environments/environment';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
+// Service
 import { GetDataSrv } from 'src/service/getData.service';
+import { FormatService } from 'src/service/format.service';
 
 const AppRoutes: Routes = [
   { path: 'Home', component: AppComponent },
@@ -66,7 +68,7 @@ const AppRoutes: Routes = [
     BrowserModule,
     BrowserAnimationsModule
   ],
-  providers: [GetDataSrv],
+  providers: [GetDataSrv, FormatService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

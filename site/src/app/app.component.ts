@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component, TemplateRef, ViewChild, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
 import { GridOptions } from 'ag-grid-community';
@@ -9,23 +9,18 @@ import { GetDataSrv } from 'src/service/getData.service';
 import { SelectItem } from 'primeng/api';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { timer } from 'rxjs';
+import { FormatService } from 'src/service/format.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   esteiras: SelectItem[];
   esteirasSelecionadas: any[];
   DataList: DataFirebaseModel[] = [];
   title = 'dash';
   ShowWhenSizable: boolean;
-
-  myStyles = {
-    'background-color': 'lime',
-    'font-size': '20px',
-    'font-weight': 'bold'
-  };
   @ViewChild('ModalShowFiltro') Modal_Filtro: TemplateRef<any>;
   public gridApi;
   public gridOptions: GridOptions;
@@ -42,7 +37,7 @@ export class AppComponent {
       classe: {
         'background-color': 'yellow',
         'color': '#300c74',
-        'font': 'normal'
+        'font-weight': 'normal'
       },
       limite: 600
     },
@@ -56,7 +51,7 @@ export class AppComponent {
     crazy: {
       classe: {
         'background-color': 'black',
-        'font': 'bolder',
+        'font-weight': 'bolder',
         'color': '#fff'
       },
       limite: 120
@@ -64,33 +59,12 @@ export class AppComponent {
   };
 
   rowClassRules: any;
-  columnDefs = [
-    {
-      headerName: 'Esteira',
-      field: 'esteira',
-      width: 80,
-      /* height: 190, */
-      cellRenderer: this.MontarColunaEsteira,
-    },
-    {
-      headerName: 'Restante',
-      field: 'data',
-      width: 20,
-      autoHeight: true,
-      cellRenderer: this.MontarColunaRestante,
-    },
-    {
-      headerName: 'Status',
-      field: 'status',
-      width: 30,
-      autoHeight: true,
-      cellRenderer: this.MontarColunaStatus,
-    },
-  ];
+  columnDefs = [];
   constructor(
     public db: AngularFireDatabase,
     public dialogService: NbDialogService,
     public dataSrv: GetDataSrv,
+    private formatSrv: FormatService,
     public breakpointObserver: BreakpointObserver) {
     this.dataSrv.ListarItems.subscribe((res: DataFirebaseModel[]) => {
       this.DataList = [];
@@ -106,21 +80,59 @@ export class AppComponent {
         this.gridApi.setRowData(this.DataList);
       });
       console.log(this.DataList);
-
-      /* this.dataSrv.DataJson = res;
-      this.dataSrv.DataJSalva = res;
-
-      this.gridApi.setRowData(res);
-      this.DataList = res; */
       this.esteiras = this.dataSrv.listaEsteiras();
     });
-
-
-
     this.dataSrv.ControleRemoto$.subscribe((items) => {
 
     });
+
+
     moment.locale('pt');
+
+
+    timer(2000, 500).subscribe(() => {
+      this.gridOptions.api.sizeColumnsToFit();
+    });
+
+    this.breakpointObserver
+      .observe(['(min-width: 700px)'])
+      .subscribe((state: BreakpointState) => {
+        if (state.matches) {
+          console.log('Viewport is 500px or over!', state);
+          this.ShowWhenSizable = false;
+          this.gridOptions.api.sizeColumnsToFit();
+        } else {
+          console.log('Viewport is getting smaller!', state);
+          this.ShowWhenSizable = true;
+          // this.gridOptions.api.sizeColumnsToFit();
+        }
+      });
+  }
+
+  ngOnInit() {
+    this.columnDefs = [
+      {
+        headerName: 'Esteira',
+        field: 'esteira',
+        width: 80,
+        /* height: 190, */
+        cellRenderer: this.formatSrv.MontarColunaEsteira,
+      },
+      {
+        headerName: 'Restante',
+        field: 'data',
+        width: 20,
+        autoHeight: true,
+        cellRenderer: this.MontarColunaRestante,
+      },
+      {
+        headerName: 'Status',
+        field: 'status',
+        width: 30,
+        autoHeight: true,
+        cellRenderer: this.MontarColunaStatus,
+      },
+    ];
     this.gridOptions = {
       columnDefs: this.columnDefs,
       enableSorting: true,
@@ -154,38 +166,18 @@ export class AppComponent {
         params.api.sizeColumnsToFit();
       }
     };
-
-    timer(2000, 500).subscribe(() => {
-      this.gridOptions.api.sizeColumnsToFit();
-    });
-
-    this.breakpointObserver
-      .observe(['(min-width: 500px)'])
-      .subscribe((state: BreakpointState) => {
-        if (state.matches) {
-          console.log('Viewport is 500px or over!');
-          this.ShowWhenSizable = false;
-          this.gridOptions.api.sizeColumnsToFit();
-        } else {
-          console.log('Viewport is getting smaller!');
-          this.ShowWhenSizable = true;
-          // this.gridOptions.api.sizeColumnsToFit();
-        }
-      });
   }
-
-
   MontarColunaStatus(param) {
     const dados: DataFirebaseModel = param.data;
-    const html = '<br><span style=" font-size: 3.8em;" >' + dados.status + '</span>';
+    const html = '<br><span style=" font-size: 3.8em;" >'/* 60.8px */ + dados.status + '</span>';
     return html;
   }
 
   MontarColunaEsteira(param) {
     const dados: DataFirebaseModel = param.data;
-    let html = '<br><span style="font-size: 4.3em;padding-top:10px;">' + dados.esteira + ' - ' + dados.tfs + '</span>';
+    let html = '<br><span style="font-size: 4.3em;padding-top:10px;">'/* 68.8px */ + dados.esteira + ' - ' + dados.tfs + '</span>';
     html += '<br>';
-    html += '<span style="font-size: 3.0em;">' + dados.titulo + '</span>';
+    html += '<span style="font-size: 3.0em;">'/* 48px */ + dados.titulo + '</span>';
     return html;
   }
 
@@ -194,20 +186,11 @@ export class AppComponent {
     const hh = +temp_d[0] + 'h ' + temp_d[1] + 'm';
     let html = '<br><span style=" font-size: 4.4em;padding-top:10px;" >' + param.data.dataFormatada + '</span>';
     html += '<br>';
-    html += '<span style="font-size: 3.0em" >  ' + param.data.datafim + '</span>';
-    return html;
-  }
-
-  getTimeFromMins(mins) {
-    const minutes = mins % 60;
-    const hours = (mins - minutes) / 60;
-
-    return hours + ':' + minutes;
-  }
-
-  formatdata(data): string {
-    const temp_d = data.split(':');
-    return +temp_d[0] + 'h ' + temp_d[1] + 'm';
+    html += '<span style="font-size: 3.0em" >' + param.data.datafim + '</span>';
+    // return html;
+    this.formatSrv.MontarColunaRestante = param;
+    return this.formatSrv.MontarColunaRestante;
+    //  console.log(this.formatSrv);
 
   }
 
