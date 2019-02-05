@@ -56,7 +56,7 @@
 
 
     <div class="card" *ngFor="let demanda of DataList">
-      <nb-card>
+      <nb-card [ngStyle]="formatarLinha(demanda)">
         <nb-card-header>
           <h1>{{ demanda.area }} - {{demanda.tfs}}</h1>
         </nb-card-header>

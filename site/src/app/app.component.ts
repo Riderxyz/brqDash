@@ -20,6 +20,12 @@ export class AppComponent {
   DataList: DataFirebaseModel[] = [];
   title = 'dash';
   ShowWhenSizable: boolean;
+
+  myStyles = {
+    'background-color': 'lime',
+    'font-size': '20px',
+    'font-weight': 'bold'
+  };
   @ViewChild('ModalShowFiltro') Modal_Filtro: TemplateRef<any>;
   public gridApi;
   public gridOptions: GridOptions;
@@ -27,31 +33,31 @@ export class AppComponent {
   limites = {
     normal: {
       classe: {
-        background: 'white !important',
-        color: 'black!important'
+        'background-color': '#3d3780',
+        'color': 'black!important'
       },
       limite: null
     },
     warning: {
       classe: {
-        background: 'yellow!important',
-        color: '#300c74',
-        font: 'normal'
+        'background-color': 'yellow',
+        'color': '#300c74',
+        'font': 'normal'
       },
       limite: 600
     },
     danger: {
       classe: {
-        background: 'red !important',
-        color: '#fff'
+        'background-color': 'red ',
+        'color': '#fff'
       },
       limite: 360
     },
     crazy: {
       classe: {
-        background: 'black !important',
-        font: 'bolder',
-        color: '#fff'
+        'background-color': 'black',
+        'font': 'bolder',
+        'color': '#fff'
       },
       limite: 120
     }
@@ -93,12 +99,14 @@ export class AppComponent {
       res.forEach((element, key) => {
         const temp_d = element.data.split(':');
         const hh = +temp_d[0] + 'h ' + temp_d[1] + 'm';
-        element.data = hh;
+        element.dataFormatada = hh;
         this.DataList.push(element);
         this.dataSrv.DataJson.push(element);
         this.dataSrv.DataJSalva.push(element);
         this.gridApi.setRowData(this.DataList);
       });
+      console.log(this.DataList);
+
       /* this.dataSrv.DataJson = res;
       this.dataSrv.DataJSalva = res;
 
@@ -143,7 +151,7 @@ export class AppComponent {
             // console.log('Got column event: ', event);
           }
         });
-         params.api.sizeColumnsToFit();
+        params.api.sizeColumnsToFit();
       }
     };
 
@@ -161,7 +169,7 @@ export class AppComponent {
         } else {
           console.log('Viewport is getting smaller!');
           this.ShowWhenSizable = true;
-         // this.gridOptions.api.sizeColumnsToFit();
+          // this.gridOptions.api.sizeColumnsToFit();
         }
       });
   }
@@ -174,16 +182,17 @@ export class AppComponent {
   }
 
   MontarColunaEsteira(param) {
-    let html = '<br><span style="font-size: 4.3em;padding-top:10px;">' + param.data.esteira + ' - ' + param.data.tfs + '</span>';
+    const dados: DataFirebaseModel = param.data;
+    let html = '<br><span style="font-size: 4.3em;padding-top:10px;">' + dados.esteira + ' - ' + dados.tfs + '</span>';
     html += '<br>';
-    html += '<span style="font-size: 3.0em;">' + param.data.titulo + '</span>';
+    html += '<span style="font-size: 3.0em;">' + dados.titulo + '</span>';
     return html;
   }
 
   MontarColunaRestante(param) {
     const temp_d = param.data.data.split(':');
     const hh = +temp_d[0] + 'h ' + temp_d[1] + 'm';
-    let html = '<br><span style=" font-size: 4.4em;padding-top:10px;" >' + param.data.data + '</span>';
+    let html = '<br><span style=" font-size: 4.4em;padding-top:10px;" >' + param.data.dataFormatada + '</span>';
     html += '<br>';
     html += '<span style="font-size: 3.0em" >  ' + param.data.datafim + '</span>';
     return html;
@@ -202,22 +211,26 @@ export class AppComponent {
 
   }
 
-  formatarLinha(params) {
-    const minutos = this.hourToMinute(params.data.data);
+  formatarLinha(params: DataFirebaseModel) {
+    const minutos = this.hourToMinute(params.data);
     // Normal
     if (minutos > this.limites.warning.limite) {
       return this.limites.normal.classe;
+
     }
     // Warning
     if (((minutos >= this.limites.danger.limite) && (minutos <= this.limites.warning.limite))) {
       return this.limites.warning.classe;
+
     }
     // Danger
     if (((minutos >= this.limites.crazy.limite) && (minutos <= this.limites.danger.limite))) {
       return this.limites.danger.classe;
+
     }
     if ((minutos <= this.limites.crazy.limite)) {
       return this.limites.crazy.classe;
+
     }
   }
 
