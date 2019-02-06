@@ -22,42 +22,8 @@ export class AppComponent implements OnInit {
   title = 'dash';
   ShowWhenSizable: boolean;
   @ViewChild('ModalShowFiltro') Modal_Filtro: TemplateRef<any>;
-  public gridApi;
+  public gridApi: any;
   public gridOptions: GridOptions;
-  public DataDimensionado: any = [];
-  limites = {
-    normal: {
-      classe: {
-      //  'background-color': this.formatSrv.whatColor(this.ShowWhenSizable),
-        'color': 'black!important'
-      },
-      limite: null
-    },
-    warning: {
-      classe: {
-        'background-color': 'orange',
-        'color': '#300c74',
-        'font-weight': 'normal'
-      },
-      limite: 600
-    },
-    danger: {
-      classe: {
-        'background-color': 'red ',
-        'color': '#fff'
-      },
-      limite: 360
-    },
-    crazy: {
-      classe: {
-        'background-color': 'black',
-        'font-weight': 'bolder',
-        'color': '#fff'
-      },
-      limite: 120
-    }
-  };
-  rowClassRules: any;
   columnDefs = [];
   constructor(
     public db: AngularFireDatabase,
@@ -71,7 +37,7 @@ export class AppComponent implements OnInit {
       this.dataSrv.DataJSalva = [];
       res.forEach((element, key) => {
         const temp_d = element.data.split(':');
-        const hh = +temp_d[0] + 'h :' + temp_d[1] + 'm';
+        const hh = +temp_d[0] + 'h:' + temp_d[1] + 'm';
         element.dataFormatada = hh;
         this.DataList.push(element);
         this.dataSrv.DataJson.push(element);
@@ -87,7 +53,6 @@ export class AppComponent implements OnInit {
     timer(2000, 500).subscribe(() => {
       this.gridOptions.api.sizeColumnsToFit();
     });
-
     this.breakpointObserver
       .observe(['(min-width: 700px)'])
       .subscribe((state: BreakpointState) => {
@@ -137,19 +102,19 @@ export class AppComponent implements OnInit {
       getRowStyle: (params) => {
         const minutos = this.formatSrv.hourToMinute(params.data.data);
         // Normal
-        if (minutos > this.limites.warning.limite) {
-          return this.limites.normal.classe;
+        if (minutos > this.formatSrv.limites.warning.limite) {
+          return this.formatSrv.limites.normal.classe;
         }
         // Warning
-        if (((minutos >= this.limites.danger.limite) && (minutos <= this.limites.warning.limite))) {
-          return this.limites.warning.classe;
+        if (((minutos >= this.formatSrv.limites.danger.limite) && (minutos <= this.formatSrv.limites.warning.limite))) {
+          return this.formatSrv.limites.warning.classe;
         }
         // Danger
-        if (((minutos >= this.limites.crazy.limite) && (minutos <= this.limites.danger.limite))) {
-          return this.limites.danger.classe;
+        if (((minutos >= this.formatSrv.limites.crazy.limite) && (minutos <= this.formatSrv.limites.danger.limite))) {
+          return this.formatSrv.limites.danger.classe;
         }
-        if ((minutos <= this.limites.crazy.limite)) {
-          return this.limites.crazy.classe;
+        if ((minutos <= this.formatSrv.limites.crazy.limite)) {
+          return this.formatSrv.limites.crazy.classe;
         }
       },
       onGridReady: (params) => {

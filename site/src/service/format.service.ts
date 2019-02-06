@@ -3,10 +3,10 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class FormatService {
-  private limites = {
+  private _limites = {
     normal: {
       classe: {
-        'background-color': '#3d3780',
+        // 'background-color': '#3d3780',
         'color': 'black!important'
       },
       limite: null
@@ -37,38 +37,44 @@ export class FormatService {
   };
   constructor() { }
   /**
-   * Setter MontarColunaStatus
+   *  MontarColunaStatus
    *  Monta a coluna de Status da Grid
    */
-  public MontarColunaStatus(param: any) {
+  public MontarColunaStatus(param: any): string {
     const dados: DataFirebaseModel = param.data;
-    const html = '<br><span style=" font-size: 3.8em;" >'/* 60.8px */ + dados.status + '</span>';
+    const html = '<br><span style=" font-size: 3.8em;" >' + dados.status + '</span>';
     return html;
   }
+  public get limites() {
+    return this._limites;
+  }
   /**
-   * Setter MontarColunaEsteira
+   * MontarColunaEsteira
    * Monta a coluna onde esta as esteiras e o numero da Demanda
    */
-  public MontarColunaEsteira(param: any) {
+  public MontarColunaEsteira(param: any): string {
     const dados: DataFirebaseModel = param.data;
-    let html = '<br><span style="font-size: 4.3em;padding-top:10px;">'/* 68.8px */ + dados.esteira + ' - ' + dados.tfs + '</span>';
+    let html = '<br><span style="font-size: 4.3em;padding-top:10px;">' + dados.esteira + ' - ' + dados.tfs + '</span>';
     html += '<br>';
-    html += '<span style="font-size: 3.0em;">'/* 48px */ + dados.titulo + '</span>';
+    html += '<span style="font-size: 3.0em;">' + dados.titulo + '</span>';
     return html;
   }
   /**
-   * Setter MontarColunaRestante
+   * MontarColunaRestante
    * Monta a coluna restante, que cuida do tempo
    */
-  public MontarColunaRestante(param: any) {
+  public MontarColunaRestante(param: any): string {
     const dados: DataFirebaseModel = param.data;
     let html = '<br><span style=" font-size: 4.4em;padding-top:10px;" >' + dados.dataFormatada + '</span>';
     html += '<br>';
     html += '<span style="font-size: 3.0em" >' + dados.datafim + '</span>';
-     return html;
+    return html;
   }
-
-  public formatarLinha(params: DataFirebaseModel) {
+  /**
+     * MontarColunaRestante
+     * Monta a coluna restante, que cuida do tempo
+     */
+  public formatarLinha(params: DataFirebaseModel): object {
     const minutos = this.hourToMinute(params.data);
     // Normal
     if (minutos > this.limites.warning.limite) {
