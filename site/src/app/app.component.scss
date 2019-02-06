@@ -11,7 +11,7 @@
 .warning {
     background-color: yellow !important;
     font-weight: normal;
-    color: rgb(48, 12, 116);
+    color: #300c74;
 }
 
 .danger {
@@ -20,7 +20,7 @@
 }
 
 .normal {
-    background-color: white !important;
+    background-color: #3d3780 !important;
     color: black !important;
 }
 
@@ -62,6 +62,7 @@
 }
 .timeLeft {
     display: flex;
+    align-items: center;
     .timeString {
         width: 100%;
     }

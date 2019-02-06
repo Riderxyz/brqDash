@@ -28,14 +28,14 @@ export class AppComponent implements OnInit {
   limites = {
     normal: {
       classe: {
-        'background-color': '#3d3780',
+      //  'background-color': this.formatSrv.whatColor(this.ShowWhenSizable),
         'color': 'black!important'
       },
       limite: null
     },
     warning: {
       classe: {
-        'background-color': 'yellow',
+        'background-color': 'orange',
         'color': '#300c74',
         'font-weight': 'normal'
       },
@@ -57,14 +57,13 @@ export class AppComponent implements OnInit {
       limite: 120
     }
   };
-
   rowClassRules: any;
   columnDefs = [];
   constructor(
     public db: AngularFireDatabase,
     public dialogService: NbDialogService,
     public dataSrv: GetDataSrv,
-    private formatSrv: FormatService,
+    public formatSrv: FormatService,
     public breakpointObserver: BreakpointObserver) {
     this.dataSrv.ListarItems.subscribe((res: DataFirebaseModel[]) => {
       this.DataList = [];
@@ -72,7 +71,7 @@ export class AppComponent implements OnInit {
       this.dataSrv.DataJSalva = [];
       res.forEach((element, key) => {
         const temp_d = element.data.split(':');
-        const hh = +temp_d[0] + 'h ' + temp_d[1] + 'm';
+        const hh = +temp_d[0] + 'h :' + temp_d[1] + 'm';
         element.dataFormatada = hh;
         this.DataList.push(element);
         this.dataSrv.DataJson.push(element);
@@ -83,13 +82,8 @@ export class AppComponent implements OnInit {
       this.esteiras = this.dataSrv.listaEsteiras();
     });
     this.dataSrv.ControleRemoto$.subscribe((items) => {
-
     });
-
-
     moment.locale('pt');
-
-
     timer(2000, 500).subscribe(() => {
       this.gridOptions.api.sizeColumnsToFit();
     });
@@ -104,33 +98,35 @@ export class AppComponent implements OnInit {
         } else {
           console.log('Viewport is getting smaller!', state);
           this.ShowWhenSizable = true;
+
           // this.gridOptions.api.sizeColumnsToFit();
         }
       });
   }
 
   ngOnInit() {
+    const that = this;
     this.columnDefs = [
       {
         headerName: 'Esteira',
         field: 'esteira',
         width: 80,
         /* height: 190, */
-        cellRenderer: this.formatSrv.MontarColunaEsteira,
+        cellRenderer: that.formatSrv.MontarColunaEsteira,
       },
       {
         headerName: 'Restante',
         field: 'data',
         width: 20,
         autoHeight: true,
-        cellRenderer: this.MontarColunaRestante,
+        cellRenderer: this.formatSrv.MontarColunaRestante,
       },
       {
         headerName: 'Status',
         field: 'status',
         width: 30,
         autoHeight: true,
-        cellRenderer: this.MontarColunaStatus,
+        cellRenderer: this.formatSrv.MontarColunaStatus,
       },
     ];
     this.gridOptions = {
@@ -139,7 +135,7 @@ export class AppComponent implements OnInit {
       headerHeight: 0,
       rowHeight: 100,
       getRowStyle: (params) => {
-        const minutos = this.hourToMinute(params.data.data);
+        const minutos = this.formatSrv.hourToMinute(params.data.data);
         // Normal
         if (minutos > this.limites.warning.limite) {
           return this.limites.normal.classe;
@@ -166,60 +162,6 @@ export class AppComponent implements OnInit {
         params.api.sizeColumnsToFit();
       }
     };
-  }
-  MontarColunaStatus(param) {
-    const dados: DataFirebaseModel = param.data;
-    const html = '<br><span style=" font-size: 3.8em;" >'/* 60.8px */ + dados.status + '</span>';
-    return html;
-  }
-
-  MontarColunaEsteira(param) {
-    const dados: DataFirebaseModel = param.data;
-    let html = '<br><span style="font-size: 4.3em;padding-top:10px;">'/* 68.8px */ + dados.esteira + ' - ' + dados.tfs + '</span>';
-    html += '<br>';
-    html += '<span style="font-size: 3.0em;">'/* 48px */ + dados.titulo + '</span>';
-    return html;
-  }
-
-  MontarColunaRestante(param) {
-    const temp_d = param.data.data.split(':');
-    const hh = +temp_d[0] + 'h ' + temp_d[1] + 'm';
-    let html = '<br><span style=" font-size: 4.4em;padding-top:10px;" >' + param.data.dataFormatada + '</span>';
-    html += '<br>';
-    html += '<span style="font-size: 3.0em" >' + param.data.datafim + '</span>';
-    // return html;
-    this.formatSrv.MontarColunaRestante = param;
-    return this.formatSrv.MontarColunaRestante;
-    //  console.log(this.formatSrv);
-
-  }
-
-  formatarLinha(params: DataFirebaseModel) {
-    const minutos = this.hourToMinute(params.data);
-    // Normal
-    if (minutos > this.limites.warning.limite) {
-      return this.limites.normal.classe;
-
-    }
-    // Warning
-    if (((minutos >= this.limites.danger.limite) && (minutos <= this.limites.warning.limite))) {
-      return this.limites.warning.classe;
-
-    }
-    // Danger
-    if (((minutos >= this.limites.crazy.limite) && (minutos <= this.limites.danger.limite))) {
-      return this.limites.danger.classe;
-
-    }
-    if ((minutos <= this.limites.crazy.limite)) {
-      return this.limites.crazy.classe;
-
-    }
-  }
-
-  hourToMinute(hh: string): number {
-    const arrayHora = hh.split(':');
-    return (Number(arrayHora[0]) * 60) + Number(arrayHora[1]);
   }
 
   showModalFiltro() {

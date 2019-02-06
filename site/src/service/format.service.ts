@@ -3,9 +3,6 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class FormatService {
-  private _MontarColunaStatus: string;
-  private _MontarColunaEsteira: string;
-  private _MontarColunaRestante: string;
   private limites = {
     normal: {
       classe: {
@@ -40,60 +37,35 @@ export class FormatService {
   };
   constructor() { }
   /**
- * Getter MontarColunaStatus
- * Retorna a coluna de status da Grid
- */
-  public get MontarColunaStatus() {
-    return this._MontarColunaStatus;
-  }
-  /**
    * Setter MontarColunaStatus
    *  Monta a coluna de Status da Grid
    */
-  public set MontarColunaStatus(param: any) {
+  public MontarColunaStatus(param: any) {
     const dados: DataFirebaseModel = param.data;
-    this._MontarColunaStatus = '<br><span style=" font-size: 3.8em;" >' + dados.status + '</span>';
-  }
-  /**
- * Getter MontarColunaEsteira
- * Retorna a coluna onde esta as esteiras e o numero da Demanda
- */
-  public get MontarColunaEsteira() {
-    return this._MontarColunaEsteira;
+    const html = '<br><span style=" font-size: 3.8em;" >'/* 60.8px */ + dados.status + '</span>';
+    return html;
   }
   /**
    * Setter MontarColunaEsteira
    * Monta a coluna onde esta as esteiras e o numero da Demanda
    */
-  public set MontarColunaEsteira(param: any) {
+  public MontarColunaEsteira(param: any) {
     const dados: DataFirebaseModel = param.data;
-    this._MontarColunaEsteira = '<br><span style="font-size: 4.3em;padding-top:10px;">' + dados.esteira + ' - ' + dados.tfs + '</span>';
-    this._MontarColunaEsteira += '<br>';
-    this._MontarColunaEsteira += '<span style="font-size: 3.0em;">' + dados.titulo + '</span>';
+    let html = '<br><span style="font-size: 4.3em;padding-top:10px;">'/* 68.8px */ + dados.esteira + ' - ' + dados.tfs + '</span>';
+    html += '<br>';
+    html += '<span style="font-size: 3.0em;">'/* 48px */ + dados.titulo + '</span>';
+    return html;
   }
   /**
    * Setter MontarColunaRestante
    * Monta a coluna restante, que cuida do tempo
    */
-  public set MontarColunaRestante(param: any) {
-    this._MontarColunaRestante = '<br><span style=" font-size: 4.4em;padding-top:10px;" >' + param.data.dataFormatada + '</span>';
-    this._MontarColunaRestante += '<br>';
-    this._MontarColunaRestante += '<span style="font-size: 3.0em" >' + param.data.datafim + '</span>';
-  }
-  /**
- * Getter MontarColunaRestante
- * Retorna a coluna restante, que cuida do tempo
- */
-  public get MontarColunaRestante() {
-    return this._MontarColunaRestante;
-  }
-
-  public MontarColunaRestanteX(param) {
-
-    this._MontarColunaRestante = '<br><span style=" font-size: 4.4em;padding-top:10px;" >' + param.data.dataFormatada + '</span>';
-    this._MontarColunaRestante += '<br>';
-    this._MontarColunaRestante += '<span style="font-size: 3.0em" >' + param.data.datafim + '</span>';
-    return this._MontarColunaRestante;
+  public MontarColunaRestante(param: any) {
+    const dados: DataFirebaseModel = param.data;
+    let html = '<br><span style=" font-size: 4.4em;padding-top:10px;" >' + dados.dataFormatada + '</span>';
+    html += '<br>';
+    html += '<span style="font-size: 3.0em" >' + dados.datafim + '</span>';
+     return html;
   }
 
   public formatarLinha(params: DataFirebaseModel) {
