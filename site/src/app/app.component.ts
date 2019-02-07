@@ -107,7 +107,13 @@ export class AppComponent implements OnInit {
         }
         // Warning
         if (((minutos >= this.formatSrv.limites.danger.limite) && (minutos <= this.formatSrv.limites.warning.limite))) {
-          return this.formatSrv.limites.warning.classe;
+          if (!this.ShowWhenSizable) {
+            return {
+              'background-color': 'yellow',
+              'color': '#300c74',
+              'font-weight': 'normal'
+            };
+          }
         }
         // Danger
         if (((minutos >= this.formatSrv.limites.crazy.limite) && (minutos <= this.formatSrv.limites.danger.limite))) {

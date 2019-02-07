@@ -40,33 +40,6 @@ export class GetDataSrv {
     });
   }
 
-
-  public MontarColunaRestanteX(param) {
-
-    let html = '<br><span style=" font-size: 4.4em;padding-top:10px;" >' + param.data.dataFormatada + '</span>';
-    html += '<br>';
-    html += '<span style="font-size: 3.0em" >' + param.data.datafim + '</span>';
-    return html;
-  }
-
-
-  async DashBoardAtivo() {
-    this.db.object('/dashBoardAtivo/' + this._localRequisitado).set({
-      dash: 'Desenvolvimento',
-      status: '',
-      id: Math.random().toString(36).substr(2, 9)
-    });
-
-  }
-
-
-  async controleRemoto() {
-    this.db.object('/dashBoardAtivo/' + this._localRequisitado).valueChanges().subscribe((res) => {
-      console.log(`Dafuck?`, res);
-    });
-
-  }
-
   public set DataJson(value: DataFirebaseModel[]) {
 
     this._DataJson = value;
