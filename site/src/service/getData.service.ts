@@ -8,8 +8,6 @@ import { Subject } from 'rxjs';
 @Injectable()
 export class GetDataSrv {
 
-
-
   private _DataJson: DataFirebaseModel[] = [];
   private _DataJSalva: DataFirebaseModel[] = [];
   private _localRequisitado = environment.NomeDashBoard;

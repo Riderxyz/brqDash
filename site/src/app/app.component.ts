@@ -10,6 +10,7 @@ import { SelectItem } from 'primeng/api';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { timer } from 'rxjs';
 import { FormatService } from 'src/service/format.service';
+import { RemoteControlService } from 'src/service/remoteControl.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -30,6 +31,7 @@ export class AppComponent implements OnInit {
     public dialogService: NbDialogService,
     public dataSrv: GetDataSrv,
     public formatSrv: FormatService,
+    public remoteControl: RemoteControlService,
     public breakpointObserver: BreakpointObserver) {
     this.dataSrv.ListarItems.subscribe((res: DataFirebaseModel[]) => {
       this.DataList = [];
@@ -67,6 +69,10 @@ export class AppComponent implements OnInit {
           // this.gridOptions.api.sizeColumnsToFit();
         }
       });
+    this.remoteControl.controleRemoto.subscribe((esteiras) => {
+    console.log('Controle remoto ativado');
+      this.gridApi.setRowData(this.dataSrv.filtroEsteira(esteiras));
+    });
   }
 
   ngOnInit() {
@@ -136,8 +142,7 @@ export class AppComponent implements OnInit {
   }
 
   showModalFiltro() {
-    //  console.log(this.dataSrv.DataJson);
-    this.dataSrv.DashBoardAtivo();
+    this.remoteControl.DashBoardAtivo();
     this.dialogService.open(this.Modal_Filtro);
   }
 

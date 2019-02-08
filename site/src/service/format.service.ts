@@ -71,10 +71,12 @@ export class FormatService {
     return html;
   }
   /**
-     * MontarColunaRestante
-     * Monta a coluna restante, que cuida do tempo
-     */
-  public formatarLinha(params: DataFirebaseModel): object {
+  * formatarCardColor:
+  *
+  * Formata a cor de fundo do card quando esta em uma tela
+  * menor que 700px
+  */
+  public formatarCardColor(params: DataFirebaseModel): object {
     const minutos = this.hourToMinute(params.data);
     // Normal
     if (minutos > this.limites.warning.limite) {

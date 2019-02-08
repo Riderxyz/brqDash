@@ -32,6 +32,7 @@ import { AngularFireDatabaseModule } from '@angular/fire/database';
 // Service
 import { GetDataSrv } from 'src/service/getData.service';
 import { FormatService } from 'src/service/format.service';
+import { RemoteControlService } from 'src/service/remoteControl.service';
 
 const AppRoutes: Routes = [
   { path: 'Home', component: AppComponent },
@@ -68,7 +69,11 @@ const AppRoutes: Routes = [
     BrowserModule,
     BrowserAnimationsModule
   ],
-  providers: [GetDataSrv, FormatService],
+  providers: [
+    GetDataSrv,
+    FormatService,
+    RemoteControlService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -53,7 +53,7 @@
           </nb-card> -->
 
     <div class="card" *ngFor="let demanda of DataList">
-      <nb-card [ngStyle]="formatSrv.formatarLinha(demanda)">
+      <nb-card [ngStyle]="formatSrv.formatarCardColor(demanda)">
         <nb-card-header>
           <h1>{{ demanda.area }} - {{demanda.tfs}}</h1>
         </nb-card-header>
