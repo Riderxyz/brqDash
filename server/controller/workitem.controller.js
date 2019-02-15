@@ -1,11 +1,12 @@
 /*jshint esversion: 6 */
 function workItemController() {
     var fs = require('fs');
+    var moment = require('moment');
     var sql = require('mssql-plus');
     var callerId = require('caller-id');
     var config = require('../public/utils/config');
     var jwt = require('jsonwebtoken');
-
+    moment.locale('pt');
     var admin = require("firebase-admin");
 
     var serviceAccount = require("./../environment/brq-sla-firebase-adminsdk-qkham-e131ae30f1.json");
@@ -24,7 +25,7 @@ function workItemController() {
 
     vm.getItens = function (req, res, next) {
         vm.pool.connect().then(SimplePool => {
-            return SimplePool.query("EXEC dbo.[usp_DashGetWorkItemTeste]");
+            return SimplePool.query("EXEC dbo.[usp_DashGetWorkItem]");
         }).then(result => {
             vm.pool.close();
             var ons_db = ref.child("ONS");
@@ -38,11 +39,18 @@ function workItemController() {
 
     vm.updateRealTime = function () {
         vm.pool.connect().then(SimplePool => {
-            return SimplePool.query("EXEC dbo.[usp_DashGetWorkItemTeste]");
+            return SimplePool.query("EXEC dbo.[usp_DashGetWorkItem]");
         }).then(result => {
             vm.pool.close();
             var ons_db = ref.child("ONS");
-            ons_db.set(result.recordsets[0]);
+            var xarray=[];
+            result.recordsets[0].forEach(element => {
+                element.datafim = moment(element.datafim).format('ddd DD-MM'); 
+                console.log(element)
+                xarray.push(element)
+            });
+            // console.log(xarray)
+            ons_db.set(xarray);
         }).catch(err => {
             console.log(err);
         });
