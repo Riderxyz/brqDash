@@ -9,4 +9,10 @@ node_modules/
 
 site/package-lock\.json
 
+<<<<<<< HEAD
 *.zip
+=======
+site/src/app/Untitled-1\.txt
+
+serverNest/
+>>>>>>> master

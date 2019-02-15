@@ -1,5 +1,4 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Component, TemplateRef, ViewChild, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
 import { GridOptions } from 'ag-grid-community';
@@ -8,111 +7,126 @@ import { NbDialogService } from '@nebular/theme';
 import { DataFirebaseModel } from './../models/data.model';
 import { GetDataSrv } from 'src/service/getData.service';
 import { SelectItem } from 'primeng/api';
-
+import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
+import { timer } from 'rxjs';
+import { FormatService } from 'src/service/format.service';
+import { RemoteControlService } from 'src/service/remoteControl.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   esteiras: SelectItem[];
   esteirasSelecionadas: any[];
-
+  DataList: DataFirebaseModel[] = [];
   title = 'dash';
+  ShowWhenSizable: boolean;
   @ViewChild('ModalShowFiltro') Modal_Filtro: TemplateRef<any>;
-  public gridApi;
+  public gridApi: any;
   public gridOptions: GridOptions;
-  public DataDimensionado: any = [];
-
-  limites = {
-    normal: {
-      classe: {
-        background: 'white !important',
-        color: 'black!important'
-      },
-      limite: null
-    },
-    warning: {
-      classe: {
-        background: 'yellow!important',
-        color: '#300c74',
-        font: 'normal'
-      },
-      limite: 600
-    },
-    danger: {
-      classe: {
-        background: 'red !important',
-        color: '#fff'
-      },
-      limite: 360
-    },
-    crazy: {
-      classe: {
-        background: 'black !important',
-        font: 'bolder',
-        color: '#fff'
-      },
-      limite: 120
-    }
-  };
-
-  rowClassRules: any;
-  columnDefs = [
-    {
-      headerName: 'Esteira',
-      field: 'esteira',
-      width: 50,
-      /* height: 190, */
-      cellRenderer: this.MontarColunaEsteira,
-    },
-    {
-      headerName: 'Restante',
-      field: 'data',
-      width: 25,
-      autoHeight: true,
-      cellRenderer: this.MontarColunaRestante,
-    },
-    {
-      headerName: 'Status',
-      field: 'status',
-      width: 25,
-      autoHeight: true,
-      cellRenderer: this.MontarColunaStatus,
-    },
-  ];
-  constructor(public db: AngularFireDatabase, public dialogService: NbDialogService, public dataSrv: GetDataSrv) {
-    this.dataSrv.ListarItems.subscribe((res: any) => {
-      this.dataSrv.DataJson = res;
-      this.dataSrv.DataJSalva = res;
-      console.log('res', res);
-      this.gridApi.setRowData(res);
-
+  columnDefs = [];
+  constructor(
+    public db: AngularFireDatabase,
+    public dialogService: NbDialogService,
+    public dataSrv: GetDataSrv,
+    public formatSrv: FormatService,
+    public remoteControl: RemoteControlService,
+    public breakpointObserver: BreakpointObserver) {
+    this.dataSrv.ListarItems.subscribe((res: DataFirebaseModel[]) => {
+      this.DataList = [];
+      this.dataSrv.DataJson = [];
+      this.dataSrv.DataJSalva = [];
+      res.forEach((element, key) => {
+        const temp_d = element.data.split(':');
+        const hh = +temp_d[0] + 'h:' + temp_d[1] + 'm';
+        element.dataFormatada = hh;
+        this.DataList.push(element);
+        this.dataSrv.DataJson.push(element);
+        this.dataSrv.DataJSalva.push(element);
+        this.gridApi.setRowData(this.DataList);
+      });
+      console.log(this.DataList);
       this.esteiras = this.dataSrv.listaEsteiras();
     });
-
+    this.dataSrv.ControleRemoto$.subscribe((items) => {
+    });
     moment.locale('pt');
+    timer(2000, 500).subscribe(() => {
+      this.gridOptions.api.sizeColumnsToFit();
+    });
+    this.breakpointObserver
+      .observe(['(min-width: 700px)'])
+      .subscribe((state: BreakpointState) => {
+        if (state.matches) {
+          console.log('Viewport is 500px or over!', state);
+          this.ShowWhenSizable = false;
+          this.gridOptions.api.sizeColumnsToFit();
+        } else {
+          console.log('Viewport is getting smaller!', state);
+          this.ShowWhenSizable = true;
+
+          // this.gridOptions.api.sizeColumnsToFit();
+        }
+      });
+    this.remoteControl.controleRemoto.subscribe((esteiras) => {
+    console.log('Controle remoto ativado');
+      this.gridApi.setRowData(this.dataSrv.filtroEsteira(esteiras));
+    });
+  }
+
+  ngOnInit() {
+    const that = this;
+    this.columnDefs = [
+      {
+        headerName: 'Esteira',
+        field: 'esteira',
+        width: 80,
+        /* height: 190, */
+        cellRenderer: that.formatSrv.MontarColunaEsteira,
+      },
+      {
+        headerName: 'Restante',
+        field: 'data',
+        width: 20,
+        autoHeight: true,
+        cellRenderer: this.formatSrv.MontarColunaRestante,
+      },
+      {
+        headerName: 'Status',
+        field: 'status',
+        width: 30,
+        autoHeight: true,
+        cellRenderer: this.formatSrv.MontarColunaStatus,
+      },
+    ];
     this.gridOptions = {
       columnDefs: this.columnDefs,
       enableSorting: true,
       headerHeight: 0,
       rowHeight: 100,
       getRowStyle: (params) => {
-        const minutos = this.hourToMinute(params.data.data);
+        const minutos = this.formatSrv.hourToMinute(params.data.data);
         // Normal
-        if (minutos > this.limites.warning.limite) {
-          return this.limites.normal.classe;
+        if (minutos > this.formatSrv.limites.warning.limite) {
+          return this.formatSrv.limites.normal.classe;
         }
         // Warning
-        if (((minutos >= this.limites.danger.limite) && (minutos <= this.limites.warning.limite))) {
-          return this.limites.warning.classe;
+        if (((minutos >= this.formatSrv.limites.danger.limite) && (minutos <= this.formatSrv.limites.warning.limite))) {
+          if (!this.ShowWhenSizable) {
+            return {
+              'background-color': 'yellow',
+              'color': '#300c74',
+              'font-weight': 'normal'
+            };
+          }
         }
         // Danger
-        if (((minutos >= this.limites.crazy.limite) && (minutos <= this.limites.danger.limite))) {
-          return this.limites.danger.classe;
+        if (((minutos >= this.formatSrv.limites.crazy.limite) && (minutos <= this.formatSrv.limites.danger.limite))) {
+          return this.formatSrv.limites.danger.classe;
         }
-        if ((minutos <= this.limites.crazy.limite)) {
-          return this.limites.crazy.classe;
+        if ((minutos <= this.formatSrv.limites.crazy.limite)) {
+          return this.formatSrv.limites.crazy.classe;
         }
       },
       onGridReady: (params) => {
@@ -127,72 +141,13 @@ export class AppComponent {
     };
   }
 
-
-  MontarColunaStatus(param) {
-    const dados: DataFirebaseModel = param.data;
-    const html = '<br><span style=" font-size: 2.5em;" >' + dados.status + '</span>';
-    return html;
-  }
-
-  MontarColunaEsteira(param) {
-    let html = '<br><span style="font-size: 2.7em;padding-top:10px;">' + param.data.esteira + ' - ' + param.data.tfs + '</span>';
-    html += '<br>';
-    html += '<span style="font-size: 2.0em;">' + param.data.titulo + '</span>';
-    return html;
-  }
-
-  MontarColunaRestante(param) {
-    const temp_d = param.data.data.split(':');
-    const hh = +temp_d[0] + 'h ' + temp_d[1] + 'm';
-    let html = '<br><span style=" font-size: 3.7em;padding-top:10px;" >' + hh + '</span>';
-    html += '<br>';
-    html += '<span style="font-size: 3.0em" > ' + param.data.datafim + '</span>';
-    return html;
-  }
-
-  getTimeFromMins(mins) {
-    const minutes = mins % 60;
-    const hours = (mins - minutes) / 60;
-
-    return hours + ':' + minutes;
-  }
-
-  formatdata(data): string {
-    const temp_d = data.split(':');
-    return +temp_d[0] + 'h ' + temp_d[1] + 'm';
-
-  }
-
-  formatarLinha(params) {
-    const minutos = this.hourToMinute(params.data.data);
-    // Normal
-    if (minutos > this.limites.warning.limite) {
-      return this.limites.normal.classe;
-    }
-    // Warning
-    if (((minutos >= this.limites.danger.limite) && (minutos <= this.limites.warning.limite))) {
-      return this.limites.warning.classe;
-    }
-    // Danger
-    if (((minutos >= this.limites.crazy.limite) && (minutos <= this.limites.danger.limite))) {
-      return this.limites.danger.classe;
-    }
-    if ((minutos <= this.limites.crazy.limite)) {
-      return this.limites.crazy.classe;
-    }
-  }
-
-  hourToMinute(hh: string): number {
-    const arrayHora = hh.split(':');
-    return (Number(arrayHora[0]) * 60) + Number(arrayHora[1]);
-  }
-
   showModalFiltro() {
-    // this.dataSrv.list();
+    this.remoteControl.DashBoardAtivo();
     this.dialogService.open(this.Modal_Filtro);
   }
 
   filtrarLista(esteira, refs) {
+    console.log('fatiou, passou', esteira);
     this.gridApi.setRowData(this.dataSrv.filtroEsteira(esteira));
     refs.close();
   }
