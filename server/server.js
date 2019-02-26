@@ -12,6 +12,7 @@ var url_servico = config.config.URLS.dev;
 util.inicializarConfiguracao()
 util.inicializarPool();
 
+
 const restify = require('restify'),
   work = require('./Controller/workitem.controller'),
   port = process.env.PORT || 9700;
@@ -48,9 +49,8 @@ server.pre(cors.preflight);
 server.use(cors.actual);
 
 var interval = setInterval(function (str1, str2) {
-  console.log("atualizando Realtime DB");
   work.updateRealTime();
-}, 55000, "BRQ", "SLA");
+}, 5000, "BRQ", "SLA");
 
 
 server.get(config.config.ENDPOINTS.getWorkItem, work.getItens);

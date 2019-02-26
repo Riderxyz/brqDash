@@ -2,14 +2,16 @@ import { DataFirebaseModel } from './../models/data.model';
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { map, filter, uniq, orderBy } from 'lodash';
+import { environment } from 'src/environments/environment';
+import { Subject } from 'rxjs';
 
 @Injectable()
 export class GetDataSrv {
 
-
-
   private _DataJson: DataFirebaseModel[] = [];
-  public DataJSalva: DataFirebaseModel[] = [];
+  private _DataJSalva: DataFirebaseModel[] = [];
+  private _localRequisitado = environment.NomeDashBoard;
+  public ControleRemoto$ = new Subject<any>();
   constructor(public db: AngularFireDatabase) { }
 
   get ListarItems() {
@@ -36,7 +38,6 @@ export class GetDataSrv {
     });
   }
 
-
   public set DataJson(value: DataFirebaseModel[]) {
 
     this._DataJson = value;
@@ -45,6 +46,16 @@ export class GetDataSrv {
   public get DataJson(): DataFirebaseModel[] {
 
     return this._DataJson;
+  }
+
+  public set DataJSalva(value: DataFirebaseModel[]) {
+
+    this._DataJSalva = value;
+  }
+
+  public get DataJSalva(): DataFirebaseModel[] {
+
+    return this._DataJSalva;
   }
 
 }

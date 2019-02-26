@@ -21,7 +21,8 @@ import {
     NbInputModule,
     NbToastrModule,
     NbWindowModule,
-    NbDialogModule
+    NbDialogModule,
+    NbListModule
 } from '@nebular/theme';
 
 
@@ -47,7 +48,8 @@ import {
         NbInputModule,
         NbToastrModule,
         NbWindowModule,
-        NbDialogModule
+        NbDialogModule,
+        NbListModule
     ],
     declarations: [],
     exports: [
@@ -70,7 +72,8 @@ import {
         NbInputModule,
         NbToastrModule,
         NbWindowModule,
-        NbDialogModule
+        NbDialogModule,
+        NbListModule
     ]
 })
 export class NebularModule { }

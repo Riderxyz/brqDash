@@ -7,6 +7,7 @@ import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
 import { Subject } from 'rxjs/Subject';
 import { tap } from 'rxjs/operators';
 import { interval } from 'rxjs';
+import { LoadingController } from 'ionic-angular';
 
 @Component({
   selector: 'page-home',
@@ -21,8 +22,7 @@ export class HomePage {
   danger = true;
   warning = false;
   limites: any = {};
-  source = interval(60000);
-
+  source = interval(60000)
   constructor(
     public navCtrl: NavController,
     public platform: Platform,
@@ -30,30 +30,26 @@ export class HomePage {
     public alertCtrl: AlertController,
     public af: AngularFireDatabase,
     public toast: ToastController,
+    public loading: LoadingController,
     public firebaseSrv: Firebase) {
-
     this.limites.warning = 600;
     this.limites.danger = 360;
     this.limites.crazy = 120;
-
     this.fcm.showBadgesNumber.asObservable()
       .subscribe((numero) => {
         this.logBadges();
       })
+      this.fcm.SaveTokenToFirebase.asObservable()
+      .subscribe(() => {
+        console.log(`Disparando Save do Token`);
 
-
+        this.fcm.saveDevideId();
+      })
 
     this.af.list('brq-sla/ONS').valueChanges().subscribe((itemSnap) => {
       this.data = [];
       itemSnap.forEach((element: any) => {
         element.id = element.tfs.split('-')[1];
-        /*   if (element.status === 'Em estimativa') {
-            element.status = 'Estimativa';
-          } else {
-            if (element.status === 'Em desenvolvimento') {
-              element.status = 'Desenv';
-            }
-          } */
         const arrayHora = element.data.split(':');
         element.dataHora = arrayHora[0].substring(1, 3) + 'hs'
         element.dataMinuto = arrayHora[1] + 'mins'
@@ -62,38 +58,15 @@ export class HomePage {
 
     });
   }
+  ionViewDidEnter() {
+
+  }
   showDescricao(desc) {
     console.log(desc)
     this.alertCtrl.create({
       title: desc
     }).present()
   }
-
-  ionViewDidEnter() {
-    // this.getWorkItens('automatico')
-    //   .then(d => {
-    //     console.log('CHAMANDO PELO GET AUTOMATICO', d);
-    //     d.forEach(element => {
-    //       this.datateste.push(element)
-    //     });
-    //     console.log(this.datateste)
-    //     this.datateste = [
-    //       { area: "MapaInformacao", criticidade: "3 - Medium", data: "004:47", dataHora: "04hs", dataMinuto: "47mins", esteira: "MAPAINFORMACAO", id: "6230", sistema: "MAPAINFORMACAO", status: "Em desenvolvimento", tfs: "TFS-6230", tiposla: "EVOLUTIVA", titulo: "Evolutivas do Mapa - BreadCrumb Icone- versão2" }
-    //       , { area: "MapaInformacao", criticidade: "3 - Medium", data: "004:47", dataHora: "04hs", dataMinuto: "47mins", esteira: "MAPAINFORMACAO", id: "6230", sistema: "MAPAINFORMACAO", status: "Em desenvolvimento", tfs: "TFS-6230", tiposla: "EVOLUTIVA", titulo: "Evolutivas do Mapa - BreadCrumb Icone- versão2" }];
-
-    //   })
-
-    // const subscribe = this.source
-    //   .subscribe(val => {
-    //     this.getWorkItens('automatico')
-    //       .then(d => {
-    //         this.data = d;
-
-    //       })
-    //   });
-  }
-
-
 
   startPush() {
     if (this.fcm.checkPlatform) {
@@ -124,7 +97,6 @@ export class HomePage {
     this.fcm.cleanBadge().then((res) => {
       console.log('Resultado da linha 47', res);
       this.logBadges()
-
     })
   }
 
@@ -146,55 +118,12 @@ export class HomePage {
     }
     return retorno;
   }
-
-  private async getWorkItens(callType, event?) {
-    this.data = [];
-    const d = [];
-    const ref = this.af.database.ref('brq-sla/ONS');
-    ref.on('value', itemSnapshot => {
-      itemSnapshot.forEach(itemSnap => {
-        const element = itemSnap.val();
-        element.id = element.tfs.split('-')[1];
-        const arrayHora = element.data.split(':');
-        element.dataHora = arrayHora[0].substring(1, 3) + 'hs'
-        element.dataMinuto = arrayHora[1] + 'mins'
-        d.push(element);
-        this.datateste.push(element)
-        return false;
-      });
-    });
-    if (callType === 'refresh') {
-      this.toast.create({
-        message: 'Demandas atualizadas automaticamente',
-        duration: 1000,
-        position: 'top'
-      }).present();
-      event.complete()
-    } else {
-      this.finalizado.next(callType)
-    }
-    return d;
-  }
-
   hourToMinute(hh: string): number {
     const arrayHora = hh.split(':');
     return (Number(arrayHora[0]) * 60) + Number(arrayHora[1]);
   }
 
-  doRefresh(event) {
-    this.getWorkItens('refresh', event);
-    this.finalizado.asObservable().subscribe((fim) => {
-      this.toast.create({
-        message: 'Demandas atualizadas',
-        duration: 3000,
-        position: 'top'
-      }).present();
-      console.log(event);
-      event.complete()
-    })
-
+  show() {
+    this.fcm.saveDevideId()
   }
 }
-
-
-
