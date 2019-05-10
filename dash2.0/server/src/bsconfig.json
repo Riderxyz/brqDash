@@ -1,0 +1,29 @@
+{
+    "name": "BRQ-DashBoard",
+    "version": "0.1.0",
+    "sources": [
+        {
+            "dir": "src"
+        },
+        {
+            "dir": "site",
+            "type": "dev"
+        },
+        {
+            "dir": "__tests__",
+            "type": "dev"
+        }
+    ],
+    "bs-dependencies": [
+        "@astrocoders/holidays-br"
+    ],
+    "bs-dev-dependencies": [
+        "bs-jest"
+    ],
+    "namespace": false,
+    "package-specs": [
+        "commonjs",
+        "es6"
+    ],
+    "refmt": 3
+}
