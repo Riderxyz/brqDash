@@ -8,7 +8,7 @@ export class DatasController {
 
     @Get(':data')
     async ehFeriado(@Param('data') data: string) {
-        return await this.dataSrv.ehFeriado(data);//  .TratarFeriado(data);
+        return await this.dataSrv.ehFeriado(data);
     }
 
     @Get('tratarFeriado/:data')
@@ -28,5 +28,10 @@ export class DatasController {
         //   return this.dataSrv.dataAtual;
     }
 
+    @Get('sla/:hora')
+    async  tratarSla(@Param('hora') hora: string) {
+        return await this.dataSrv.calcularSla(hora);
+        //   return this.dataSrv.dataAtual;
+    }
 
 }
