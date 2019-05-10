@@ -3,20 +3,15 @@ import { TfsService } from '../service/tfs/tfs.service';
 
 @Controller('tfs')
 export class TFSController {
-    constructor(public tfsSrv: TfsService) {
+  constructor(public tfsSrv: TfsService) {}
 
-    }
+  @Get()
+  findAll() {
+    return this.tfsSrv.recuperarListaWorkItens().subscribe((data: any) => {
+      // x = JSON.stringify(data);
+      console.log(data);
 
-    @Get()
-    findAll() {
-        let x;
-        return this.tfsSrv.recuperarListaWorkItens()
-            .subscribe((data: string) => {
-                // console.log(data)
-                //
-                return data; // x = JSON.stringify(data)
-            })
-
-    }
-
+      return 'data'; // x = JSON.stringify(data)
+    });
+  }
 }

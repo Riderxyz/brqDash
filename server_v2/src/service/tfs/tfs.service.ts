@@ -21,14 +21,10 @@ export class TfsService {
     }
 
     recuperarListaWorkItens() {
-        console.log(11111);
-
-        return this.http.post(this.url, this.body, { headers: this.headers })
-            .pipe(
-                map(response => response.data)
-            )
-
-
+        return this.http.post(this.url, this.body, { headers: this.headers });
+            // .pipe(
+            //     map(response => response.data)
+            // );
     }
 
 }

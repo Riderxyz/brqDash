@@ -19,6 +19,18 @@ export class TFSController {
             });
     }
 
+    @Get('rev/')
+    findrev(@Res() res) {
+        return this.tfsSrv.recuperarListaRevisions()
+            .subscribe(async (data: any) => {
+                console.log(data)
+                await this.getDadosWorkItems(data.workItems);
+                console.log('WORKITEMS', this.workitens.length);
+
+                res.status(200).send(this.workitens);
+            });
+    }
+
     async getDadosWorkItems(dados) {
         // tslint:disable-next-line:prefer-for-of
         for (let i = 0; i < dados.length; i++) {

@@ -16,6 +16,7 @@ export class TfsService {
 
     // tslint:disable-next-line:max-line-length
     body = { "query": "Select *  From WorkItems where [ONS.fornecedor] ='BRQ'  AND [ONS.DataEntrega] >=  '" + this.dt.toISOString().substring(0, 10) + "'" };
+    bodyRevision = { "query": "http://172.20.249.88:8080/tfs/ONS/d62f0bbc-23db-4531-8d34-af83d53316fc/_apis/wit/workItems/7235/revisions" };
     json = true;
 
     constructor(private http: HttpService) {
@@ -30,10 +31,25 @@ export class TfsService {
                 map(response => {
                     //    console.log(response.data);
                     return response.data;
-                }
-                ))
+                },
+                ));
 
     }
+
+
+    recuperarListaRevisions() {
+        console.log(12222);
+
+        return this.http.post(this.url, this.bodyRevision, { headers: this.headers })
+            .pipe(
+                map(response => {
+                    console.log(response.data);
+                    return response.data;
+                },
+                ));
+
+    }
+
     recuperarWorkItem(url) {
         //    console.log('chamando ==> ', url);
         try {
