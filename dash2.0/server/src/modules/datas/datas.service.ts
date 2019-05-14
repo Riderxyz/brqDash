@@ -65,8 +65,8 @@ export class DatasService {
     }
 
     public proximoLimiteHorario(data: string): string {
-        // console.log('data time ', mom(data).toDate());
-        const hora: number = parseInt(mom(data).format('HH'));
+        const hora: number = parseInt(data.substr(11, 2));
+        const zone = mom.tz.zone('America/Fortaleza');
         let proxima = '';
         switch (true) {
             case (hora < 9):
@@ -82,48 +82,12 @@ export class DatasService {
                 proxima = config.Jornada.JORNADA_FIM;
                 break;
             case (hora >= 18):
-                data = mom(data).add(1, 'days').toISOString();
+                data = this.addDays(this.now(data), 1).toISOString();
                 proxima = config.Jornada.JORNADA_INICIO;
                 break;
             default:
                 break;
         }
-        //        console.log(differenceTravel, minutos);
-
-        // console.log(dtPartida, dtChegada);
-
-        // console.log('Difference is ', dtChegada.diff(dtPartida), 'minutes');
-
-        // let x = data.substring(0, 10) + 'T' + proxima;
-        // var start = mom(mom().toDate(), "HH:mm");
-        // var end = mom(x, "HH:mm");
-        // var minutes = end.diff(start, 'minutes');
-        // var interval = mom().hour(0).minute(minutes);
-
-        // var date1 = new Date(dtPartida.slice(0, 4), dtPartida.slice(4, 6), dtPartida.slice(6, 8), dtPartida.slice(9, 11), dtPartida.slice(12, 14)),
-        //     date2 = new Date(dtChegada.slice(0, 4), dtChegada.slice(4, 6), dtChegada.slice(6, 8), dtChegada.slice(9, 11), dtChegada.slice(12, 14));
-
-        // var diffMs = (date2 - date1);
-        // var diffHrs = Math.floor((diffMs % 86400000) / 3600000);
-        // var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000);
-        // var diff = diffHrs + 'h ' + diffMins + 'm';
-        //  console.log('minutos', (dtChegada - dtPartida));
-
-        // let x = data.substring(0, 10) + 'T' + proxima;
-        // var start = mom(mom().toDate(), "HH:mm").toDate();
-        // var end = mom(x, "HH:mm").toDate();
-        // var minutes = end.diff(start, 'minutes');
-        // var interval = mom().hour(0).minute(minutes);
-        // console.log('data ', x);
-        // console.log('end', end);
-        // console.log('start', start);
-        // console.log('minutos', minutes);
-
-        // console.log(interval);
-
-        //      interval.subtract(lunchTime, 'minutes');
-        // console.log('data ', data.substring(0, 10) + ' ' + proxima);
-
         return data.substring(0, 10) + ' ' + proxima;
     }
 
@@ -136,31 +100,32 @@ export class DatasService {
         return interval.format('HH:mm');
     }
 
-    public async calcularSla(horas: string) {
-        // let saldo = horas;
-        const consumido = 0;
-        // const datalimite = this.proximoLimiteHorario(data);
-        let saldo = this.horasParaMinutos(horas);
-        //  console.log('new date', mom.tz(new Date()));
+    addDays(date: Date, days: number) {
+        var result = this.now(date.toISOString());
+        result.setDate(result.getDate() + days);
+        return result;
+    }
 
+    public async calcularSla(horas: string) {
+        const consumido = 0;
+        let saldo = this.horasParaMinutos(horas);
+        console.log('Saldo em minutos inicial ', saldo);
 
         let dtPartida = this.now();
         let rastreio = [];
-        let dtChegada = mom(this.proximoLimiteHorario(dtPartida.toISOString())).toDate();
-        // console.log('partida inicio', dtPartida);
-        // console.log('partida chegada', dtChegada, saldo);
+        let dtChegada = this.now(mom(this.proximoLimiteHorario(dtPartida.toISOString())));
+        let differenceTravel = dtPartida.getTime() - dtChegada.getTime();
+        let minutos = Math.floor((differenceTravel) / (1000) / 60);
+        saldo -= Math.abs(minutos);
         rastreio.push({ partida: dtPartida, saldo1: saldo, chegada: dtChegada });
         while ((saldo > 0)) {
+            dtPartida = this.now(this.proximoLimiteHorario(dtChegada.toISOString()));
+            dtChegada = this.now(this.proximoLimiteHorario(dtPartida.toISOString()));
             const differenceTravel = dtPartida.getTime() - dtChegada.getTime();
             const minutos = Math.floor((differenceTravel) / (1000) / 60);
             saldo -= Math.abs(minutos);
-            dtPartida = mom(this.proximoLimiteHorario(dtChegada.toISOString())).toDate();
-            dtChegada = mom(this.proximoLimiteHorario(dtPartida.toISOString())).toDate();
             rastreio.push({ partida: dtPartida, saldo1: saldo, chegada: dtChegada });
-            // console.log('partida dentro inicio', dtPartida, saldo);
-            // console.log('partida dentro chegada', dtChegada, saldo);
         }
-        console.log(rastreio);
         return rastreio;
     }
 
@@ -170,65 +135,17 @@ export class DatasService {
         }
         return (mom(hora, 'HH:mm:ss').hour() * 60 + mom(hora, 'HH:mm:ss').minute());
     }
-    // emHorarioTrabalho(d ata: string): boolean {
-    //     let ret = false;
-    //     if ((!this.ehFeriado) && (!this.isWeekDay(data))) {
-    //         const horaIniBase = mom()
 
-    //         const jornadaInicio = mom(config.Jornada.JORNADA_INICIO);
-    //         const jornadaFim = mom(config.Jornada.JORNADA_FIM);
-    //         const jornadaAlmocoInicio = mom(config.Jornada.JORNADA_INICIO_ALMOCO);
-    //         const jornadaAlmocoFim = mom(config.Jornada.JORNADA_FIM_ALMOCO);
-    //         const curTime = mom(data, 'hh:mm:ss');
-    //         ret = (
-    //             (curTime >= jornadaInicio) &&
-    //             (curTime <= jornadaFim) &&
-    //             (curTime <= jornadaAlmocoInicio) &&
-    //             (curTime >= jornadaAlmocoFim)
-    //         )
-    //     } else {
-    //         ret = false;
-    //     }
-    //     return ret;
-    // }
 
-    // proximoHorarioTrab(data: string, hh: string): Date {
-    //     return new Date();
-    //     /*
-    //     se soma inAlmoco ou foraHorario
-    //             r = calcular(restante)
-
-    //     se em halmoço
-    //             montar data fim almoço
-    //     se fora horario
-    //             montar data inicioAlmoço
-    //     se soma inAlmoco ou foraHorario
-    //             r = calcular(restante)
-
-    //     */
-
-    // }
-
-    // private proximoDiaUtil(data: string) {
-    //     this.dataAtual = mom(data).toDate();
-    //     while (this.ehFeriado(this.dataAtual.toISOString())) {
-    //         mom(this.dataAtual).add(1, 'd')
-    //     }
-    //     if (mom(this.dataAtual).day() === 6) {
-    //         mom(this.dataAtual).add(2, 'd')
-    //     } else if (mom(this.dataAtual).day() === 0) {
-    //         mom(this.dataAtual).add(1, 'd');
-    //     }
-    //     while (this.ehFeriado(this.dataAtual.toISOString())) {
-    //         mom(this.dataAtual).add(1, 'd')
-    //     }
-    //     return this.dataAtual;
-
-    // }
-
-    now() {
+    now(hh?: string): Date {
         const zone = mom.tz.zone('America/Fortaleza');
         const z1 = zone.parse(Date.UTC(2012, 2, 11, 1, 59));
-        return mom().subtract(z1, 'minutes').toDate();
+        let ret;
+        if (hh === undefined) {
+            ret = mom().subtract(z1, 'minutes').toDate();
+        } else {
+            ret = mom(hh).subtract(z1, 'minutes').toDate();
+        }
+        return ret
     }
 }
