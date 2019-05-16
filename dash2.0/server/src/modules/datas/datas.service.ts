@@ -109,23 +109,50 @@ export class DatasService {
     public async calcularSla(horas: string) {
         const consumido = 0;
         let saldo = this.horasParaMinutos(horas);
-        console.log('Saldo em minutos inicial ', saldo);
-
         let dtPartida = this.now();
+        console.log('dt partida inicial ', dtPartida);
+        if (!this.horarioComercial(this.now().toISOString())) {
+            dtPartida = this.now(this.proximoLimiteHorario(dtPartida.toISOString()));
+        }
+
+        console.log('dt partida inicial ', dtPartida);
+
+        console.log('dt partida tratada', this.proximoLimiteHorario(dtPartida.toISOString()))
+        console.log('hoario comercial, ', dtPartida, this.horarioComercial(dtPartida.toISOString()));
+
+
         let rastreio = [];
         let dtChegada = this.now(mom(this.proximoLimiteHorario(dtPartida.toISOString())));
-        let differenceTravel = dtPartida.getTime() - dtChegada.getTime();
-        let minutos = Math.floor((differenceTravel) / (1000) / 60);
+        let difMinutos = dtPartida.getTime() - dtChegada.getTime();
+        console.log(dtPartida, dtChegada);
+
+        let minutos = Math.floor((difMinutos) / (1000) / 60);
+        console.log('minutos ', minutos);
+
         saldo -= Math.abs(minutos);
         rastreio.push({ partida: dtPartida, saldo1: saldo, chegada: dtChegada });
         while ((saldo > 0)) {
             dtPartida = this.now(this.proximoLimiteHorario(dtChegada.toISOString()));
             dtChegada = this.now(this.proximoLimiteHorario(dtPartida.toISOString()));
-            const differenceTravel = dtPartida.getTime() - dtChegada.getTime();
-            const minutos = Math.floor((differenceTravel) / (1000) / 60);
+            const difMinutos = dtPartida.getTime() - dtChegada.getTime();
+            const minutos = Math.floor((difMinutos) / (1000) / 60);
             saldo -= Math.abs(minutos);
+            if (saldo < 0) {
+                console.log('dt chegada ', dtChegada);
+                console.log(mom(dtChegada).subtract(Math.abs(saldo), 'minutes').toDate());
+                dtChegada = mom(dtChegada).subtract(Math.abs(saldo), 'minutes').toDate();
+                console.log('chegada tratada ', dtChegada);
+
+            }
             rastreio.push({ partida: dtPartida, saldo1: saldo, chegada: dtChegada });
         }
+        console.log('ukltima data ', rastreio[rastreio.length - 1].chegada);
+        let d = rastreio[rastreio.length - 1].chegada;
+        let d1 = d;
+        console.log('ultima data ', d.setMinutes(d.getMinutes() - Math.abs(saldo)));
+        d1.setMinutes(d1.getMinutes() - Math.abs(saldo));
+        console.log('d1 ', d1);
+
         return rastreio;
     }
 
@@ -133,7 +160,12 @@ export class DatasService {
         if (hora === undefined) {
             return 0;
         }
-        return (mom(hora, 'HH:mm:ss').hour() * 60 + mom(hora, 'HH:mm:ss').minute());
+        const posicao = hora.indexOf(':');
+        const hh = parseInt(hora.substring(0, posicao));
+        const min = parseInt(hora.substring(posicao + 1));
+        console.log(hh, min, (hh * 60) + min);
+
+        return ((hh * 60) + min);
     }
 
 
@@ -147,5 +179,14 @@ export class DatasService {
             ret = mom(hh).subtract(z1, 'minutes').toDate();
         }
         return ret
+    }
+
+    horarioComercial(data: string): boolean {
+        const hora = this.hora(data);
+        return !((hora < 9) || (hora >= 18) || (hora == 12))
+    }
+
+    hora(data: string): number {
+        return parseInt(data.substr(data.indexOf('T') + 1, 3));
     }
 }
