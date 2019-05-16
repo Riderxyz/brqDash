@@ -140,7 +140,7 @@ export class DatasService {
             if (saldo < 0) {
                 console.log('dt chegada ', dtChegada);
                 console.log(mom(dtChegada).subtract(Math.abs(saldo), 'minutes').toDate());
-                dtChegada = mom(dtChegada).subtract(Math.abs(saldo), 'minutes').toDate();
+                dtChegada = this.now(mom(dtChegada).subtract(Math.abs(saldo), 'minutes').toDate());
                 console.log('chegada tratada ', dtChegada);
 
             }
