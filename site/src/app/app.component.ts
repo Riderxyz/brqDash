@@ -4,7 +4,7 @@ import 'moment/locale/pt-br';
 import { GridOptions } from 'ag-grid-community';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { NbDialogService } from '@nebular/theme';
-import { DataFirebaseModel } from './../models/data.model';
+import { DataFirebaseModel } from '../models/data.model';
 import { GetDataSrv } from 'src/service/getData.service';
 import { SelectItem } from 'primeng/api';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
@@ -46,7 +46,6 @@ export class AppComponent implements OnInit {
         this.dataSrv.DataJSalva.push(element);
         this.gridApi.setRowData(this.DataList);
       });
-      console.log(this.DataList);
       this.esteiras = this.dataSrv.listaEsteiras();
     });
     this.dataSrv.ControleRemoto$.subscribe((items) => {
@@ -56,7 +55,7 @@ export class AppComponent implements OnInit {
       this.gridOptions.api.sizeColumnsToFit();
     });
     this.breakpointObserver
-      .observe(['(min-width: 700px)'])
+      .observe(['(min-width: 830px)'])
       .subscribe((state: BreakpointState) => {
         if (state.matches) {
           console.log('Viewport is 500px or over!', state);

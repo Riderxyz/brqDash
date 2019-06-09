@@ -1,4 +1,4 @@
-import { DataFirebaseModel } from './../models/data.model';
+import { DataFirebaseModel } from '../models/data.model';
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { map, filter, uniq, orderBy } from 'lodash';

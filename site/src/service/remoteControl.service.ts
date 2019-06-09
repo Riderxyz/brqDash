@@ -15,7 +15,7 @@ export class RemoteControlService {
     ) {
       this.db.object('/dashBoardAtivo/' + this._localRequisitado).valueChanges()
       .subscribe((res: any) => {
-        console.log(`Dafuck?`, res);
+        console.log(`Controle`, res);
         const esteirasFiltradas = [];
         res.esteirasParaExibicao.forEach(element => {
           esteirasFiltradas.push(element.value);
