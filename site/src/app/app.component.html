@@ -13,8 +13,16 @@
         <nb-card-body style="overflow:visible">
           <div class="p-grid">
             <div class="p-col-12">
-              <p-multiSelect defaultLabel="Selecione" [options]="esteiras" [(ngModel)]="esteirasSelecionadas" autoWidth="false"
-                [style]="{'width':'100%'}" filterPlaceHolder="Procure por nome"></p-multiSelect>
+
+
+<!--               <p-multiSelect defaultLabel="Selecione" [options]="esteiras" [(ngModel)]="esteirasSelecionadas"
+                autoWidth="false" [style]="{'width':'100%'}" filterPlaceHolder="Procure por nome"></p-multiSelect>
+ -->
+
+              <nb-select multiple placeholder="Selecione" [(ngModel)]="esteirasSelecionadas">
+                <nb-option [value]="item.value" *ngFor="let item of esteiras">{{item.label}}</nb-option>
+              </nb-select>
+
             </div>
           </div>
         </nb-card-body>
@@ -28,13 +36,18 @@
 
   <nb-layout-column style="padding:.5rem;" [hidden]="!ShowWhenSizable">
     <div class="card" *ngFor="let demanda of DataList">
-      <nb-card [ngStyle]="formatSrv.formatarCardColor(demanda)">
+      <!-- [ngStyle]="formatSrv.formatarCardColor(demanda)"  -->
+      <nb-card class="{{formatSrv.formatarCardColor(demanda)}}">
         <nb-card-header>
           <h1>{{ demanda.area }} - {{demanda.tfs}}</h1>
         </nb-card-header>
         <nb-card-body>
           <h5>
             Descrição: {{demanda.titulo}}
+          </h5>
+          <br>
+          <h5>
+            Status: {{demanda.status}}
           </h5>
           <br>
           <div class="timeLeft">

@@ -7,27 +7,40 @@
 .sick-days-warning {
     background-color: sandybrown !important;
 }
+.normal {
+    // background-color: #3d3780 !important;
+    font-weight: normal;
+    color: black !important;
+}
 
 .warning {
-    background-color: yellow !important;
+    background-color: orange !important;
     font-weight: normal;
     color: #300c74;
 }
 
 .danger {
     background-color: red !important;
-    color: white;
-}
-
-.normal {
-    background-color: #3d3780 !important;
-    color: black !important;
+    font-weight: normal;
+    color: #fff;
 }
 
 .crazy {
     background-color: black !important;
     font-weight: bolder;
     color: white;
+    .timeLeft{
+      .timeReal{
+        .timeData {
+          border-bottom: solid 0.1rem white;
+        }
+        .timeDataFim {
+          border-top: solid 0.1rem white;
+        }
+
+      }
+
+    }
 }
 
 ::ng-deep nb-dialog-container {

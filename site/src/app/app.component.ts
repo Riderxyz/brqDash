@@ -59,6 +59,8 @@ export class AppComponent implements OnInit {
       .subscribe((state: BreakpointState) => {
         if (state.matches) {
           console.log('Viewport is 500px or over!', state);
+          console.log(this.DataList[0]);
+
           this.ShowWhenSizable = false;
           this.gridOptions.api.sizeColumnsToFit();
         } else {
@@ -124,6 +126,7 @@ export class AppComponent implements OnInit {
         if (((minutos >= this.formatSrv.limites.crazy.limite) && (minutos <= this.formatSrv.limites.danger.limite))) {
           return this.formatSrv.limites.danger.classe;
         }
+        // Crazy
         if ((minutos <= this.formatSrv.limites.crazy.limite)) {
           return this.formatSrv.limites.crazy.classe;
         }

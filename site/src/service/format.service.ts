@@ -35,6 +35,25 @@ export class FormatService {
       limite: 120
     }
   };
+
+  private _limitesCard = {
+    normal: {
+      classe: 'normal',
+      limite: null
+    },
+    warning: {
+      classe: 'warning',
+      limite: 600
+    },
+    danger: {
+      classe: 'danger',
+      limite: 360
+    },
+    crazy: {
+      classe: 'crazy',
+      limite: 120
+    }
+  }
   constructor() { }
   /**
    *  MontarColunaStatus
@@ -47,6 +66,9 @@ export class FormatService {
   }
   public get limites() {
     return this._limites;
+  }
+  public get limitesCard() {
+    return this._limitesCard;
   }
   /**
    * MontarColunaEsteira
@@ -76,7 +98,7 @@ export class FormatService {
   * Formata a cor de fundo do card quando esta em uma tela
   * menor que 700px
   */
-  public formatarCardColor(params: DataFirebaseModel): object {
+  public formatarGridColor(params: DataFirebaseModel): object {
     const minutos = this.hourToMinute(params.data);
     // Normal
     if (minutos > this.limites.warning.limite) {
@@ -98,6 +120,27 @@ export class FormatService {
     }
   }
 
+  public formatarCardColor(params: DataFirebaseModel): string {
+    const minutos = this.hourToMinute(params.data);
+    // Normal
+    if (minutos > this.limitesCard.warning.limite) {
+      return this.limitesCard.normal.classe;
+
+    }
+    // Warning
+    if (((minutos >= this.limitesCard.danger.limite) && (minutos <= this.limitesCard.warning.limite))) {
+      return this.limitesCard.warning.classe;
+
+    }
+    // Danger
+    if (((minutos >= this.limitesCard.crazy.limite) && (minutos <= this.limitesCard.danger.limite))) {
+      return this.limitesCard.danger.classe;
+
+    }
+    if ((minutos <= this.limitesCard.crazy.limite)) {
+      return this.limitesCard.crazy.classe;
+    }
+  }
   public hourToMinute(hh: string): number {
     const arrayHora = hh.split(':');
     return (Number(arrayHora[0]) * 60) + Number(arrayHora[1]);
