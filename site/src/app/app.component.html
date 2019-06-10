@@ -13,12 +13,6 @@
         <nb-card-body style="overflow:visible">
           <div class="p-grid">
             <div class="p-col-12">
-
-
-<!--               <p-multiSelect defaultLabel="Selecione" [options]="esteiras" [(ngModel)]="esteirasSelecionadas"
-                autoWidth="false" [style]="{'width':'100%'}" filterPlaceHolder="Procure por nome"></p-multiSelect>
- -->
-
               <nb-select multiple placeholder="Selecione" [(ngModel)]="esteirasSelecionadas">
                 <nb-option [value]="item.value" *ngFor="let item of esteiras">{{item.label}}</nb-option>
               </nb-select>

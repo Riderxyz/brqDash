@@ -71,7 +71,7 @@ export class AppComponent implements OnInit {
         }
       });
     this.remoteControl.controleRemoto.subscribe((esteiras) => {
-    console.log('Controle remoto ativado');
+      console.log('Controle remoto ativado');
       this.gridApi.setRowData(this.dataSrv.filtroEsteira(esteiras));
     });
   }
@@ -115,11 +115,7 @@ export class AppComponent implements OnInit {
         // Warning
         if (((minutos >= this.formatSrv.limites.danger.limite) && (minutos <= this.formatSrv.limites.warning.limite))) {
           if (!this.ShowWhenSizable) {
-            return {
-              'background-color': 'yellow',
-              'color': '#300c74',
-              'font-weight': 'normal'
-            };
+            return this.formatSrv.limites.warning.classe;
           }
         }
         // Danger

@@ -1,95 +1,113 @@
-
 .centralizar {
-    align-items: center;
-    justify-items: center;
+  align-items: center;
+  justify-items: center;
 }
 
 .sick-days-warning {
-    background-color: sandybrown !important;
+  background-color: sandybrown !important;
 }
 .normal {
-    // background-color: #3d3780 !important;
-    font-weight: normal;
-    color: black !important;
+  // background-color: #3d3780 !important;
+
+  background-image: linear-gradient(to right, #ad59ff, #7659ff);
+  box-shadow: 0 3px 0 0 #7e4ddb, 0 2px 8px 0 #9259ff,
+    0 4px 10px 0 rgba(33, 7, 77, 0.5);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  border: none;
+  line-height: calc((1rem * 1.25) + 4px);
+  font-weight: normal;
+  color: black !important;
 }
 
 .warning {
-    background-color: orange !important;
-    font-weight: normal;
-    color: #300c74;
+  /*     background-color: orange !important;
+  color: #300c74;
+  */
+
+  background-image: linear-gradient(to right, #fc0, #ffa100) !important;
+  box-shadow: 0 3px 0 0 #db9d00, 0 2px 8px 0 #ffb600,
+    0 4px 10px 0 rgba(33, 7, 77, 0.5);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  border: none;
+  font-weight: normal;
+  line-height: calc((1rem * 1.25) + 4px);
 }
 
 .danger {
-    background-color: red !important;
-    font-weight: normal;
-    color: #fff;
+  /*  background-color: red !important; */
+  background-image: linear-gradient(to right, red, #ff386a);
+  box-shadow: 0 3px 0 0 #db3078, 0 2px 8px 0 #ff388b,
+    0 4px 10px 0 rgba(33, 7, 77, 0.5);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  border: none;
+  line-height: calc((1rem * 1.25) + 4px);
+  font-weight: normal;
+  color: #fff;
 }
 
 .crazy {
-    background-color: black !important;
-    font-weight: bolder;
-    color: white;
-    .timeLeft{
-      .timeReal{
-        .timeData {
-          border-bottom: solid 0.1rem white;
-        }
-        .timeDataFim {
-          border-top: solid 0.1rem white;
-        }
-
+  background-color: black !important;
+  font-weight: bolder;
+  color: white;
+  .timeLeft {
+    .timeReal {
+      .timeData {
+        border-bottom: solid 0.1rem white;
       }
-
+      .timeDataFim {
+        border-top: solid 0.1rem white;
+      }
     }
+  }
 }
 
 ::ng-deep nb-dialog-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .float {
-    background-color: #0c9;
-    position: fixed;
-    display: flex;
-    width: 60px;
-    height: 60px;
-    bottom: 40px;
-    right: 40px;
-    color: #fff;
-    justify-content: center;
-    z-index: 100;
-    font-size: 3em;
-    align-items: center;
-    border-radius: 50px;
-    cursor: pointer;
-    .nb-plus {
-        font-weight: bolder;
-    }
+  background-color: #0c9;
+  position: fixed;
+  display: flex;
+  width: 60px;
+  height: 60px;
+  bottom: 40px;
+  right: 40px;
+  color: #fff;
+  justify-content: center;
+  z-index: 100;
+  font-size: 3em;
+  align-items: center;
+  border-radius: 50px;
+  cursor: pointer;
+  .nb-plus {
+    font-weight: bolder;
+  }
 }
 
-.card{
+.card {
   background-color: unset;
   border: none;
 }
 .timeLeft {
-    display: flex;
-    align-items: center;
-    .timeString {
-        width: 100%;
+  display: flex;
+  align-items: center;
+  .timeString {
+    width: 100%;
+  }
+  .timeReal {
+    width: 100%;
+    .timeData {
+      width: 100%;
+      text-align: right;
+      border-bottom: solid 0.1rem black;
     }
-    .timeReal {
-        width: 100%;
-        .timeData {
-          width: 100%;
-          text-align: right;
-          border-bottom: solid 0.1rem black;
-        }
-        .timeDataFim {
-          width: 100%;
-          text-align: right;
-          border-top: solid 0.1rem black;
-        }
+    .timeDataFim {
+      width: 100%;
+      text-align: right;
+      border-top: solid 0.1rem black;
     }
+  }
 }
