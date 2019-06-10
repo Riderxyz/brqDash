@@ -13,7 +13,12 @@ export class FormatService {
     },
     warning: {
       classe: {
-        'background-color': 'orange',
+        /* 'background-color': 'yellow', */
+        'background-image': 'linear-gradient(to right, #ffa100,  yellow)',
+        'box-shadow': '0 3px 0 0 #db9d00, 0 2px 8px 0 #ffb600, 0 4px 10px 0 rgba(33, 7, 77, 0.5)',
+        'text-shadow': '0 1px 3px rgba(0, 0, 0, 0.3)',
+        'border': 'none',
+        'line-height': 'calc((1rem * 1.25) + 4px)',
         'color': '#300c74',
         'font-weight': 'normal'
       },
@@ -21,8 +26,19 @@ export class FormatService {
     },
     danger: {
       classe: {
-        'background-color': 'red ',
-        'color': '#fff'
+        'background-image': 'linear-gradient(to right, red, #ff386a)',
+        'box-shadow': '0 3px 0 0 #db3078, 0 2px 8px 0 #ff388b, 0 4px 10px 0 rgba(33, 7, 77, 0.5)',
+        'text-shadow': '0 1px 3px rgba(0, 0, 0, 0.3)',
+        'border': 'none',
+        'line-height': 'calc((1rem * 1.25) + 4px)',
+        'font-weight': 'normal',
+        'color': '#fff',
+
+
+        /*
+
+                'background-color': 'purple',
+                'color': '#fff' */
       },
       limite: 360
     },
