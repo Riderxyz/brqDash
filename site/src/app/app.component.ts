@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
   DataList: DataFirebaseModel[] = [];
   SplashScreen = {
     show: true,
-    animation: 'wobble slow delay-1s'
+    animation: 'jello slow delay-1s'
   }
   ShowWhenSizable: boolean;
   @ViewChild('ModalShowFiltro') Modal_Filtro: TemplateRef<any>;
@@ -42,7 +42,7 @@ export class AppComponent implements OnInit {
       this.dataSrv.DataJSalva = [];
       res.forEach((element, key) => {
         const temp_d = element.data.split(':');
-        const hh = +temp_d[0] + 'h:' + temp_d[1] + 'm';
+        const hh = +temp_d[0] + 'h' + temp_d[1] + 'm';
         element.dataFormatada = hh;
         this.DataList.push(element);
         this.dataSrv.DataJson.push(element);
@@ -57,7 +57,6 @@ export class AppComponent implements OnInit {
     timer(2000, 500).subscribe(() => {
       this.gridOptions.api.sizeColumnsToFit();
     });
-
     setTimeout(() => {
       this.splashScreenLoadOut();
     }, 3500);
