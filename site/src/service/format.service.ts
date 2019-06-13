@@ -6,14 +6,12 @@ export class FormatService {
   private _limites = {
     normal: {
       classe: {
-        // 'background-color': '#3d3780',
         'color': 'black!important'
       },
       limite: null
     },
     warning: {
       classe: {
-        /* 'background-color': 'yellow', */
         'background-image': 'linear-gradient(to right, #ffa100,  yellow)',
         'box-shadow': '0 3px 0 0 #db9d00, 0 2px 8px 0 #ffb600, 0 4px 10px 0 rgba(33, 7, 77, 0.5)',
         'text-shadow': '0 1px 3px rgba(0, 0, 0, 0.3)',
@@ -33,12 +31,6 @@ export class FormatService {
         'line-height': 'calc((1rem * 1.25) + 4px)',
         'font-weight': 'normal',
         'color': '#fff',
-
-
-        /*
-
-                'background-color': 'purple',
-                'color': '#fff' */
       },
       limite: 360
     },
@@ -69,17 +61,8 @@ export class FormatService {
       classe: 'crazy',
       limite: 120
     }
-  }
+  };
   constructor() { }
-  /**
-   *  MontarColunaStatus
-   *  Monta a coluna de Status da Grid
-   */
-  public MontarColunaStatus(param: any): string {
-    const dados: DataFirebaseModel = param.data;
-    const html = '<br><span style=" font-size: 3.8em;" >' + dados.status + '</span>';
-    return html;
-  }
   public get limites() {
     return this._limites;
   }
@@ -87,14 +70,23 @@ export class FormatService {
     return this._limitesCard;
   }
   /**
+   *  MontarColunaStatus
+   *  Monta a coluna de Status da Grid
+   */
+  public MontarColunaStatus(param: any): string {
+    const dados: DataFirebaseModel = param.data;
+    const html = '<br><span class="ColunaStatus">' + dados.status + '</span>';
+    return html;
+  }
+  /**
    * MontarColunaEsteira
    * Monta a coluna onde esta as esteiras e o numero da Demanda
    */
   public MontarColunaEsteira(param: any): string {
     const dados: DataFirebaseModel = param.data;
-    let html = '<br><span style="font-size: 4.3em;padding-top:10px;">' + dados.esteira + ' - ' + dados.tfs + '</span>';
+    let html = '<br><span class="ColunaEsteiraEsteira">' + dados.esteira + ' - ' + dados.tfs + '</span>';
     html += '<br>';
-    html += '<span style="font-size: 3.0em;">' + dados.titulo + '</span>';
+    html += '<span class="ColunaEsteiraTitulo">' + dados.titulo + '</span>';
     return html;
   }
   /**
@@ -103,9 +95,9 @@ export class FormatService {
    */
   public MontarColunaRestante(param: any): string {
     const dados: DataFirebaseModel = param.data;
-    let html = '<br><span style=" font-size: 4.4em;padding-top:10px;" >' + dados.dataFormatada + '</span>';
+    let html = '<br><span class="ColunaEsteiraDataFormatada">' + dados.dataFormatada + '</span>';
     html += '<br>';
-    html += '<span style="font-size: 3.0em" >' + dados.datafim + '</span>';
+    html += '<span class="ColunaEsteiraDataFim">' + dados.datafim + '</span>';
     return html;
   }
   /**
@@ -163,3 +155,13 @@ export class FormatService {
   }
 
 }
+
+
+
+/*      'background-image': 'linear-gradient(to right, #ad59ff, #7659ff)',
+        'box-shadow': '0 3px 0 0 #7e4ddb, 0 2px 8px 0 #9259ff, 0 4px 10px 0 rgba(33, 7, 77, 0.5)',
+        'text-shadow': '0 1px 3px rgba(0, 0, 0, 0.3)',
+        'border': 'none',
+        'line-height': 'calc((1rem * 1.25) + 4px)',
+        'font-weight': 'normal',
+        'color': '#fff' */

@@ -1,3 +1,24 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~ag-grid-community/dist/styles/ag-grid.css";
 @import "~ag-grid-community/dist/styles/ag-theme-balham.css";
+
+.ColunaStatus {
+  font-size: 2vw;
+}
+
+.ColunaEsteiraEsteira {
+  font-size: 2vw;
+  padding-top: 10px;
+}
+.ColunaEsteiraTitulo {
+  font-size: 2vw;
+}
+
+.ColunaEsteiraDataFormatada {
+  font-size: 2vw;
+  padding-top: 10px;
+}
+
+.ColunaEsteiraDataFim {
+  font-size: 2vw;
+}

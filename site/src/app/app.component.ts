@@ -111,25 +111,7 @@ export class AppComponent implements OnInit {
       headerHeight: 0,
       rowHeight: 100,
       getRowStyle: (params) => {
-        const minutos = this.formatSrv.hourToMinute(params.data.data);
-        // Normal
-        if (minutos > this.formatSrv.limites.warning.limite) {
-          return this.formatSrv.limites.normal.classe;
-        }
-        // Warning
-        if (((minutos >= this.formatSrv.limites.danger.limite) && (minutos <= this.formatSrv.limites.warning.limite))) {
-          if (!this.ShowWhenSizable) {
-            return this.formatSrv.limites.warning.classe;
-          }
-        }
-        // Danger
-        if (((minutos >= this.formatSrv.limites.crazy.limite) && (minutos <= this.formatSrv.limites.danger.limite))) {
-          return this.formatSrv.limites.danger.classe;
-        }
-        // Crazy
-        if ((minutos <= this.formatSrv.limites.crazy.limite)) {
-          return this.formatSrv.limites.crazy.classe;
-        }
+        return this.formatSrv.formatarGridColor(params.data);
       },
       onGridReady: (params) => {
         this.gridApi = params.api;
