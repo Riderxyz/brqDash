@@ -20,6 +20,7 @@
             Firebase
           </span>
         </h1>
+        <span>Versão 1.3.0</span>
       </div>
     </div>
 
@@ -49,8 +50,30 @@
     </ng-template>
   </nb-layout-column>
 
-  <nb-layout-column style="padding:.5rem;" [class.showNHide]="SplashScreen.show" [hidden]="!ShowWhenSizable">
-    <div class="card" *ngFor="let demanda of DataList">
+  <nb-layout-column style="padding:.5rem;" [hidden]="!ShowWhenSizable">
+
+    <div class="card animated slideInUp" style="text-align: center">
+      <nb-card class="{{formatSrv.formatarCardColor(demanda)}}" *ngFor="let demanda of DataList">
+        <nb-card-header>
+          <h1>{{ demanda.area }} - {{demanda.tfs}}</h1>
+        </nb-card-header>
+        <nb-card-body>
+          <h5> {{demanda.titulo}} </h5>
+          <h5 class="status"> {{demanda.status}} </h5>
+          <div class="newDesignTimeLeft">
+            <div class="newDesignTimeReal">TEMPO RESTANTE:
+              <h4>{{demanda.dataFormatada}} / {{demanda.datafim}}</h4>
+            </div>
+          </div>
+        </nb-card-body>
+      </nb-card>
+    </div>
+
+
+
+
+
+    <!--    <div class="card" *ngFor="let demanda of DataList">
       <nb-card class="{{formatSrv.formatarCardColor(demanda)}}">
         <nb-card-header>
           <h1>{{ demanda.area }} - {{demanda.tfs}}</h1>
@@ -64,6 +87,17 @@
             Status: {{demanda.status}}
           </h5>
           <br>
+          <div>
+            <div>
+              <h4>Tempo restante:</h4>
+              <h4>{{demanda.dataFormatada}}</h4>
+            </div>
+            <div>
+              <h4>Data de entrega:</h4>
+              <h4>{{demanda.datafim}}</h4>
+            </div>
+          </div>
+
           <div class="timeLeft">
             <div class="timeString">
               <h4>Tempo restante:</h4>
@@ -79,6 +113,78 @@
           </div>
         </nb-card-body>
       </nb-card>
-    </div>
+    </div> -->
   </nb-layout-column>
 </nb-layout>
+
+
+
+
+
+
+
+
+
+
+<!--    <div class="card" style="text-align: center">
+      <nb-card class="normal">
+        <nb-card-header>
+          <h1>TESTE - TFS 1234</h1>
+        </nb-card-header>
+        <nb-card-body>
+          <h5>TESTE</h5>
+          <h5 class="status"> DIMENSIONADO </h5>
+          <div class="newDesignTimeLeft">
+            <div class="newDesignTimeReal">TEMPO RESTANTE:
+              <h4>2h 36m / Qui 13-06</h4>
+            </div>
+          </div>
+        </nb-card-body>
+      </nb-card>
+      <nb-card class="warning">
+        <nb-card-header>
+          <h1>TESTE - TFS 1234</h1>
+        </nb-card-header>
+        <nb-card-body>
+          <h5>TESTE</h5>
+          <h5 class="status"> DIMENSIONADO </h5>
+          <div class="newDesignTimeLeft">
+            <div class="newDesignTimeReal">TEMPO RESTANTE:
+              <h4>2h 36m / Qui 13-06</h4>
+            </div>
+          </div>
+        </nb-card-body>
+      </nb-card>
+
+
+      <nb-card class="danger">
+        <nb-card-header>
+          <h1>TESTE - TFS 1234</h1>
+        </nb-card-header>
+        <nb-card-body>
+          <h5>TESTE</h5>
+          <h5 class="status"> DIMENSIONADO </h5>
+          <div class="newDesignTimeLeft">
+            <div class="newDesignTimeReal">TEMPO RESTANTE:
+              <h4>2h 36m / Qui 13-06</h4>
+            </div>
+          </div>
+        </nb-card-body>
+      </nb-card>
+
+
+      <nb-card class="crazy">
+        <nb-card-header>
+          <h1>TESTE - TFS 1234</h1>
+        </nb-card-header>
+        <nb-card-body>
+          <h5>TESTE</h5>
+          <h5 class="status"> DIMENSIONADO </h5>
+          <div class="newDesignTimeLeft">
+            <div class="newDesignTimeReal">TEMPO RESTANTE:
+              <h4>2h 36m / Qui 13-06</h4>
+            </div>
+          </div>
+        </nb-card-body>
+      </nb-card>
+    </div> -->

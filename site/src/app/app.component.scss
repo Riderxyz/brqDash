@@ -48,6 +48,11 @@
   line-height: calc((1rem * 1.25) + 4px);
   font-weight: normal;
   color: black !important;
+  .status {
+    font-size: 30px;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 3px black;
+  }
 }
 
 .warning {
@@ -62,10 +67,14 @@
   border: none;
   font-weight: normal;
   line-height: calc((1rem * 1.25) + 4px);
+  .status {
+    font-size: 30px;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 3px black;
+  }
 }
 
 .danger {
-  /*  background-color: red !important; */
   background-image: linear-gradient(to right, red, #ff386a);
   box-shadow: 0 3px 0 0 #db3078, 0 2px 8px 0 #ff388b,
     0 4px 10px 0 rgba(33, 7, 77, 0.5);
@@ -74,21 +83,21 @@
   line-height: calc((1rem * 1.25) + 4px);
   font-weight: normal;
   color: #fff;
+  .status {
+    font-size: 30px;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 3px black;
+  }
 }
 
 .crazy {
   background-color: black !important;
   font-weight: bolder;
   color: white;
-  .timeLeft {
-    .timeReal {
-      .timeData {
-        border-bottom: solid 0.1rem white;
-      }
-      .timeDataFim {
-        border-top: solid 0.1rem white;
-      }
-    }
+  .status {
+    font-size: 30px;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 3px black;
   }
 }
 
@@ -122,6 +131,22 @@
   background-color: unset;
   border: none;
 }
+
+.newDesignTimeLeft {
+  display: flex;
+  align-items: center;
+  background: white;
+  color: black;
+  border-radius: 5px;
+  padding: 10px;
+  .newDesignTimeReal {
+    width: 100%;
+    h4 {
+      color: black;
+    }
+  }
+}
+
 .timeLeft {
   display: flex;
   align-items: center;

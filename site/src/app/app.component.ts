@@ -42,7 +42,7 @@ export class AppComponent implements OnInit {
       this.dataSrv.DataJSalva = [];
       res.forEach((element, key) => {
         const temp_d = element.data.split(':');
-        const hh = +temp_d[0] + 'h' + temp_d[1] + 'm';
+        const hh = +temp_d[0] + 'h ' + temp_d[1] + 'm';
         element.dataFormatada = hh;
         this.DataList.push(element);
         this.dataSrv.DataJson.push(element);
