@@ -1,11 +1,42 @@
 .centralizar {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
   align-items: center;
-  justify-items: center;
+  position: absolute;
+  z-index: 2;
+  background-color: #2f286b;
+  .cardSplash {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 0px 15px 15px;
+    imageBox {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: 1vw;
+    }
+  }
+  h1 {
+    font-weight: bold;
+    text-align: center;
+    font-family: cursive;
+    .angular {
+      color: #dd0331;
+    }
+    .firebase {
+      color: #fcca3e;
+    }
+  }
 }
 
-.sick-days-warning {
-  background-color: sandybrown !important;
+.showNHide {
+  display: none;
 }
+
 .normal {
   // background-color: #3d3780 !important;
 

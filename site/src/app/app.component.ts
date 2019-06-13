@@ -20,7 +20,10 @@ export class AppComponent implements OnInit {
   esteiras: SelectItem[];
   esteirasSelecionadas: any[];
   DataList: DataFirebaseModel[] = [];
-  title = 'dash';
+  SplashScreen = {
+    show: true,
+    animation: 'wobble slow delay-1s'
+  }
   ShowWhenSizable: boolean;
   @ViewChild('ModalShowFiltro') Modal_Filtro: TemplateRef<any>;
   public gridApi: any;
@@ -44,9 +47,9 @@ export class AppComponent implements OnInit {
         this.DataList.push(element);
         this.dataSrv.DataJson.push(element);
         this.dataSrv.DataJSalva.push(element);
-        this.gridApi.setRowData(this.DataList);
       });
       this.esteiras = this.dataSrv.listaEsteiras();
+      this.gridApi.setRowData(this.DataList);
     });
     this.dataSrv.ControleRemoto$.subscribe((items) => {
     });
@@ -54,20 +57,22 @@ export class AppComponent implements OnInit {
     timer(2000, 500).subscribe(() => {
       this.gridOptions.api.sizeColumnsToFit();
     });
+
+    setTimeout(() => {
+      this.splashScreenLoadOut();
+    }, 3500);
     this.breakpointObserver
       .observe(['(min-width: 830px)'])
       .subscribe((state: BreakpointState) => {
         if (state.matches) {
           console.log('Viewport is 500px or over!', state);
           console.log(this.DataList[0]);
-
           this.ShowWhenSizable = false;
           this.gridOptions.api.sizeColumnsToFit();
         } else {
+          this.splashScreenLoadOut();
           console.log('Viewport is getting smaller!', state);
           this.ShowWhenSizable = true;
-
-          // this.gridOptions.api.sizeColumnsToFit();
         }
       });
     this.remoteControl.controleRemoto.subscribe((esteiras) => {
@@ -83,7 +88,7 @@ export class AppComponent implements OnInit {
         headerName: 'Esteira',
         field: 'esteira',
         width: 80,
-        /* height: 190, */
+        // height: 190,
         cellRenderer: that.formatSrv.MontarColunaEsteira,
       },
       {
@@ -129,11 +134,6 @@ export class AppComponent implements OnInit {
       },
       onGridReady: (params) => {
         this.gridApi = params.api;
-        params.api.addGlobalListener((type, event) => {
-          if (type.indexOf('rowDataChanged') >= 0) {
-            // console.log('Got column event: ', event);
-          }
-        });
         params.api.sizeColumnsToFit();
       }
     };
@@ -144,6 +144,16 @@ export class AppComponent implements OnInit {
     this.dialogService.open(this.Modal_Filtro);
   }
 
+  splashScreenLoadOut() {
+    if (this.DataList !== [] || this.DataList !== null || this.DataList !== undefined) {
+      this.SplashScreen.animation = 'slideOutUp fast';
+      setTimeout(() => {
+        this.SplashScreen.show = false;
+      }, 2000);
+    } else {
+      this.splashScreenLoadOut();
+    }
+  }
   filtrarLista(esteira, refs) {
     console.log('fatiou, passou', esteira);
     this.gridApi.setRowData(this.dataSrv.filtroEsteira(esteira));

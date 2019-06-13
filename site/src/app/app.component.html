@@ -1,6 +1,28 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <nb-layout>
   <nb-layout-column style="padding:.5rem;" [hidden]="ShowWhenSizable">
+    <div class="centralizar" *ngIf="SplashScreen.show">
+      <div (click)="splashScreenLoadOut()" class="animated {{SplashScreen.animation}} cardSplash">
+        <div>
+          <img width="300" alt="Angular Logo"
+            src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+          <img width="200" alt="Firebase Logo" src="../assets/firebase.png">
+        </div>
+        <h1>
+          Powered by
+          <span class="angular">
+            Angular
+          </span>
+          <span>
+            and
+          </span>
+          <span class="firebase">
+            Firebase
+          </span>
+        </h1>
+      </div>
+    </div>
+
     <div class="float" (click)="showModalFiltro()">
       <i class="nb-search"></i>
     </div>
@@ -16,7 +38,6 @@
               <nb-select multiple placeholder="Selecione" [(ngModel)]="esteirasSelecionadas">
                 <nb-option [value]="item.value" *ngFor="let item of esteiras">{{item.label}}</nb-option>
               </nb-select>
-
             </div>
           </div>
         </nb-card-body>
@@ -28,9 +49,8 @@
     </ng-template>
   </nb-layout-column>
 
-  <nb-layout-column style="padding:.5rem;" [hidden]="!ShowWhenSizable">
+  <nb-layout-column style="padding:.5rem;" [class.showNHide]="SplashScreen.show" [hidden]="!ShowWhenSizable">
     <div class="card" *ngFor="let demanda of DataList">
-      <!-- [ngStyle]="formatSrv.formatarCardColor(demanda)"  -->
       <nb-card class="{{formatSrv.formatarCardColor(demanda)}}">
         <nb-card-header>
           <h1>{{ demanda.area }} - {{demanda.tfs}}</h1>
@@ -60,33 +80,5 @@
         </nb-card-body>
       </nb-card>
     </div>
-
-    <!--           <div class="card" *ngFor="let demanda of DataList">
-              <div class="card-header">
-                  <h1>{{ demanda.area }} - {{demanda.tfs}}</h1>
-              </div>
-              <div class="card-body">
-                  <h5>
-                      Descrição: {{demanda.titulo}}
-                    </h5>
-                    <br>
-                    <div class="timeLeft" >
-                      <div class="timeString">
-                       <h4>Tempo restante:</h4>
-                      </div>
-                      <div class="timeReal">
-                        <div class="timeData">
-                         <h4>{{demanda.data}}</h4>
-                        </div>
-                        <div class="timeDataFim">
-                          <h4>{{demanda.datafim}}</h4>
-                        </div>
-                      </div>
-                    </div>
-              </div>
-            </div> -->
-
-
-
   </nb-layout-column>
 </nb-layout>
