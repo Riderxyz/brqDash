@@ -13,6 +13,7 @@ import { NebularModule } from 'src/Modules/Nebular.module';
 
 
 import { AppComponent } from './app.component';
+import { FloatingActionMenuModule } from 'ng2-floating-action-menu';
 
 // PrimeNg
 import { TableModule } from 'primeng/table';
@@ -48,6 +49,7 @@ const AppRoutes: Routes = [
     ),
     HttpClientModule,
     FormsModule,
+    FloatingActionMenuModule,
     // CDK
     LayoutModule,
     // AngularFire

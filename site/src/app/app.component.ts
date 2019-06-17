@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild, OnInit } from '@angular/core';
+import { Component, TemplateRef, ViewChild, OnInit, ElementRef } from '@angular/core';
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
 import { GridOptions } from 'ag-grid-community';
@@ -25,6 +25,7 @@ export class AppComponent implements OnInit {
     animation: 'jello slow delay-1s'
   }
   ShowWhenSizable: boolean;
+  @ViewChild('animateSplash') animationDiv: ElementRef<any>;
   @ViewChild('ModalShowFiltro') Modal_Filtro: TemplateRef<any>;
   public gridApi: any;
   public gridOptions: GridOptions;
@@ -81,6 +82,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+
     const that = this;
     this.columnDefs = [
       {
@@ -126,6 +128,15 @@ export class AppComponent implements OnInit {
   }
 
   splashScreenLoadOut() {
+    const divAni = document.getElementById('animateSplash')
+    console.log(divAni)
+    divAni.addEventListener('animationend', ((res) => {
+      console.log('terminei a animação', res);
+
+    }));
+    this.animationDiv.nativeElement.addEventListener('animationend', ((res) => {
+      console.log('terminei a animação 23', res);
+    }));
     if (this.DataList !== [] || this.DataList !== null || this.DataList !== undefined) {
       this.SplashScreen.animation = 'slideOutUp fast';
       setTimeout(() => {
@@ -140,4 +151,6 @@ export class AppComponent implements OnInit {
     this.gridApi.setRowData(this.dataSrv.filtroEsteira(esteira));
     refs.close();
   }
+
+
 }
