@@ -12,17 +12,17 @@ export class RemoteControlService {
   constructor(
     public db: AngularFireDatabase,
     public dataSrv: GetDataSrv
-    ) {
-      this.db.object('/dashBoardAtivo/' + this._localRequisitado).valueChanges()
+  ) {
+    this.db.object('/dashBoardAtivo/' + this._localRequisitado).valueChanges()
       .subscribe((res: any) => {
         console.log(`Controle`, res);
         const esteirasFiltradas = [];
         res.esteirasParaExibicao.forEach(element => {
           esteirasFiltradas.push(element.value);
         });
-    this.controleRemoto.next(esteirasFiltradas);
+        this.controleRemoto.next(esteirasFiltradas);
       });
-     }
+  }
 
 
 

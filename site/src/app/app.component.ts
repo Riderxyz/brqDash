@@ -52,25 +52,21 @@ export class AppComponent implements OnInit {
       this.esteiras = this.dataSrv.listaEsteiras();
       this.gridApi.setRowData(this.DataList);
     });
-    this.dataSrv.ControleRemoto$.subscribe((items) => {
-    });
     moment.locale('pt');
     timer(2000, 500).subscribe(() => {
-      this.gridOptions.api.sizeColumnsToFit();
+      if (!this.ShowWhenSizable) {
+        this.gridApi.sizeColumnsToFit();
+      }
+
     });
-    setTimeout(() => {
-      this.splashScreenLoadOut();
-    }, 3500);
     this.breakpointObserver
       .observe(['(min-width: 830px)'])
       .subscribe((state: BreakpointState) => {
         if (state.matches) {
           console.log('Viewport is 500px or over!', state);
-          console.log(this.DataList[0]);
           this.ShowWhenSizable = false;
           this.gridOptions.api.sizeColumnsToFit();
         } else {
-          this.splashScreenLoadOut();
           console.log('Viewport is getting smaller!', state);
           this.ShowWhenSizable = true;
         }
@@ -116,6 +112,7 @@ export class AppComponent implements OnInit {
         return this.formatSrv.formatarGridColor(params.data);
       },
       onGridReady: (params) => {
+        this.splashScreenLoadOut();
         this.gridApi = params.api;
         params.api.sizeColumnsToFit();
       }
@@ -128,23 +125,23 @@ export class AppComponent implements OnInit {
   }
 
   splashScreenLoadOut() {
-    const divAni = document.getElementById('animateSplash')
-    console.log(divAni)
-    divAni.addEventListener('animationend', ((res) => {
-      console.log('terminei a animação', res);
-
-    }));
     this.animationDiv.nativeElement.addEventListener('animationend', ((res) => {
       console.log('terminei a animação 23', res);
-    }));
-    if (this.DataList !== [] || this.DataList !== null || this.DataList !== undefined) {
-      this.SplashScreen.animation = 'slideOutUp fast';
-      setTimeout(() => {
+      if (res.animationName === 'jello') {
+        if (this.DataList !== [] || this.DataList !== null || this.DataList !== undefined) {
+          this.SplashScreen.animation = 'slideOutUp fast';
+        }
+      }
+      if (res.animationName === 'slideOutUp') {
         this.SplashScreen.show = false;
-      }, 2000);
-    } else {
-      this.splashScreenLoadOut();
-    }
+        this.splashScreenLoadOut();
+      }
+    }));
+    /*         if (this.DataList !== [] || this.DataList !== null || this.DataList !== undefined) {
+              setTimeout(() => {
+              }, 2000);
+            } else {
+            } */
   }
   filtrarLista(esteira, refs) {
     console.log('fatiou, passou', esteira);
