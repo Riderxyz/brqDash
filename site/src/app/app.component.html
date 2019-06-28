@@ -25,9 +25,33 @@
       </div>
     </div>
 
-    <div class="float" (click)="showModalFiltro()">
+    <nb-flip-card>
+        <nb-card-front>
+          <nb-card>
+            <nb-card-body>
+
+            </nb-card-body>
+          </nb-card>
+        </nb-card-front>
+        <nb-card-back>
+          <nb-card>
+            <nb-card-body>
+              Back
+            </nb-card-body>
+          </nb-card>
+        </nb-card-back>
+      </nb-flip-card>
+<!--     <div class="float" (click)="showModalFiltro()">
       <i class="nb-search"></i>
-    </div>
+    </div> -->
+    <ng2-floating-action-menu
+    placement="br"
+    effect="mfb-slidein"
+    iconClass="nb-search"
+    activeIconClass="nb-audio"
+    toggle="click"
+    [buttons]="fabButton">
+  </ng2-floating-action-menu>
     <ag-grid-angular id='GridDimensionado' style="height: calc(100vh - 20px);width: 100%;" class="ag-theme-balham"
       [gridOptions]="gridOptions">
     </ag-grid-angular>
@@ -70,75 +94,3 @@
     </div>
   </nb-layout-column>
 </nb-layout>
-
-
-
-
-
-
-
-
-
-
-<!--    <div class="card" style="text-align: center">
-      <nb-card class="normal">
-        <nb-card-header>
-          <h1>TESTE - TFS 1234</h1>
-        </nb-card-header>
-        <nb-card-body>
-          <h5>TESTE</h5>
-          <h5 class="status"> DIMENSIONADO </h5>
-          <div class="newDesignTimeLeft">
-            <div class="newDesignTimeReal">TEMPO RESTANTE:
-              <h4>2h 36m / Qui 13-06</h4>
-            </div>
-          </div>
-        </nb-card-body>
-      </nb-card>
-      <nb-card class="warning">
-        <nb-card-header>
-          <h1>TESTE - TFS 1234</h1>
-        </nb-card-header>
-        <nb-card-body>
-          <h5>TESTE</h5>
-          <h5 class="status"> DIMENSIONADO </h5>
-          <div class="newDesignTimeLeft">
-            <div class="newDesignTimeReal">TEMPO RESTANTE:
-              <h4>2h 36m / Qui 13-06</h4>
-            </div>
-          </div>
-        </nb-card-body>
-      </nb-card>
-
-
-      <nb-card class="danger">
-        <nb-card-header>
-          <h1>TESTE - TFS 1234</h1>
-        </nb-card-header>
-        <nb-card-body>
-          <h5>TESTE</h5>
-          <h5 class="status"> DIMENSIONADO </h5>
-          <div class="newDesignTimeLeft">
-            <div class="newDesignTimeReal">TEMPO RESTANTE:
-              <h4>2h 36m / Qui 13-06</h4>
-            </div>
-          </div>
-        </nb-card-body>
-      </nb-card>
-
-
-      <nb-card class="crazy">
-        <nb-card-header>
-          <h1>TESTE - TFS 1234</h1>
-        </nb-card-header>
-        <nb-card-body>
-          <h5>TESTE</h5>
-          <h5 class="status"> DIMENSIONADO </h5>
-          <div class="newDesignTimeLeft">
-            <div class="newDesignTimeReal">TEMPO RESTANTE:
-              <h4>2h 36m / Qui 13-06</h4>
-            </div>
-          </div>
-        </nb-card-body>
-      </nb-card>
-    </div> -->

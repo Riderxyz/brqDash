@@ -22,7 +22,7 @@
     "@angular/pwa": "0.10.4",
     "@angular/router": "~7.1.0",
     "@angular/service-worker": "7.1.0",
-    "@nebular/theme": "^3.1.0",
+    "@nebular/theme": "3.5.0",
     "ag-grid-angular": "^19.1.2",
     "ag-grid-community": "^19.1.4",
     "animate.css": "^3.7.2",

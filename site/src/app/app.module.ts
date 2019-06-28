@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
 import { NgModule } from '@angular/core';
-
+import { AppComponent } from './app.component';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
@@ -10,20 +10,11 @@ import { FormsModule } from '@angular/forms';
 import { NbSidebarModule, NbLayoutModule, NbSidebarService, NbCardModule, NbDialogModule } from '@nebular/theme';
 import { NbThemeModule, NbDialogService } from '@nebular/theme';
 import { NebularModule } from 'src/Modules/Nebular.module';
-
-
-import { AppComponent } from './app.component';
-import { FloatingActionMenuModule } from 'ng2-floating-action-menu';
-
-// PrimeNg
-import { TableModule } from 'primeng/table';
-import { CardModule } from 'primeng/card';
-import { PanelModule } from 'primeng/panel';
-import { DropdownModule } from 'primeng/dropdown';
-import { MultiSelectModule } from 'primeng/multiselect';
 // Ag-Grid
 import { AgGridModule } from 'ag-grid-angular';
 
+// Modules
+import { FloatingActionMenuModule } from 'ng2-floating-action-menu'
 import { HttpClientModule } from '@angular/common/http';
 
 // AngularFire
@@ -34,6 +25,11 @@ import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { GetDataSrv } from 'src/service/getData.service';
 import { FormatService } from 'src/service/format.service';
 import { RemoteControlService } from 'src/service/remoteControl.service';
+import { CentralRxJsService } from 'src/service/centralRxjs.service';
+
+// Paginas
+import { DashboardComponent } from '../pages/Dashboard/dashboard.component';
+import { GDBoardComponent } from '../pages/GD-Board/gd-board.component';
 
 const AppRoutes: Routes = [
   { path: 'Home', component: AppComponent },
@@ -41,7 +37,9 @@ const AppRoutes: Routes = [
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DashboardComponent,
+    GDBoardComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -55,13 +53,8 @@ const AppRoutes: Routes = [
     // AngularFire
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
-    // PrimeNG
-    TableModule,
-    CardModule,
+    // Angular
     AgGridModule.withComponents([]),
-    PanelModule,
-    DropdownModule,
-    MultiSelectModule,
     // Nebular
     NebularModule,
     NbThemeModule.forRoot({ name: 'cosmic' }),
@@ -74,6 +67,7 @@ const AppRoutes: Routes = [
   providers: [
     GetDataSrv,
     FormatService,
+    CentralRxJsService,
     RemoteControlService
   ],
   bootstrap: [AppComponent]
