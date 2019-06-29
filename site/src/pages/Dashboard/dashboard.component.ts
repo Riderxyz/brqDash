@@ -6,18 +6,19 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import { NbDialogService } from '@nebular/theme';
 import { DataFirebaseModel } from './../../models/data.model';
 import { GetDataSrv } from 'src/service/getData.service';
-import { SelectItem } from 'primeng/api';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { timer } from 'rxjs';
 import { FormatService } from 'src/service/format.service';
 import { RemoteControlService } from 'src/service/remoteControl.service';
+import { SelectItemModel } from 'src/models/SelectItem.model';
+import { CentralRxJsService } from 'src/service/centralRxjs.service';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  esteiras: SelectItem[];
+  esteiras: SelectItemModel[];
   esteirasSelecionadas: any[];
   DataList: DataFirebaseModel[] = [];
   SplashScreen = {
@@ -36,8 +37,16 @@ export class DashboardComponent implements OnInit {
     public dataSrv: GetDataSrv,
     public formatSrv: FormatService,
     public remoteControl: RemoteControlService,
-    public breakpointObserver: BreakpointObserver
-    ) { this.dataSrv.ListarItems.subscribe((res: DataFirebaseModel[]) => {
+    public breakpointObserver: BreakpointObserver,
+    public centralRx: CentralRxJsService
+    ) {
+      this.centralRx.DataSended.subscribe((res)=>{
+        console.log('LINHA 44 DE DASHBOARD', res);
+
+      })
+
+
+      this.dataSrv.ListarItems.subscribe((res: DataFirebaseModel[]) => {
       this.DataList = [];
       this.dataSrv.DataJson = [];
       this.dataSrv.DataJSalva = [];
@@ -59,18 +68,7 @@ export class DashboardComponent implements OnInit {
       }
 
     });
-    this.breakpointObserver
-      .observe(['(min-width: 830px)'])
-      .subscribe((state: BreakpointState) => {
-        if (state.matches) {
-          console.log('Viewport is 500px or over!', state);
-          this.ShowWhenSizable = false;
-          this.gridOptions.api.sizeColumnsToFit();
-        } else {
-          console.log('Viewport is getting smaller!', state);
-          this.ShowWhenSizable = true;
-        }
-      });
+
     this.remoteControl.controleRemoto.subscribe((esteiras) => {
       console.log('Controle remoto ativado');
       this.gridApi.setRowData(this.dataSrv.filtroEsteira(esteiras));
@@ -114,8 +112,25 @@ export class DashboardComponent implements OnInit {
       onGridReady: (params) => {
         this.gridApi = params.api;
         params.api.sizeColumnsToFit();
+        this.centralRx.sendData = 'oi, a grid ta pronta';
       }
     };
+
+
+
+    this.breakpointObserver
+    .observe(['(min-width: 830px)'])
+    .subscribe((state: BreakpointState) => {
+      this.centralRx.sendData = 'oi, a grid ta renderizada';
+      if (state.matches) {
+        console.log('Viewport is 500px or over!', state);
+        this.ShowWhenSizable = false;
+        this.gridOptions.api.sizeColumnsToFit();
+      } else {
+        console.log('Viewport is getting smaller!', state);
+        this.ShowWhenSizable = true;
+      }
+    });
   }
 
 

@@ -6,7 +6,6 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import { NbDialogService } from '@nebular/theme';
 import { DataFirebaseModel } from '../models/data.model';
 import { GetDataSrv } from 'src/service/getData.service';
-import { SelectItem } from 'primeng/api';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { timer } from 'rxjs';
 import { FormatService } from 'src/service/format.service';
@@ -15,6 +14,7 @@ import { RemoteControlService } from 'src/service/remoteControl.service';
 
 
 import { FloatingActionButton } from 'ng2-floating-action-menu';
+import { SelectItemModel } from 'src/models/SelectItem.model';
 
 
 
@@ -24,33 +24,28 @@ import { FloatingActionButton } from 'ng2-floating-action-menu';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  esteiras: SelectItem[];
+  esteiras: SelectItemModel[];
   esteirasSelecionadas: any[];
   DataList: DataFirebaseModel[] = [];
   SplashScreen = {
     show: true,
     animation: 'jello slow delay-1s'
   }
-
-
-
-
-
   fabButton: FloatingActionButton[] = [{
     iconClass: 'nb-menu',
-      label: 'follow me on github',
-      onClick: function(){
- console.log('vindo do primeiro');
+    label: 'follow me on github',
+    onClick: function () {
+      console.log('vindo do primeiro');
 
-      }
-    },
-    {
-      iconClass: 'ion-social-facebook',
-      label: 'nb-user',
-      onClick: function(){
-        console.log('vindo do segundo');
-      }
-  }]
+    }
+  },
+  {
+    iconClass: 'ion-social-facebook',
+    label: 'nb-user',
+    onClick: function () {
+      console.log('vindo do segundo');
+    }
+  }];
   ShowWhenSizable: boolean;
   @ViewChild('animateSplash') animationDiv: ElementRef<any>;
   @ViewChild('ModalShowFiltro') Modal_Filtro: TemplateRef<any>;
@@ -64,7 +59,8 @@ export class AppComponent implements OnInit {
     public formatSrv: FormatService,
     public remoteControl: RemoteControlService,
     public breakpointObserver: BreakpointObserver) {
-    this.dataSrv.ListarItems.subscribe((res: DataFirebaseModel[]) => {
+
+/*     this.dataSrv.ListarItems.subscribe((res: DataFirebaseModel[]) => {
       this.DataList = [];
       this.dataSrv.DataJson = [];
       this.dataSrv.DataJSalva = [];
@@ -78,13 +74,12 @@ export class AppComponent implements OnInit {
       });
       this.esteiras = this.dataSrv.listaEsteiras();
       this.gridApi.setRowData(this.DataList);
-    });
+    }); */
     moment.locale('pt');
     timer(2000, 500).subscribe(() => {
       if (!this.ShowWhenSizable) {
-        this.gridApi.sizeColumnsToFit();
+       /*  this.gridApi.sizeColumnsToFit(); */
       }
-
     });
     this.breakpointObserver
       .observe(['(min-width: 830px)'])
@@ -92,7 +87,7 @@ export class AppComponent implements OnInit {
         if (state.matches) {
           console.log('Viewport is 500px or over!', state);
           this.ShowWhenSizable = false;
-          this.gridOptions.api.sizeColumnsToFit();
+          /* this.gridOptions.api.sizeColumnsToFit(); */
         } else {
           console.log('Viewport is getting smaller!', state);
           this.ShowWhenSizable = true;
@@ -100,12 +95,12 @@ export class AppComponent implements OnInit {
       });
     this.remoteControl.controleRemoto.subscribe((esteiras) => {
       console.log('Controle remoto ativado');
-      this.gridApi.setRowData(this.dataSrv.filtroEsteira(esteiras));
+    /*   this.gridApi.setRowData(this.dataSrv.filtroEsteira(esteiras)); */
     });
   }
 
   ngOnInit() {
-
+    this.splashScreenLoadOut();
     const that = this;
     this.columnDefs = [
       {
@@ -130,7 +125,7 @@ export class AppComponent implements OnInit {
         cellRenderer: this.formatSrv.MontarColunaStatus,
       },
     ];
-    this.gridOptions = {
+/*     this.gridOptions = {
       columnDefs: this.columnDefs,
       enableSorting: true,
       headerHeight: 0,
@@ -143,7 +138,7 @@ export class AppComponent implements OnInit {
         this.gridApi = params.api;
         params.api.sizeColumnsToFit();
       }
-    };
+    }; */
   }
 
   showModalFiltro() {

@@ -6,7 +6,21 @@ export class CentralRxJsService {
 
 
 
-  InputStream = new ReplaySubject<any>();
-  OutputStrem = new ReplaySubject<any>();
+  private InputStream = new ReplaySubject<any>();
+  public OutputStrem = this.InputStream.asObservable();
   constructor() { }
+
+
+
+
+
+public set sendData(value) {
+  this.InputStream.next(value);
+}
+
+public get DataSended() {
+  return this.OutputStrem;
+}
+
+
 }
