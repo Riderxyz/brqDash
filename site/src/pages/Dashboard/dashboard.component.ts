@@ -42,7 +42,6 @@ export class DashboardComponent implements OnInit {
     ) {
       this.centralRx.DataSended.subscribe((res)=>{
         console.log('LINHA 44 DE DASHBOARD', res);
-
       })
 
 

@@ -15,6 +15,7 @@ import { RemoteControlService } from 'src/service/remoteControl.service';
 
 import { FloatingActionButton } from 'ng2-floating-action-menu';
 import { SelectItemModel } from 'src/models/SelectItem.model';
+import { CentralRxJsService } from 'src/service/centralRxjs.service';
 
 
 
@@ -58,29 +59,14 @@ export class AppComponent implements OnInit {
     public dataSrv: GetDataSrv,
     public formatSrv: FormatService,
     public remoteControl: RemoteControlService,
-    public breakpointObserver: BreakpointObserver) {
-
-/*     this.dataSrv.ListarItems.subscribe((res: DataFirebaseModel[]) => {
-      this.DataList = [];
-      this.dataSrv.DataJson = [];
-      this.dataSrv.DataJSalva = [];
-      res.forEach((element, key) => {
-        const temp_d = element.data.split(':');
-        const hh = +temp_d[0] + 'h ' + temp_d[1] + 'm';
-        element.dataFormatada = hh;
-        this.DataList.push(element);
-        this.dataSrv.DataJson.push(element);
-        this.dataSrv.DataJSalva.push(element);
+    public breakpointObserver: BreakpointObserver,
+       public centralRx: CentralRxJsService
+    ) {
+      this.centralRx.DataSended.subscribe((res) => {
+        console.log('LINHA 66 do appComponent', res);
       });
-      this.esteiras = this.dataSrv.listaEsteiras();
-      this.gridApi.setRowData(this.DataList);
-    }); */
+
     moment.locale('pt');
-    timer(2000, 500).subscribe(() => {
-      if (!this.ShowWhenSizable) {
-       /*  this.gridApi.sizeColumnsToFit(); */
-      }
-    });
     this.breakpointObserver
       .observe(['(min-width: 830px)'])
       .subscribe((state: BreakpointState) => {
