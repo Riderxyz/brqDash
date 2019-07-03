@@ -1,0 +1,11 @@
+.esteiraHolder{
+  display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .esteiraNome{
+      min-width: 400px;
+    }
+    .esteiraProdMensal {
+      min-width: 400px;
+    }
+}

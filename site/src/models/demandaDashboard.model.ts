@@ -1,4 +1,4 @@
-export interface DataFirebaseModel {
+export interface DemandaDashboardModel {
   area: string;
   criticidade: string;
   data: string;

@@ -4,7 +4,7 @@ import 'moment/locale/pt-br';
 import { GridOptions } from 'ag-grid-community';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { NbDialogService } from '@nebular/theme';
-import { DataFirebaseModel } from './../../models/data.model';
+import { DemandaDashboardModel } from '../../models/demandaDashboard.model';
 import { GetDataSrv } from 'src/service/getData.service';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { timer, from, of } from 'rxjs';
@@ -22,7 +22,7 @@ import { config } from 'src/service/config';
 export class DashboardComponent implements OnInit {
   esteiras: SelectItemModel[];
   esteirasSelecionadas: any[];
-  DataList: DataFirebaseModel[] = [];
+  DataList: DemandaDashboardModel[] = [];
   SplashScreen = {
     show: true,
     animation: 'jello slow delay-1s'
@@ -41,26 +41,27 @@ export class DashboardComponent implements OnInit {
     public formatSrv: FormatService,
     public remoteControl: RemoteControlService,
     public breakpointObserver: BreakpointObserver,
-    public centralRx: CentralRxJsService
+    public centralRx: CentralRxJsService,
   ) {
+
     this.centralRx.DataSended.subscribe((res) => {
       console.log('LINHA 44 DE DASHBOARD', res);
     });
 
     moment.locale('pt');
-      this.remoteControl.controleRemoto.subscribe((esteiras) => {
+    this.remoteControl.controleRemoto.subscribe((esteiras) => {
       console.log('Controle remoto ativado');
       this.gridApi.setRowData(this.dataSrv.filtroEsteira(esteiras));
     });
   }
 
   ngOnInit() {
-    timer(2000, 500).subscribe(() => {
-      if (!this.ShowWhenSizable) {
-        this.gridApi.sizeColumnsToFit();
-      }
-    });
-    this.dataSrv.ListarItems.subscribe((res: DataFirebaseModel[]) => {
+    window.onresize = ((resizeObj) => {
+      console.log('RESIZEBLE da linha 61', resizeObj);
+      this.gridApi.sizeColumnsToFit();
+    })
+
+    this.dataSrv.ListarItems.subscribe((res: DemandaDashboardModel[]) => {
       /* console.log('LINHA 64', res); */
       this.DataList = [];
       this.dataSrv.DataJson = [];
@@ -84,20 +85,6 @@ export class DashboardComponent implements OnInit {
         this.isGridReady = true;
       }
     };
-    this.breakpointObserver
-      .observe(['(min-width: 830px)'])
-      .subscribe((state: BreakpointState) => {
-        if (state.matches) {
-          console.log('Viewport is 500px or over!', state);
-          this.ShowWhenSizable = false;
-          if (this.isGridReady) {
-            this.gridOptions.api.sizeColumnsToFit();
-          }
-        } else {
-          console.log('Viewport is getting smaller!', state);
-          this.ShowWhenSizable = true;
-        }
-      });
   }
 
 
@@ -128,7 +115,7 @@ export class DashboardComponent implements OnInit {
     ];
   }
 
-  popularGrid(dataFromFirebase: DataFirebaseModel[]) {
+  popularGrid(dataFromFirebase: DemandaDashboardModel[]) {
     dataFromFirebase.forEach((element, key) => {
       const temp_d = element.data.split(':');
       const hh = +temp_d[0] + 'h ' + temp_d[1] + 'm';
@@ -139,7 +126,9 @@ export class DashboardComponent implements OnInit {
     });
     this.esteiras = this.dataSrv.listaEsteiras();
     if (this.isGridReady) {
-      this.gridApi.setRowData(this.DataList);
+      console.log(this.DataList);
+      this.gridOptions.api.setRowData(this.DataList);
+      this.gridOptions.api.sizeColumnsToFit();
     }
   }
 
@@ -147,6 +136,7 @@ export class DashboardComponent implements OnInit {
   filtrarLista(esteira, refs) {
     console.log('fatiou, passou', esteira);
     this.gridApi.setRowData(this.dataSrv.filtroEsteira(esteira));
+    this.gridOptions.api.sizeColumnsToFit();
     refs.close();
   }
 

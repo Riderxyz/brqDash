@@ -1,7 +1,7 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <nb-layout>
   <nb-layout-column style="padding:.5rem;" [hidden]="ShowWhenSizable">
-    <div class="centralizar" *ngIf="SplashScreen.show">
+  <!--   <div class="centralizar" *ngIf="SplashScreen.show">
       <div (click)="splashScreenLoadOut()" #animateSplash id="animateSplash"
         class="animated {{SplashScreen.animation}} cardSplash">
         <div>
@@ -23,7 +23,7 @@
         </h1>
         <span>Versão 1.4.0</span>
       </div>
-    </div>
+    </div> -->
     <a routerLink="dashboard" routerLinkActive="active" nbButton>Dashboard</a>
     <a routerLink="gdboard" routerLinkActive="active" nbButton>GDBoard</a>
     <div [@routeAnimations]="o && o.activatedRouteData
@@ -31,7 +31,6 @@
       <router-outlet #o="outlet"></router-outlet>
     </div>
   </nb-layout-column>
-
   <nb-layout-column style="padding:.5rem;" [hidden]="!ShowWhenSizable">
     <div class="card animated slideInUp" style="text-align: center">
       <nb-card class="{{formatSrv.formatarCardColor(demanda)}}" *ngFor="let demanda of DataList">

@@ -1,4 +1,4 @@
-import { DataFirebaseModel } from '../models/data.model';
+import { DemandaDashboardModel } from '../models/demandaDashboard.model';
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { map, filter, uniq, orderBy } from 'lodash';
@@ -8,14 +8,18 @@ import { Subject } from 'rxjs';
 @Injectable()
 export class GetDataSrv {
 
-  private _DataJson: DataFirebaseModel[] = [];
-  private _DataJSalva: DataFirebaseModel[] = [];
+  private _DataJson: DemandaDashboardModel[] = [];
+  private _DataJSalva: DemandaDashboardModel[] = [];
   private _localRequisitado = environment.NomeDashBoard;
   public ControleRemoto$ = new Subject<any>();
   constructor(public db: AngularFireDatabase) { }
 
   get ListarItems() {
     return this.db.list('brq-sla/ONS').valueChanges();
+  }
+
+  get ListarGerenciamento() {
+    return this.db.list('brq-sla/gerenciamentoDiario').valueChanges();
   }
 
   filtroEsteira(esteiras) {
@@ -38,22 +42,22 @@ export class GetDataSrv {
     });
   }
 
-  public set DataJson(value: DataFirebaseModel[]) {
+  public set DataJson(value: DemandaDashboardModel[]) {
 
     this._DataJson = value;
   }
 
-  public get DataJson(): DataFirebaseModel[] {
+  public get DataJson(): DemandaDashboardModel[] {
 
     return this._DataJson;
   }
 
-  public set DataJSalva(value: DataFirebaseModel[]) {
+  public set DataJSalva(value: DemandaDashboardModel[]) {
 
     this._DataJSalva = value;
   }
 
-  public get DataJSalva(): DataFirebaseModel[] {
+  public get DataJSalva(): DemandaDashboardModel[] {
 
     return this._DataJSalva;
   }

@@ -1,4 +1,4 @@
-import { DataFirebaseModel } from '../models/data.model';
+import { DemandaDashboardModel } from '../models/demandaDashboard.model';
 import { Injectable } from '@angular/core';
 
 @Injectable()
@@ -74,7 +74,7 @@ export class FormatService {
    *  Monta a coluna de Status da Grid
    */
   public MontarColunaStatus(param: any): string {
-    const dados: DataFirebaseModel = param.data;
+    const dados: DemandaDashboardModel = param.data;
     const html = '<br><span class="ColunaStatus">' + dados.status + '</span>';
     return html;
   }
@@ -83,7 +83,7 @@ export class FormatService {
    * Monta a coluna onde esta as esteiras e o numero da Demanda
    */
   public MontarColunaEsteira(param: any): string {
-    const dados: DataFirebaseModel = param.data;
+    const dados: DemandaDashboardModel = param.data;
     let html = '<br><span class="ColunaEsteiraEsteira">' + dados.esteira + ' - ' + dados.tfs + '</span>';
     html += '<br>';
     html += '<span class="ColunaEsteiraTitulo">' + dados.titulo + '</span>';
@@ -94,7 +94,7 @@ export class FormatService {
    * Monta a coluna restante, que cuida do tempo
    */
   public MontarColunaRestante(param: any): string {
-    const dados: DataFirebaseModel = param.data;
+    const dados: DemandaDashboardModel = param.data;
     let html = '<br><span class="ColunaEsteiraDataFormatada">' + dados.dataFormatada + '</span>';
     html += '<br>';
     html += '<span class="ColunaEsteiraDataFim">' + dados.datafim + '</span>';
@@ -106,7 +106,7 @@ export class FormatService {
   * Formata a cor de fundo do card quando esta em uma tela
   * menor que 700px
   */
-  public formatarGridColor(params: DataFirebaseModel): object {
+  public formatarGridColor(params: DemandaDashboardModel): object {
     const minutos = this.hourToMinute(params.data);
     // Normal
     if (minutos > this.limites.warning.limite) {
@@ -128,7 +128,7 @@ export class FormatService {
     }
   }
 
-  public formatarCardColor(params: DataFirebaseModel): string {
+  public formatarCardColor(params: DemandaDashboardModel): string {
     const minutos = this.hourToMinute(params.data);
     // Normal
     if (minutos > this.limitesCard.warning.limite) {
