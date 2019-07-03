@@ -1,7 +1,7 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <nb-layout>
   <nb-layout-column style="padding:.5rem;" [hidden]="ShowWhenSizable">
- <!--    <div class="centralizar" *ngIf="SplashScreen.show">
+    <div class="centralizar" *ngIf="SplashScreen.show">
       <div (click)="splashScreenLoadOut()" #animateSplash id="animateSplash"
         class="animated {{SplashScreen.animation}} cardSplash">
         <div>
@@ -23,52 +23,13 @@
         </h1>
         <span>Versão 1.4.0</span>
       </div>
-    </div> -->
-
-    <nb-flip-card [showToggleButton]="false">
-      <nb-card-front>
-        <nb-card>
-          <nb-card-body class="flipcard">
-            FRON
-            <!-- <app-dashboard></app-dashboard> -->
-          </nb-card-body>
-        </nb-card>
-      </nb-card-front>
-      <nb-card-back>
-        <nb-card>
-          <nb-card-body>
-            Back
-          </nb-card-body>
-        </nb-card>
-      </nb-card-back>
-    </nb-flip-card>
-    <!--     <div class="float" (click)="showModalFiltro()">
-      <i class="nb-search"></i>
-    </div> -->
-    <ng2-floating-action-menu placement="br" effect="mfb-slidein" iconClass="nb-search" activeIconClass="nb-audio"
-      toggle="click" [buttons]="fabButton">
-    </ng2-floating-action-menu>
-<!--     <ag-grid-angular id='GridDimensionado' style="height: calc(100vh - 20px);width: 100%;" class="ag-theme-balham"
-      [gridOptions]="gridOptions">
-    </ag-grid-angular> -->
-    <ng-template #ModalShowFiltro let-data let-ref="dialogRef">
-      <nb-card>
-        <nb-card-header>Escolha um filtro:</nb-card-header>
-        <nb-card-body style="overflow:visible">
-          <div class="p-grid">
-            <div class="p-col-12">
-              <nb-select multiple placeholder="Selecione" [(ngModel)]="esteirasSelecionadas">
-                <nb-option [value]="item.value" *ngFor="let item of esteiras">{{item.label}}</nb-option>
-              </nb-select>
-            </div>
-          </div>
-        </nb-card-body>
-        <nb-card-footer style="display: flex;justify-content: space-between;">
-          <button nbButton hero status="danger" (click)="ref.close()">Cancelar</button>
-          <button nbButton hero status="success" (click)="filtrarLista(esteirasSelecionadas,ref)">Salvar</button>
-        </nb-card-footer>
-      </nb-card>
-    </ng-template>
+    </div>
+    <a routerLink="dashboard" routerLinkActive="active" nbButton>Dashboard</a>
+    <a routerLink="gdboard" routerLinkActive="active" nbButton>GDBoard</a>
+    <div [@routeAnimations]="o && o.activatedRouteData
+    && o.activatedRouteData['animation']">
+      <router-outlet #o="outlet"></router-outlet>
+    </div>
   </nb-layout-column>
 
   <nb-layout-column style="padding:.5rem;" [hidden]="!ShowWhenSizable">

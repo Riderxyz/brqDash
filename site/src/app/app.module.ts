@@ -30,6 +30,7 @@ import { CentralRxJsService } from 'src/service/centralRxjs.service';
 // Paginas
 import { DashboardComponent } from '../pages/Dashboard/dashboard.component';
 import { GDBoardComponent } from '../pages/GD-Board/gd-board.component';
+import { RoutingModule } from './app.routing';
 
 const AppRoutes: Routes = [
   { path: 'Home', component: AppComponent },
@@ -42,9 +43,7 @@ const AppRoutes: Routes = [
     GDBoardComponent
   ],
   imports: [
-    RouterModule.forRoot(
-      AppRoutes, { enableTracing: false }
-    ),
+    RoutingModule,
     HttpClientModule,
     FormsModule,
     FloatingActionMenuModule,
