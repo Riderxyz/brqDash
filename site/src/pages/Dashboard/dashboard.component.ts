@@ -49,24 +49,29 @@ export class DashboardComponent implements OnInit {
     });
 
     moment.locale('pt');
-    this.remoteControl.controleRemoto.subscribe((esteiras) => {
+/*     this.remoteControl.controleRemoto.subscribe((esteiras) => {
       console.log('Controle remoto ativado');
       this.gridApi.setRowData(this.dataSrv.filtroEsteira(esteiras));
-    });
+    }); */
   }
 
   ngOnInit() {
     window.onresize = ((resizeObj) => {
       console.log('RESIZEBLE da linha 61', resizeObj);
       this.gridApi.sizeColumnsToFit();
-    })
+    });
 
     this.dataSrv.ListarItems.subscribe((res: DemandaDashboardModel[]) => {
-      /* console.log('LINHA 64', res); */
-      this.DataList = [];
-      this.dataSrv.DataJson = [];
-      this.dataSrv.DataJSalva = [];
-      this.popularGrid(res);
+      console.log('peguei do firebase',res);
+
+      this.DataList = res;
+      this.dataSrv.DataJson = res;
+      this.dataSrv.DataJSalva = res;
+      this.esteiras = this.dataSrv.listaEsteiras();
+      this.gridOptions.api.setRowData(this.DataList);
+      if (this.isGridReady) {
+        this.gridOptions.api.sizeColumnsToFit();
+      }
     });
 
     this.gridOptions = {
@@ -80,6 +85,8 @@ export class DashboardComponent implements OnInit {
       onGridReady: (params) => {
         this.gridApi = params.api;
         params.api.sizeColumnsToFit();
+        console.log('grid de DashBoard Pronta!');
+
         const comando = config.rxjsCentralKeys.GridReady;
         this.centralRx.sendData = comando;
         this.isGridReady = true;
@@ -114,23 +121,6 @@ export class DashboardComponent implements OnInit {
       },
     ];
   }
-
-  popularGrid(dataFromFirebase: DemandaDashboardModel[]) {
-    dataFromFirebase.forEach((element, key) => {
-      const temp_d = element.data.split(':');
-      const hh = +temp_d[0] + 'h ' + temp_d[1] + 'm';
-      element.dataFormatada = hh;
-      this.DataList.push(element);
-      this.dataSrv.DataJson.push(element);
-      this.dataSrv.DataJSalva.push(element);
-    });
-    this.esteiras = this.dataSrv.listaEsteiras();
-    if (this.isGridReady) {
-      this.gridOptions.api.setRowData(this.DataList);
-      this.gridOptions.api.sizeColumnsToFit();
-    }
-  }
-
 
   filtrarLista(esteira, refs) {
     console.log('fatiou, passou', esteira);

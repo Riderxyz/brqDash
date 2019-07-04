@@ -1,5 +1,6 @@
 <!-- <nb-layout-column style="padding:.5rem;" [hidden]="ShowWhenSizable"> -->
-    <ag-grid-angular id='GridDimensionado' style="height: calc(100vh - 50px);width: 100%;" class="ag-theme-balham"
+  <div class="animated flipInX delay-1s">
+      <ag-grid-angular id='GridDimensionado' style="height: calc(100vh - 50px);width: 100%;" class="ag-theme-balham"
       [gridOptions]="gridOptions">
     </ag-grid-angular>
     <div class="float" (click)="showModalFiltro()">
@@ -23,4 +24,6 @@
         </nb-card-footer>
       </nb-card>
     </ng-template>
+  </div>
+
   <!-- </nb-layout-column> -->

@@ -28,14 +28,12 @@ export class GetDataService {
       filter(this.DataJSalva, { 'esteira': esteira.name }).forEach(x => {
         result.push(x);
       });
-
     });
     console.log(result);
     this.DataJson = orderBy(result, ['data', 'esteira']);
     // filter(this.DataJson,{'esteira': esteira});
     return this.DataJson;
   }
-
   listaEsteiras() {
     return map(uniq(map(this.DataJson, 'esteira')), (item, index) => {
       return { label: item, value: { id: index, name: item } };

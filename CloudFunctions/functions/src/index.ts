@@ -179,7 +179,6 @@ export const pushNotification = functions.database.ref('/brq-sla/ONS').onWrite(
             console.log('O que deu errado aqui?', error);
         }
     })
-
 export const CalculoMetaCumpridaGD = functions.database.ref('/brq-sla/gerenciamentoDiario').onWrite(
     async (snapshot, context) => {
         try {
@@ -219,7 +218,7 @@ export const CalculoMetaCumpridaGD = functions.database.ref('/brq-sla/gerenciame
                 };
             };
             let GDEmGeral: GDInterface[] = [];
-            
+
             const getGD = (async () => {
                 const result = await admin.database().ref('/brq-sla/gerenciamentoDiario').once('value');
                 GDEmGeral = result.val();
@@ -235,7 +234,7 @@ export const CalculoMetaCumpridaGD = functions.database.ref('/brq-sla/gerenciame
                 console.log('Vindo da linha 79', arrModificado);
             })
 
-           await getGD();
+            await getGD();
         }
         catch (error) {
             console.log('erro da fução CalculoMetaCumprida', error);
@@ -243,71 +242,70 @@ export const CalculoMetaCumpridaGD = functions.database.ref('/brq-sla/gerenciame
         }
     })
 
-    export const CalculoSaldoGD = functions.database.ref('/brq-sla/gerenciamentoDiario').onWrite(
-        async (snapshot, context) => {
-            try {
-                interface GDInterface {
-                    nome: string;
-                    dados: {
-                        metas: {
-                            prodMensal: number;
-                            horasPrev: number;
-                            horasEntregues: number;
-                            metaCumprida: any;
-                        }
-                        saldo: any;
-                        metaSemanal: {
-                            semana1: {
-                                valor: number;
-                                isSemanaAtual: boolean;
-                            };
-                            semana2: {
-                                valor: number;
-                                isSemanaAtual: boolean;
-                            };
-                            semana3: {
-                                valor: number;
-                                isSemanaAtual: boolean;
-                            };
-                            semana4: {
-                                valor: number;
-                                isSemanaAtual: boolean;
-                            };
-                            semana5: {
-                                valor: number;
-                                isSemanaAtual: boolean;
-                            };
-    
+export const CalculoSaldoGD = functions.database.ref('/brq-sla/gerenciamentoDiario').onWrite(
+    async (snapshot, context) => {
+        try {
+            interface GDInterface {
+                nome: string;
+                dados: {
+                    metas: {
+                        prodMensal: number;
+                        horasPrev: number;
+                        horasEntregues: number;
+                        metaCumprida: any;
+                    }
+                    saldo: any;
+                    metaSemanal: {
+                        semana1: {
+                            valor: number;
+                            isSemanaAtual: boolean;
                         };
+                        semana2: {
+                            valor: number;
+                            isSemanaAtual: boolean;
+                        };
+                        semana3: {
+                            valor: number;
+                            isSemanaAtual: boolean;
+                        };
+                        semana4: {
+                            valor: number;
+                            isSemanaAtual: boolean;
+                        };
+                        semana5: {
+                            valor: number;
+                            isSemanaAtual: boolean;
+                        };
+
                     };
                 };
-                let GDEmGeral: GDInterface[] = [];
-                
-                const getGD = (async () => {
-                    const result = await admin.database().ref('/brq-sla/gerenciamentoDiario').once('value');
-                    GDEmGeral = result.val();
-                    GDEmGeral.forEach((element: GDInterface) => {
-                        let Saldo: any = (element.dados.metas.prodMensal - element.dados.metas.horasEntregues)
-                        if (Saldo < 0) {
-                          console.log('saldo é negativo da esteira ' + element.nome, Saldo);
-                          Saldo = ' ✓ '
-                          element.dados.saldo = Saldo
-                        } else {
-                          element.dados.saldo = Saldo
-                        }
-                    });
-                    await concluirPush(GDEmGeral);
-                })
-    
-                const concluirPush = (async (arrModificado: GDInterface[]) => {
-                    await admin.database().ref('/brq-sla/gerenciamentoDiario').set(arrModificado);
-                    console.log('Vindo da linha 79', arrModificado);
-                })
-    
-               await getGD();
-            }
-            catch (error) {
-                console.log('erro da fução CalculoMetaCumprida', error);
-    
-            }
-        })
+            };
+            let GDEmGeral: GDInterface[] = [];
+            const getGD = (async () => {
+                const result = await admin.database().ref('/brq-sla/gerenciamentoDiario').once('value');
+                GDEmGeral = result.val();
+                GDEmGeral.forEach((element: GDInterface) => {
+                    let Saldo: any = (element.dados.metas.prodMensal - element.dados.metas.horasEntregues)
+                    if (Saldo < 0) {
+                        console.log('saldo é negativo da esteira ' + element.nome, Saldo);
+                        Saldo = '✓'
+                        element.dados.saldo = Saldo
+                    } else {
+                        element.dados.saldo = Saldo
+                    }
+                });
+                await concluirPush(GDEmGeral);
+            })
+
+            const concluirPush = (async (arrModificado: GDInterface[]) => {
+                await admin.database().ref('/brq-sla/gerenciamentoDiario').set(arrModificado);
+                console.log('Vindo da linha 79', arrModificado);
+            })
+
+            await getGD();
+        }
+        catch (error) {
+            console.log('erro da fução CalculoMetaCumprida', error);
+
+        }
+    })

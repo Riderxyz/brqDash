@@ -5,6 +5,7 @@ import { GetDataService } from 'src/service/getData.service';
 import { CentralRxJsService } from 'src/service/centralRxjs.service';
 import { GDInterface } from 'src/models/gd.model';
 import { GridOptions, ColDef, ColGroupDef } from 'ag-grid-community';
+
 @Component({
   selector: 'app-gd-board',
   templateUrl: './gd-board.component.html',
@@ -63,7 +64,6 @@ export class GDBoardComponent implements OnInit {
     return this.columnDefs = [
       {
         headerName: 'Esteira',
-        field: 'esteira',
         cellClass: 'normalCell',
         width: 50,
         // height: 190,
@@ -71,7 +71,6 @@ export class GDBoardComponent implements OnInit {
       },
       {
         headerName: 'Produção Mensal',
-        field: 'esteira',
         width: 25,
         cellStyle: { textAlign: 'center' },
         cellClass: 'normalCell',
@@ -80,7 +79,6 @@ export class GDBoardComponent implements OnInit {
       },
       {
         headerName: 'Horas Previstas',
-        field: 'esteira',
         width: 25,
         cellStyle: { textAlign: 'center' },
         cellClass: 'normalCell',
@@ -89,7 +87,6 @@ export class GDBoardComponent implements OnInit {
       },
       {
         headerName: 'Horas Entregues',
-        field: 'esteira',
         width: 25,
         cellStyle: { textAlign: 'center' },
         cellClass: 'normalCell',
@@ -98,7 +95,6 @@ export class GDBoardComponent implements OnInit {
       },
       {
         headerName: 'Meta Cumprida',
-        field: 'esteira',
         width: 25,
         cellStyle: { textAlign: 'center' },
         cellClass: 'normalCell',
@@ -107,12 +103,11 @@ export class GDBoardComponent implements OnInit {
       },
       {
         headerName: 'Saldo',
-        field: 'esteira',
         width: 25,
         cellStyle: { textAlign: 'center' },
         cellClass: 'normalCell',
         // height: 190,
-        cellRenderer: this.formatGDSrv.formatMetaCumprida,
+        cellRenderer: this.formatGDSrv.formatSaldo,
       },
       {
         headerName: 'S1',
