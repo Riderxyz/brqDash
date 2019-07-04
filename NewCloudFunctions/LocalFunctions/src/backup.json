@@ -1,0 +1,166 @@
+[ {
+  "dados" : {
+    "metaSemanal" : {
+      "semana1" : {
+        "isSemanaAtual" : false,
+        "valor" : 212
+      },
+      "semana2" : {
+        "isSemanaAtual" : false,
+        "valor" : 424
+      },
+      "semana3" : {
+        "isSemanaAtual" : false,
+        "valor" : 636
+      },
+      "semana4" : {
+        "isSemanaAtual" : true,
+        "valor" : 848
+      },
+      "semana5" : {
+        "isSemanaAtual" : false,
+        "valor" : 10510
+      }
+    },
+    "metas" : {
+      "horasEntregues" : 701,
+      "horasPrev" : 701,
+      "metaCumprida" : " - ",
+      "prodMensal" : 848
+    },
+    "saldo" : " - "
+  },
+  "nome" : "Sharepoint"
+}, {
+  "dados" : {
+    "metaSemanal" : {
+      "semana1" : {
+        "isSemanaAtual" : false,
+        "valor" : 113
+      },
+      "semana2" : {
+        "isSemanaAtual" : false,
+        "valor" : 225
+      },
+      "semana3" : {
+        "isSemanaAtual" : false,
+        "valor" : 338
+      },
+      "semana4" : {
+        "isSemanaAtual" : true,
+        "valor" : 450
+      },
+      "semana5" : {
+        "isSemanaAtual" : false,
+        "valor" : 3000
+      }
+    },
+    "metas" : {
+      "horasEntregues" : 472,
+      "horasPrev" : 472,
+      "metaCumprida" : " - ",
+      "prodMensal" : 450
+    },
+    "saldo" : " - "
+  },
+  "nome" : "Mobile"
+}, {
+  "dados" : {
+    "metaSemanal" : {
+      "semana1" : {
+        "isSemanaAtual" : false,
+        "valor" : 88
+      },
+      "semana2" : {
+        "isSemanaAtual" : false,
+        "valor" : 175
+      },
+      "semana3" : {
+        "isSemanaAtual" : false,
+        "valor" : 263
+      },
+      "semana4" : {
+        "isSemanaAtual" : true,
+        "valor" : 350
+      },
+      "semana5" : {
+        "isSemanaAtual" : false,
+        "valor" : 421
+      }
+    },
+    "metas" : {
+      "horasEntregues" : 388,
+      "horasPrev" : 388,
+      "metaCumprida" : " - ",
+      "prodMensal" : 350
+    },
+    "saldo" : " - "
+  },
+  "nome" : "PeopleSoft"
+}, {
+  "dados" : {
+    "metaSemanal" : {
+      "semana1" : {
+        "isSemanaAtual" : false,
+        "valor" : 70
+      },
+      "semana2" : {
+        "isSemanaAtual" : false,
+        "valor" : 140
+      },
+      "semana3" : {
+        "isSemanaAtual" : false,
+        "valor" : 209
+      },
+      "semana4" : {
+        "isSemanaAtual" : true,
+        "valor" : 279
+      },
+      "semana5" : {
+        "isSemanaAtual" : false,
+        "valor" : 300
+      }
+    },
+    "metas" : {
+      "horasEntregues" : 289,
+      "horasPrev" : 233,
+      "metaCumprida" : " - ",
+      "prodMensal" : 279
+    },
+    "saldo" : " - "
+  },
+  "nome" : "Integração"
+}, {
+  "dados" : {
+    "metaSemanal" : {
+      "semana1" : {
+        "isSemanaAtual" : false,
+        "valor" : 95
+      },
+      "semana2" : {
+        "isSemanaAtual" : false,
+        "valor" : 190
+      },
+      "semana3" : {
+        "isSemanaAtual" : false,
+        "valor" : 285
+      },
+      "semana4" : {
+        "isSemanaAtual" : true,
+        "valor" : 380
+      },
+      "semana5" : {
+        "isSemanaAtual" : false,
+        "valor" : 463
+      }
+    },
+    "metas" : {
+      "horasEntregues" : 488,
+      "horasPrev" : 451,
+      "metaCumprida" : " - ",
+      "prodMensal" : 380
+    },
+    "saldo" : " - "
+  },
+  "nome" : "Delphi/ .NET/ETL"
+} ]
