@@ -3,22 +3,64 @@
 @import "~ag-grid-community/dist/styles/ag-theme-balham.css";
 
 .ColunaStatus {
-  font-size: 2vw;
+    font-size: 2vw;
 }
 
 .ColunaEsteiraEsteira {
-  font-size: 2vw;
-  padding-top: 10px;
+    font-size: 2vw;
+    padding-top: 10px;
 }
+
 .ColunaEsteiraTitulo {
-  font-size: 2vw;
+    font-size: 2vw;
 }
 
 .ColunaEsteiraDataFormatada {
-  font-size: 2vw;
-  padding-top: 10px;
+    font-size: 2vw;
+    padding-top: 10px;
 }
 
 .ColunaEsteiraDataFim {
+    font-size: 2vw;
+}
+
+
+.colunasDoGD{
   font-size: 2vw;
+  text-align: center;
+}
+.ag-theme-balham .ag-header{
+  background-color: royalblue;
+  border-bottom: 1px solid #BDC3C7;
+  color: #fff;
+}
+.ag-cell-label-container {
+    /*Necessary to allow for text to grow vertically*/
+    height: 100%;
+}
+
+.ag-header-cell-label {
+    /*Necessary to allow for text to grow vertically*/
+    height: 100% !important;
+    padding: 0 !important;
+    text-overflow: clip;
+    overflow: visible;
+    white-space: normal;
+    text-align: center;
+    float: none !important;
+    font-size: 1.2rem;
+    width: 100% !important;
+
+    .ag-header-cell-text {
+        /*Force the width corresponding at how much width
+  we need once the text is layed out vertically*/
+        width: 100% !important;
+        // transform: rotate(45deg);
+        // margin-top: 50px;
+        /*Since we are rotating a span*/
+        display: inline-block;
+        overflow: unset !important;
+        text-overflow: unset !important;
+        white-space: unset !important;
+    }
 }
