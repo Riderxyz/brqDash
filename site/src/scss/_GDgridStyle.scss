@@ -1,21 +1,25 @@
-.colunasDoGD{
-  font-size: 2vw;
-  text-align: center;
+.colunasDoGD {
+    font-size: 2vw;
+    text-align: center;
 }
 
 .semanaAtual {
-  color: #007bff;
-  background-color: lightgray;
+    color: #007bff;
+    background-color: honeydew;
+
+}
+.normalCell {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.ag-theme-blue .ag-header{
- /*  background-color: royalblue;
+.ag-theme-blue .ag-header {
+    /*  background-color: royalblue;
   border-bottom: 1px solid #BDC3C7; */
-  color: #fff;
+    color: #fff;
 }
+
 .ag-cell-label-container {
     /*Necessary to allow for text to grow vertically*/
     height: 100%;

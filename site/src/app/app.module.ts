@@ -14,7 +14,6 @@ import { NebularModule } from 'src/Modules/Nebular.module';
 import { AgGridModule } from 'ag-grid-angular';
 
 // Modules
-import { FloatingActionMenuModule } from 'ng2-floating-action-menu'
 import { HttpClientModule } from '@angular/common/http';
 
 // AngularFire
@@ -46,7 +45,6 @@ const AppRoutes: Routes = [
     RoutingModule,
     HttpClientModule,
     FormsModule,
-    FloatingActionMenuModule,
     // CDK
     LayoutModule,
     // AngularFire
