@@ -12,7 +12,7 @@ export class GDBoardComponent implements OnInit {
   esteiras: GDInterface[] = [];
   public gridApi: any;
   public gridOptions: GridOptions;
-  columnDefs:ColDef[] = [];
+  columnDefs: ColDef[] = [];
   constructor(
     public dataSrv: GetDataSrv,
   ) { }
@@ -22,14 +22,11 @@ export class GDBoardComponent implements OnInit {
       console.log('o q vem aqui para gerenciamento?', res);
       this.esteiras = res;
     });
-
-
-
     this.gridOptions = {
       columnDefs: this.createColumnDefs,
       enableSorting: true,
       headerHeight: 60,
-      rowHeight: 100,
+      rowHeight: 120,
       onGridReady: (params) => {
         this.gridApi = params.api;
         params.api.sizeColumnsToFit();
@@ -57,7 +54,7 @@ export class GDBoardComponent implements OnInit {
       {
         headerName: 'Esteira',
         field: 'esteira',
-       width: 50,
+        width: 50,
         // height: 190,
         cellRenderer: this.formatNome,
       },
@@ -65,7 +62,7 @@ export class GDBoardComponent implements OnInit {
         headerName: 'Produção Mensal',
         field: 'esteira',
         width: 25,
-        cellStyle:{ textAlign: 'center'},
+        cellStyle: { textAlign: 'center' },
         // height: 190,
         cellRenderer: this.formatProducaoMensal,
       },
@@ -73,7 +70,7 @@ export class GDBoardComponent implements OnInit {
         headerName: 'Horas Previstas',
         field: 'esteira',
         width: 25,
-        cellStyle:{ textAlign: 'center'},
+        cellStyle: { textAlign: 'center' },
         // height: 190,
         cellRenderer: this.formatHoraPrevista,
       },
@@ -81,7 +78,7 @@ export class GDBoardComponent implements OnInit {
         headerName: 'Horas Entregues',
         field: 'esteira',
         width: 25,
-        cellStyle:{ textAlign: 'center'},
+        cellStyle: { textAlign: 'center' },
         // height: 190,
         cellRenderer: this.formatHoraEntregues,
       },
@@ -89,7 +86,7 @@ export class GDBoardComponent implements OnInit {
         headerName: 'Meta Cumprida',
         field: 'esteira',
         width: 25,
-        cellStyle:{ textAlign: 'center'},
+        cellStyle: { textAlign: 'center' },
         // height: 190,
         cellRenderer: this.formatMetaCumprida,
       },
@@ -97,49 +94,81 @@ export class GDBoardComponent implements OnInit {
         headerName: 'Saldo',
         field: 'esteira',
         width: 25,
-        cellStyle:{ textAlign: 'center'},
+        cellStyle: { textAlign: 'center' },
         // height: 190,
         cellRenderer: this.formatMetaCumprida,
       },
       {
         headerName: 'S1',
         width: 25,
-        cellStyle:{ textAlign: 'center'},
-        // height: 190,
+        cellStyle: { textAlign: 'center' },
+        cellClassRules: {
+          'semanaAtual': ((params) => {
+            const dados: GDInterface = params.data;
+            return (dados.dados.metaSemanal.semana1.isSemanaAtual);
+          })
+        },
         cellRenderer: this.formatSemana1,
       },
       {
         headerName: 'S2',
         width: 25,
-        cellStyle:{ textAlign: 'center'},
-        // height: 190,
+        cellStyle: { textAlign: 'center' },
+          cellClassRules: {
+          'semanaAtual': ((params) => {
+            const dados: GDInterface = params.data;
+            return (dados.dados.metaSemanal.semana2.isSemanaAtual);
+          })
+        },
         cellRenderer: this.formatSemana2,
       },
       {
         headerName: 'S3',
         width: 25,
-        cellStyle:{ textAlign: 'center'},
-        // height: 190,
+        cellStyle: { textAlign: 'center' },
+          cellClassRules: {
+          'semanaAtual': ((params) => {
+            const dados: GDInterface = params.data;
+            return (dados.dados.metaSemanal.semana3.isSemanaAtual);
+          })
+        },
         cellRenderer: this.formatSemana3,
       },
       {
         headerName: 'S4',
         width: 25,
-        cellStyle:{ textAlign: 'center'},
-        // height: 190,
+        cellStyle: { textAlign: 'center' },
+          cellClassRules: {
+          'semanaAtual': ((params) => {
+            const dados: GDInterface = params.data;
+            return (dados.dados.metaSemanal.semana4.isSemanaAtual);
+          })
+        },
         cellRenderer: this.formatSemana4,
       },
       {
         headerName: 'S5',
         width: 25,
-        cellStyle:{ textAlign: 'center'},
-        // height: 190,
+        cellStyle: { textAlign: 'center' },
+          cellClassRules: {
+          'semanaAtual': ((params) => {
+            const dados: GDInterface = params.data;
+            return (dados.dados.metaSemanal.semana5.isSemanaAtual);
+          })
+        },
         cellRenderer: this.formatSemana5,
       },
     ];
   }
 
+  isSemanaAtual(params: any) {
+    const semanaAtual = {
+      'semanaAtual': ((params) => {
+        const dados: GDInterface = params.data;
 
+      })
+    }
+  }
 
   formatNome(param: any) {
     const dados: GDInterface = param.data;
