@@ -4,6 +4,7 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import { map, filter, uniq, orderBy } from 'lodash';
 import { environment } from 'src/environments/environment';
 import { Subject } from 'rxjs';
+import { config } from './config';
 
 @Injectable()
 export class GetDataService {
@@ -58,6 +59,12 @@ export class GetDataService {
   public get DataJSalva(): DemandaDashboardModel[] {
 
     return this._DataJSalva;
+  }
+
+  public get randomEffect() {
+    const effArr = config.animateCssArr;
+    const random = effArr[Math.floor(Math.random() * effArr.length)];
+    return random;
   }
 
 }

@@ -25,8 +25,12 @@ export class GDBoardComponent implements OnInit {
   ngOnInit() {
     window.onresize = ((resizeObj) => {
       console.log('RESIZEBLE da linha 61', resizeObj);
-      this.gridApi.sizeColumnsToFit();
+      this.gridOptions.api.sizeColumnsToFit();
     })
+
+    setTimeout(() => {
+      this.gridOptions.api.sizeColumnsToFit();
+    }, 1500);
     this.dataSrv.ListarGerenciamento.subscribe((res: GDInterface[]) => {
       console.log('o q vem aqui para gerenciamento?', res);
       this.esteiras = res;

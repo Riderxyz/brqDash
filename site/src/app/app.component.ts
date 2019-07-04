@@ -44,7 +44,6 @@ export class AppComponent implements OnInit {
     public centralRx: CentralRxJsService
   ) {
     this.centralRx.DataSended.subscribe((res) => {
-      console.log('LINHA 66 do appComponent', res);
       if (res === config.rxjsCentralKeys.GridReady) {
         if (!this.isAppLoaded) {
           this.splashScreenLoadOut();
@@ -56,20 +55,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.dataSrv.ListarItems.pipe(
-      map((resultadoMap: DemandaDashboardModel[]) => {
-        resultadoMap.forEach((element) => {
-          const temp_d = element.data.split(':');
-          const hh = +temp_d[0] + 'h ' + temp_d[1] + 'm';
-          element.dataFormatada = hh;
-        });
-        this.DataList = [];
-        this.dataSrv.DataJson = [];
-        this.dataSrv.DataJSalva = [];
-        return resultadoMap;
-      })
-    ).subscribe((res: DemandaDashboardModel[]) => {
-      /* console.log('LINHA 64', res); */
+    this.dataSrv.ListarItems.subscribe((res: DemandaDashboardModel[]) => {
       this.DataList = res;
       this.dataSrv.DataJson = res;
       this.dataSrv.DataJSalva = res;
@@ -87,8 +73,6 @@ export class AppComponent implements OnInit {
         }
       });
   }
-
-
   splashScreenLoadOut() {
     console.log('Entrei na função de splashArt');
     this.animationDiv.nativeElement.addEventListener('animationend', ((res) => {

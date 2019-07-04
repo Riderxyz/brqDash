@@ -43,11 +43,6 @@ export class DashboardComponent implements OnInit {
     public breakpointObserver: BreakpointObserver,
     public centralRx: CentralRxJsService,
   ) {
-
-    this.centralRx.DataSended.subscribe((res) => {
-      console.log('LINHA 44 DE DASHBOARD', res);
-    });
-
     moment.locale('pt');
 /*     this.remoteControl.controleRemoto.subscribe((esteiras) => {
       console.log('Controle remoto ativado');
@@ -62,7 +57,7 @@ export class DashboardComponent implements OnInit {
     });
 
     this.dataSrv.ListarItems.subscribe((res: DemandaDashboardModel[]) => {
-      console.log('peguei do firebase',res);
+      console.log('peguei do firebase', res);
 
       this.DataList = res;
       this.dataSrv.DataJson = res;
