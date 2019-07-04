@@ -37,7 +37,6 @@
     "moment-duration-format": "^2.2.2",
     "nebular-icons": "^1.1.0",
     "ng2-completer": "^2.0.8",
-    "ng2-floating-action-menu": "0.0.3",
     "popper.js": "^1.14.6",
     "rxjs": "~6.3.3",
     "tslib": "^1.9.0",

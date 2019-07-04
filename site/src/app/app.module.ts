@@ -21,8 +21,8 @@ import { environment } from './../environments/environment';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 // Service
-import { GetDataSrv } from 'src/service/getData.service';
-import { FormatService } from 'src/service/format.service';
+import { GetDataService } from 'src/service/getData.service';
+import { FormatDashService } from 'src/service/formatDash.service';
 import { RemoteControlService } from 'src/service/remoteControl.service';
 import { CentralRxJsService } from 'src/service/centralRxjs.service';
 
@@ -30,6 +30,7 @@ import { CentralRxJsService } from 'src/service/centralRxjs.service';
 import { DashboardComponent } from '../pages/Dashboard/dashboard.component';
 import { GDBoardComponent } from '../pages/GD-Board/gd-board.component';
 import { RoutingModule } from './app.routing';
+import { FormatGDService } from 'src/service/formatGD.service';
 
 const AppRoutes: Routes = [
   { path: 'Home', component: AppComponent },
@@ -62,8 +63,9 @@ const AppRoutes: Routes = [
     BrowserAnimationsModule
   ],
   providers: [
-    GetDataSrv,
-    FormatService,
+    GetDataService,
+    FormatDashService,
+    FormatGDService,
     CentralRxJsService,
     RemoteControlService
   ],

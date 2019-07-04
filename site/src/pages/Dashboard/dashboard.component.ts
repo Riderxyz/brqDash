@@ -5,11 +5,11 @@ import { GridOptions } from 'ag-grid-community';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { NbDialogService } from '@nebular/theme';
 import { DemandaDashboardModel } from '../../models/demandaDashboard.model';
-import { GetDataSrv } from 'src/service/getData.service';
+import { GetDataService } from 'src/service/getData.service';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { timer, from, of } from 'rxjs';
 import { map, debounce, delay } from 'rxjs/operators';
-import { FormatService } from 'src/service/format.service';
+import { FormatDashService } from 'src/service/formatDash.service';
 import { RemoteControlService } from 'src/service/remoteControl.service';
 import { SelectItemModel } from 'src/models/SelectItem.model';
 import { CentralRxJsService } from 'src/service/centralRxjs.service';
@@ -37,8 +37,8 @@ export class DashboardComponent implements OnInit {
   constructor(
     public db: AngularFireDatabase,
     public dialogService: NbDialogService,
-    public dataSrv: GetDataSrv,
-    public formatSrv: FormatService,
+    public dataSrv: GetDataService,
+    public formatSrv: FormatDashService,
     public remoteControl: RemoteControlService,
     public breakpointObserver: BreakpointObserver,
     public centralRx: CentralRxJsService,
@@ -126,7 +126,6 @@ export class DashboardComponent implements OnInit {
     });
     this.esteiras = this.dataSrv.listaEsteiras();
     if (this.isGridReady) {
-      console.log(this.DataList);
       this.gridOptions.api.setRowData(this.DataList);
       this.gridOptions.api.sizeColumnsToFit();
     }

@@ -2,7 +2,7 @@ import { DemandaDashboardModel } from '../models/demandaDashboard.model';
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class FormatService {
+export class FormatDashService {
   private _limites = {
     normal: {
       classe: {

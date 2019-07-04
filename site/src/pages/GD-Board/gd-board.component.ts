@@ -1,5 +1,7 @@
+import { FormatGDService } from './../../service/formatGD.service';
+import { config } from '../../service/config';
 import { Component, OnInit } from '@angular/core';
-import { GetDataSrv } from 'src/service/getData.service';
+import { GetDataService } from 'src/service/getData.service';
 import { CentralRxJsService } from 'src/service/centralRxjs.service';
 import { GDInterface } from 'src/models/gd.model';
 import { GridOptions, ColDef, ColGroupDef } from 'ag-grid-community';
@@ -14,10 +16,16 @@ export class GDBoardComponent implements OnInit {
   public gridOptions: GridOptions;
   columnDefs: ColDef[] = [];
   constructor(
-    public dataSrv: GetDataSrv,
+    public dataSrv: GetDataService,
+    public centralRx: CentralRxJsService,
+    public formatGDSrv: FormatGDService
   ) { }
 
   ngOnInit() {
+    window.onresize = ((resizeObj) => {
+      console.log('RESIZEBLE da linha 61', resizeObj);
+      this.gridApi.sizeColumnsToFit();
+    })
     this.dataSrv.ListarGerenciamento.subscribe((res: GDInterface[]) => {
       console.log('o q vem aqui para gerenciamento?', res);
       this.esteiras = res;
@@ -31,7 +39,8 @@ export class GDBoardComponent implements OnInit {
       onGridReady: (params) => {
         this.gridApi = params.api;
         params.api.sizeColumnsToFit();
-        console.log('esta pronto');
+        const comando = config.rxjsCentralKeys.GridReady;
+        this.centralRx.sendData = comando;
         this.gridOptions.api.setRowData(this.esteiras);
         /*         const comando = config.rxjsCentralKeys.GridReady;
                 this.centralRx.sendData = comando;
@@ -58,7 +67,7 @@ export class GDBoardComponent implements OnInit {
         cellClass: 'normalCell',
         width: 50,
         // height: 190,
-        cellRenderer: this.formatNome,
+        cellRenderer: this.formatGDSrv.formatNome,
       },
       {
         headerName: 'Produção Mensal',
@@ -67,7 +76,7 @@ export class GDBoardComponent implements OnInit {
         cellStyle: { textAlign: 'center' },
         cellClass: 'normalCell',
         // height: 190,
-        cellRenderer: this.formatProducaoMensal,
+        cellRenderer: this.formatGDSrv.formatProducaoMensal,
       },
       {
         headerName: 'Horas Previstas',
@@ -76,7 +85,7 @@ export class GDBoardComponent implements OnInit {
         cellStyle: { textAlign: 'center' },
         cellClass: 'normalCell',
         // height: 190,
-        cellRenderer: this.formatHoraPrevista,
+        cellRenderer: this.formatGDSrv.formatHoraPrevista,
       },
       {
         headerName: 'Horas Entregues',
@@ -85,7 +94,7 @@ export class GDBoardComponent implements OnInit {
         cellStyle: { textAlign: 'center' },
         cellClass: 'normalCell',
         // height: 190,
-        cellRenderer: this.formatHoraEntregues,
+        cellRenderer: this.formatGDSrv.formatHoraEntregues,
       },
       {
         headerName: 'Meta Cumprida',
@@ -94,7 +103,7 @@ export class GDBoardComponent implements OnInit {
         cellStyle: { textAlign: 'center' },
         cellClass: 'normalCell',
         // height: 190,
-        cellRenderer: this.formatMetaCumprida,
+        cellRenderer: this.formatGDSrv.formatMetaCumprida,
       },
       {
         headerName: 'Saldo',
@@ -103,7 +112,7 @@ export class GDBoardComponent implements OnInit {
         cellStyle: { textAlign: 'center' },
         cellClass: 'normalCell',
         // height: 190,
-        cellRenderer: this.formatMetaCumprida,
+        cellRenderer: this.formatGDSrv.formatMetaCumprida,
       },
       {
         headerName: 'S1',
@@ -116,7 +125,7 @@ export class GDBoardComponent implements OnInit {
             return (dados.dados.metaSemanal.semana1.isSemanaAtual);
           })
         },
-        cellRenderer: this.formatSemana1,
+        cellRenderer: this.formatGDSrv.formatSemana1,
       },
       {
         headerName: 'S2',
@@ -129,7 +138,7 @@ export class GDBoardComponent implements OnInit {
             return (dados.dados.metaSemanal.semana2.isSemanaAtual);
           })
         },
-        cellRenderer: this.formatSemana2,
+        cellRenderer: this.formatGDSrv.formatSemana2,
       },
       {
         headerName: 'S3',
@@ -142,7 +151,7 @@ export class GDBoardComponent implements OnInit {
             return (dados.dados.metaSemanal.semana3.isSemanaAtual);
           })
         },
-        cellRenderer: this.formatSemana3,
+        cellRenderer: this.formatGDSrv.formatSemana3,
       },
       {
         headerName: 'S4',
@@ -155,7 +164,7 @@ export class GDBoardComponent implements OnInit {
             return (dados.dados.metaSemanal.semana4.isSemanaAtual);
           })
         },
-        cellRenderer: this.formatSemana4,
+        cellRenderer: this.formatGDSrv.formatSemana4,
       },
       {
         headerName: 'S5',
@@ -168,68 +177,8 @@ export class GDBoardComponent implements OnInit {
             return (dados.dados.metaSemanal.semana5.isSemanaAtual);
           })
         },
-        cellRenderer: this.formatSemana5,
+        cellRenderer: this.formatGDSrv.formatSemana5,
       },
     ];
-  }
-
-
-  formatNome(param: any) {
-    const dados: GDInterface = param.data;
-    const html = '<span class="colunasDoGD">' + dados.nome + '</span>';
-    return html;
-  }
-  formatProducaoMensal(param: any) {
-    const dados: GDInterface = param.data;
-    const html = '<span class="colunasDoGD">' + dados.dados.metas.prodMensal + '</span>';
-    /* const html = `<nb-card>
-    <nb-card-header>` + dados.dados.metas.prodMensal + `</nb-card-header>
-    </nb-card>` */
-    return html;
-  }
-  formatHoraPrevista(param: any) {
-    const dados: GDInterface = param.data;
-    const html = '<span class="colunasDoGD">' + dados.dados.metas.horasPrev + '</span>';
-    return html;
-  }
-  formatHoraEntregues(param: any) {
-    const dados: GDInterface = param.data;
-    const html = '<span class="colunasDoGD">' + dados.dados.metas.horasEntregues + '</span>';
-    return html;
-  }
-  formatMetaCumprida(param: any) {
-    const dados: GDInterface = param.data;
-    const html = '<span class="colunasDoGD">' + dados.dados.metas.metaCumprida + '</span>';
-    return html;
-  }
-  formatSaldo(param: any) {
-    const dados: GDInterface = param.data;
-    const html = '<span class="colunasDoGD">' + dados.dados.saldo + '</span>';
-    return html;
-  }
-  formatSemana1(param: any) {
-    const dados: GDInterface = param.data;
-    const html = '<span class="colunasDoGD">' + dados.dados.metaSemanal.semana1.valor + '</span>';
-    return html;
-  }
-  formatSemana2(param: any) {
-    const dados: GDInterface = param.data;
-    const html = '<span class="colunasDoGD">' + dados.dados.metaSemanal.semana2.valor + '</span>';
-    return html;
-  }
-  formatSemana3(param: any) {
-    const dados: GDInterface = param.data;
-    const html = '<span class="colunasDoGD">' + dados.dados.metaSemanal.semana3.valor + '</span>';
-    return html;
-  }
-  formatSemana4(param: any) {
-    const dados: GDInterface = param.data;
-    const html = '<span class="colunasDoGD">' + dados.dados.metaSemanal.semana4.valor + '</span>';
-    return html;
-  }
-  formatSemana5(param: any) {
-    const dados: GDInterface = param.data;
-    const html = '<span class="colunasDoGD">' + dados.dados.metaSemanal.semana5.valor + '</span>';
-    return html;
   }
 }

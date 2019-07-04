@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { environment } from 'src/environments/environment';
 import { Subject } from 'rxjs';
-import { GetDataSrv } from './getData.service';
+import { GetDataService } from './getData.service';
 
 @Injectable()
 export class RemoteControlService {
@@ -11,7 +11,7 @@ export class RemoteControlService {
 
   constructor(
     public db: AngularFireDatabase,
-    public dataSrv: GetDataSrv
+    public dataSrv: GetDataService
   ) {
     this.db.object('/dashBoardAtivo/' + this._localRequisitado).valueChanges()
       .subscribe((res: any) => {

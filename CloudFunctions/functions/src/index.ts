@@ -5,9 +5,8 @@ admin.initializeApp()
 // // https://firebase.google.com/docs/functions/typescript
 export const pushNotification = functions.database.ref('/brq-sla/ONS').onWrite(
   async (snapshot, context) => {
-
     try {
-      type NotificationMessagePayload = {
+      interface NotificationMessagePayload  {
         tag?: string;
         body?: string;
         icon?: string;
@@ -23,12 +22,12 @@ export const pushNotification = functions.database.ref('/brq-sla/ONS').onWrite(
         [key: string]: string | undefined;
       };
 
-      type MessagingPayload = {
+      interface MessagingPayload  {
         data?: admin.messaging.DataMessagePayload;
         notification?: admin.messaging.NotificationMessagePayload;
       };
 
-      type MessagingOptions = {
+      interface MessagingOptions  {
         dryRun?: boolean;
         priority?: string;
         timeToLive?: number;
@@ -108,7 +107,6 @@ export const pushNotification = functions.database.ref('/brq-sla/ONS').onWrite(
             title: "Funciona!",
           }
         }
-
         allTokens.val().forEach(element => {
           payload.notification.color = pushColor
           admin.messaging().sendToDevice(element, payload).then((res) => {
@@ -171,3 +169,16 @@ export const pushNotification = functions.database.ref('/brq-sla/ONS').onWrite(
       console.log('O que deu errado aqui?', error);
     }
   })
+
+  export const CalculoMetaCumprida = functions.database.ref('/brq-sla/gerenciamentoDiario').onWrite(
+    async (snapshot, context) => {
+      try {
+
+        const allTokens = await admin.database().ref('/DeviceId').once('value');
+
+
+      }
+      catch(error) {
+
+      }
+    })

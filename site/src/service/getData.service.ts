@@ -6,7 +6,7 @@ import { environment } from 'src/environments/environment';
 import { Subject } from 'rxjs';
 
 @Injectable()
-export class GetDataSrv {
+export class GetDataService {
 
   private _DataJson: DemandaDashboardModel[] = [];
   private _DataJSalva: DemandaDashboardModel[] = [];

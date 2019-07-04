@@ -2,21 +2,18 @@ import { config } from './../service/config';
 import { Component, TemplateRef, ViewChild, OnInit, ElementRef } from '@angular/core';
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
-import { GridOptions } from 'ag-grid-community';
 import { AngularFireDatabase } from '@angular/fire/database';
-import { NbDialogService } from '@nebular/theme';
 import { DemandaDashboardModel } from '../models/demandaDashboard.model';
-import { GetDataSrv } from 'src/service/getData.service';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
-import { timer, from, of } from 'rxjs';
-import { map, debounce, delay } from 'rxjs/operators';
-import { FormatService } from 'src/service/format.service';
-import { RemoteControlService } from 'src/service/remoteControl.service';
+import { map } from 'rxjs/operators';
 
 
-import { FloatingActionButton } from 'ng2-floating-action-menu';
-import { SelectItemModel } from 'src/models/SelectItem.model';
-import { CentralRxJsService } from 'src/service/centralRxjs.service';
+import { GetDataService } from 'src/service/getData.service';
+import { FormatDashService } from '../service/formatDash.service';
+import { RemoteControlService } from '../service/remoteControl.service';
+import { CentralRxJsService } from '../service/centralRxjs.service';
+
+import { SelectItemModel } from '../models/SelectItem.model';
 
 import { slideInAnimation } from './route.animation';
 
@@ -35,35 +32,14 @@ export class AppComponent implements OnInit {
     show: true,
     animation: 'jello slow delay-1s'
   }
-  fabButton: FloatingActionButton[] = [{
-    iconClass: 'nb-menu',
-    label: 'follow me on github',
-    onClick: function () {
-      console.log('vindo do primeiro');
 
-    }
-  },
-  {
-    iconClass: 'ion-social-facebook',
-    label: 'nb-user',
-    onClick: function () {
-      console.log('vindo do segundo');
-    }
-  }];
   ShowWhenSizable: boolean;
   @ViewChild('animateSplash') animationDiv: ElementRef<any>;
-  @ViewChild('ModalShowFiltro') Modal_Filtro: TemplateRef<any>;
-  public gridApi: any;
-  public gridOptions: GridOptions;
-
   isAppLoaded = false;
   columnDefs = [];
   constructor(
-    public db: AngularFireDatabase,
-    public dialogService: NbDialogService,
-    public dataSrv: GetDataSrv,
-    public formatSrv: FormatService,
-    public remoteControl: RemoteControlService,
+    public dataSrv: GetDataService,
+    public formatSrv: FormatDashService,
     public breakpointObserver: BreakpointObserver,
     public centralRx: CentralRxJsService
   ) {
@@ -99,7 +75,7 @@ export class AppComponent implements OnInit {
       this.dataSrv.DataJSalva = res;
 
     });
-   this.breakpointObserver
+    this.breakpointObserver
       .observe(['(min-width: 830px)'])
       .subscribe((state: BreakpointState) => {
         if (state.matches) {
@@ -128,19 +104,5 @@ export class AppComponent implements OnInit {
         this.splashScreenLoadOut();
       }
     }));
-    /*         if (this.DataList !== [] || this.DataList !== null || this.DataList !== undefined) {
-              setTimeout(() => {
-              }, 2000);
-            } else {
-            } */
   }
-
-
-  filtrarLista(esteira, refs) {
-    console.log('fatiou, passou', esteira);
-    this.gridApi.setRowData(this.dataSrv.filtroEsteira(esteira));
-    refs.close();
-  }
-
-
 }
