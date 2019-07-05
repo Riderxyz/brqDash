@@ -31,14 +31,14 @@ export class FormatGDService {
   }
   formatMetaCumprida(param: any) {
     const dados: GDInterface = param.data;
-    const html = '<span class="colunasDoGD">' + dados.dados.metas.metaCumprida + '</span>';
+    const html = '<span class="colunasDoGD">' + dados.dados.metas.metaCumprida + '%</span>';
     return html;
   }
   formatSaldo(param: any) {
     const dados: GDInterface = param.data;
       let html = null as string;
     if (dados.dados.saldo !== '✓') {
-      html = '<span class="colunasDoGD">' + dados.dados.saldo + '%</span>';
+      html = '<span class="colunasDoGD">' + dados.dados.saldo + '</span>';
     } else {
       html = '<span class="colunasDoGD"> <i class="fas fa-check"></i> </span>';
     }

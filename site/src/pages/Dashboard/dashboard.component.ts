@@ -9,11 +9,11 @@ import { GetDataService } from 'src/service/getData.service';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { FormatDashService } from 'src/service/formatDash.service';
 import { RemoteControlService } from 'src/service/remoteControl.service';
-import { SelectItemModel } from 'src/models/SelectItem.model';
+import { SelectItemInterface } from 'src/models/SelectItem.model';
 import { CentralRxJsService } from 'src/service/centralRxjs.service';
 import { config } from 'src/service/config';
 import { FabListInterface } from 'src/models/fabList.model';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,7 +21,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  esteiras: SelectItemModel[];
+  esteiras: SelectItemInterface[];
   esteirasSelecionadas: any[];
   DataList: DemandaDashboardModel[] = [];
   SplashScreen = {
@@ -45,7 +45,8 @@ export class DashboardComponent implements OnInit {
     public remoteControl: RemoteControlService,
     public breakpointObserver: BreakpointObserver,
     public centralRx: CentralRxJsService,
-    private route: Router
+    private route: Router,
+    public router: ActivatedRoute,
   ) {
     moment.locale('pt');
     /*     this.remoteControl.controleRemoto.subscribe((esteiras) => {
@@ -55,14 +56,14 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+
     window.onresize = ((resizeObj) => {
       console.log('RESIZEBLE da linha 61', resizeObj);
       this.gridApi.sizeColumnsToFit();
     });
+
     this.FabList = this.dataSrv.FabButtonList;
     this.dataSrv.ListarItems.subscribe((res: DemandaDashboardModel[]) => {
-      console.log('peguei do firebase', res);
-
       this.DataList = res;
       this.dataSrv.DataJson = res;
       this.dataSrv.DataJSalva = res;

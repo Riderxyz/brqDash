@@ -29,6 +29,18 @@
     <div [@routeAnimations]="o && o.activatedRouteData
     && o.activatedRouteData['animation']">
       <router-outlet #o="outlet"></router-outlet>
+      <div class="OnFabButton">
+        <div class="float-btn-group" [class.open]="showFab">
+          <button class="btn-float btn-triger" nbButton (click)="GoForIt()">
+            <i class="fas fa-bars"></i>
+          </button>
+          <div class="btn-list">
+            <button class="btn-float" (click)="GoTo(fabObj)" *ngFor="let fabObj of FabList" nbButton hero [status]="fabObj.cor" [nbTooltip]="fabObj.tooltip" nbTooltipPlacement="top">
+              <i class="{{fabObj.icon}}"></i>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
   </nb-layout-column>

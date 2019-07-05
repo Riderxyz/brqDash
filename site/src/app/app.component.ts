@@ -14,9 +14,10 @@ import { FormatDashService } from '../service/formatDash.service';
 import { RemoteControlService } from '../service/remoteControl.service';
 import { CentralRxJsService } from '../service/centralRxjs.service';
 
-import { SelectItemModel } from '../models/SelectItem.model';
+import { SelectItemInterface } from '../models/SelectItem.model';
 
 import { slideInAnimation } from './route.animation';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -40,7 +41,8 @@ export class AppComponent implements OnInit {
     public dataSrv: GetDataService,
     public formatSrv: FormatDashService,
     public breakpointObserver: BreakpointObserver,
-    public centralRx: CentralRxJsService
+    public centralRx: CentralRxJsService,
+    public route: Router,
   ) {
     this.centralRx.DataSended.subscribe((res) => {
       if (res === config.rxjsCentralKeys.GridReady) {
@@ -54,6 +56,10 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+
+
+
+
     this.FabList = this.dataSrv.FabButtonList;
     this.dataSrv.ListarItems.subscribe((res: DemandaDashboardModel[]) => {
       this.DataList = res;
@@ -90,11 +96,37 @@ export class AppComponent implements OnInit {
     }));
   }
   GoForIt() {
+    console.log('LINHA 60', this.route.url);
     this.showFab = !this.showFab;
   }
 
+
   GoTo(ev) {
     console.log(ev);
+    switch (ev.comando) {
+      case config.FabCommand.FiltrarGrid:
+        this.showFab = false;
+        if (this.route.url === '/dashboard') {
+          const comando = config.rxjsCentralKeys.GridReady;
+          this.centralRx.sendData = comando;
+        } else {
+          alert('Ainda será implementado');
+        }
+        break;
+      case config.FabCommand.GoToDash:
+        this.showFab = false;
+        this.route.navigateByUrl('/dashboard');
+        break;
+      case config.FabCommand.GoToGD:
+        this.showFab = false;
+        this.route.navigateByUrl('/gdboard');
+        break;
+      case config.FabCommand.GoToUser:
+        this.showFab = false;
+        break;
+      default:
+        break;
+    }
 
   }
 }

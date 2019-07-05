@@ -31,6 +31,7 @@ import { DashboardComponent } from '../pages/Dashboard/dashboard.component';
 import { GDBoardComponent } from '../pages/GD-Board/gd-board.component';
 import { RoutingModule } from './app.routing';
 import { FormatGDService } from 'src/service/formatGD.service';
+import { LoginModalComponent } from '../components/login-modal/login-modal.component';
 
 const AppRoutes: Routes = [
   { path: 'Home', component: AppComponent },
@@ -40,7 +41,8 @@ const AppRoutes: Routes = [
   declarations: [
     AppComponent,
     DashboardComponent,
-    GDBoardComponent
+    GDBoardComponent,
+    LoginModalComponent
   ],
   imports: [
     RoutingModule,

@@ -1,4 +1,4 @@
-export interface SelectItemModel {
+export interface SelectItemInterface {
   label: string;
   value: {
     id: number;
