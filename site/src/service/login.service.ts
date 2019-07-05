@@ -10,7 +10,7 @@ import { FabListInterface } from 'src/models/fabList.model';
 import { UserObjInterface } from 'src/models/userObj.model';
 
 @Injectable()
-export class NameService {
+export class LoginService {
 
 
   private _UserObj = {};

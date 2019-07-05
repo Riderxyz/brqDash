@@ -25,6 +25,7 @@ import { GetDataService } from 'src/service/getData.service';
 import { FormatDashService } from 'src/service/formatDash.service';
 import { RemoteControlService } from 'src/service/remoteControl.service';
 import { CentralRxJsService } from 'src/service/centralRxjs.service';
+import { LoginService } from 'src/service/login.service';
 
 // Paginas
 import { DashboardComponent } from '../pages/Dashboard/dashboard.component';
@@ -72,7 +73,8 @@ const AppRoutes: Routes = [
     FormatDashService,
     FormatGDService,
     CentralRxJsService,
-    RemoteControlService
+    RemoteControlService,
+    LoginService
   ],
   bootstrap: [AppComponent]
 })

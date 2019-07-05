@@ -1,0 +1,15 @@
+.loginHolder{
+  display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+nb-flip-card{
+  width: 50%;
+  .loginForm{
+    display: flex;
+    flex-direction: column;
+
+  }
+}
+}

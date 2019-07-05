@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CentralRxJsService } from 'src/service/centralRxjs.service';
+import { NgForm } from '@angular/forms';
+import { UserObjInterface } from 'src/models/userObj.model';
+import { LoginService } from 'src/service/login.service';
 @Component({
   selector: 'app-login-modal',
   templateUrl: './login-modal.component.html',
@@ -7,11 +10,19 @@ import { CentralRxJsService } from 'src/service/centralRxjs.service';
 })
 export class LoginModalComponent implements OnInit {
 onRegisterPage = false;
+
+userObj:UserObjInterface;
   constructor(
-    public centralRx: CentralRxJsService
-    ) { }
+    public centralRx: CentralRxJsService,
+    public loginSrv:LoginService
+    ) {
+
+
+    }
 
   ngOnInit() {
   }
+  onLoginClick(Form: NgForm){
 
+  }
 }
