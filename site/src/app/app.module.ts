@@ -20,6 +20,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { environment } from './../environments/environment';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 // Service
 import { GetDataService } from 'src/service/getData.service';
 import { FormatDashService } from 'src/service/formatDash.service';
@@ -34,9 +35,11 @@ import { RoutingModule } from './app.routing';
 import { FormatGDService } from 'src/service/formatGD.service';
 import { LoginModalComponent } from '../components/login-modal/login-modal.component';
 
-const AppRoutes: Routes = [
-  { path: 'Home', component: AppComponent },
-];
+const AngularFire = [
+  AngularFireModule.initializeApp(environment.firebase),
+AngularFireDatabaseModule,
+AngularFireAuthModule
+]
 
 @NgModule({
   declarations: [
@@ -55,8 +58,7 @@ const AppRoutes: Routes = [
     // CDK
     LayoutModule,
     // AngularFire
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireDatabaseModule,
+    ...AngularFire,
     // Angular
     AgGridModule.withComponents([]),
     // Nebular

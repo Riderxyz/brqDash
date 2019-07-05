@@ -14,9 +14,9 @@ onRegisterPage = false;
 userObj:UserObjInterface;
   constructor(
     public centralRx: CentralRxJsService,
-    public loginSrv:LoginService
+    public loginSrv: LoginService
     ) {
-
+this.userObj = this.loginSrv.NewUserObj;
 
     }
 
