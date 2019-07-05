@@ -1,0 +1,79 @@
+   <section class="model-0">
+      <div class="float-btn-group" [class.open]="showFab">
+        <button class="btn-float btn-triger pink" (click)="GoForIt()">
+          <i class="icon-bars"></i>
+        </button>
+        <div class="btn-list">
+          <a class="btn-float yellow" href="#">
+            <i class="fa fa-search"></i>
+          </a>
+          <a class="btn-float blue" href="#">
+            <i class="fa fa-cloud-download"> </i>
+          </a>
+          <a class="btn-float green" href="#">
+            <i class="fa fa-paperclip"> </i>
+          </a>
+          <a class="btn-float purple" href="#">
+            <i class="fa fa-line-chart"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="model-1">
+      <div class="float-btn-group"><button class="btn-float btn-triger pink"><i class="icon-bars"></i></button>
+        <div class="btn-list"><a class="btn-float yellow" href="#"><i class="fa fa-search"></i></a><a
+            class="btn-float blue" href="#"><i class="fa fa-cloud-download"> </i></a><a class="btn-float green"
+            href="#"><i class="fa fa-paperclip"> </i></a><a class="btn-float purple" href="#"><i
+              class="fa fa-line-chart"> </i></a></div>
+      </div>
+    </section>
+
+    <section class="model-2">
+      <div class="float-btn-group" [class.open]="showFab">
+
+        <button class="btn-float btn-triger pink">
+          <i class="icon-bars"></i></button>
+        <div class="btn-list"><a class="btn-float yellow" href="#"><i class="fa fa-search"></i></a><a
+            class="btn-float blue" href="#"><i class="fa fa-cloud-download"> </i></a><a class="btn-float green"
+            href="#"><i class="fa fa-paperclip"> </i></a><a class="btn-float purple" href="#"><i
+              class="fa fa-line-chart"> </i></a>
+            </div>
+      </div>
+    </section>
+
+
+    <section class="model-3">
+      <div class="float-btn-group"><button class="btn-float btn-triger pink"><i class="icon-bars"></i></button>
+        <div class="btn-list"><a class="btn-float yellow" href="#"><i class="fa fa-search"></i></a><a
+            class="btn-float blue" href="#"><i class="fa fa-cloud-download"> </i></a><a class="btn-float green"
+            href="#"><i class="fa fa-paperclip"> </i></a><a class="btn-float purple" href="#"><i
+              class="fa fa-line-chart"> </i></a></div>
+      </div>
+    </section>
+    <section class="model-4">
+      <div class="float-btn-group" [class.open]="showFab">
+        <button class="btn-float btn-triger pink" (click)="GoForIt()">
+          <i class="icon-bars"></i></button>
+        <div class="btn-list"><a class="btn-float yellow" href="#"><i class="fa fa-search"></i></a><a
+            class="btn-float blue" href="#"><i class="fa fa-cloud-download"> </i></a><a class="btn-float green"
+            href="#"><i class="fa fa-paperclip"> </i></a><a class="btn-float purple" href="#"><i
+              class="fa fa-line-chart"> </i></a></div>
+      </div>
+    </section>
+    <section class="model-5">
+      <div class="float-btn-group"><button class="btn-float btn-triger pink"><i class="icon-bars"></i></button>
+        <div class="btn-list"><a class="btn-float yellow" href="#"><i class="fa fa-search"></i></a><a
+            class="btn-float blue" href="#"><i class="fa fa-cloud-download"> </i></a><a class="btn-float green"
+            href="#"><i class="fa fa-paperclip"> </i></a><a class="btn-float purple" href="#"><i
+              class="fa fa-line-chart"> </i></a></div>
+      </div>
+    </section>
+    <section class="model-6">
+      <div class="float-btn-group"><button class="btn-float btn-triger pink"><i class="icon-bars"></i></button>
+        <div class="btn-list"><a class="btn-float yellow" href="#"><i class="fa fa-search"></i></a><a
+            class="btn-float blue" href="#"><i class="fa fa-cloud-download"> </i></a><a class="btn-float green"
+            href="#"><i class="fa fa-paperclip"> </i></a><a class="btn-float purple" href="#"><i
+              class="fa fa-line-chart"> </i></a></div>
+      </div>
+    </section>

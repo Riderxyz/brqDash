@@ -5,6 +5,7 @@ import { map, filter, uniq, orderBy } from 'lodash';
 import { environment } from 'src/environments/environment';
 import { Subject } from 'rxjs';
 import { config } from './config';
+import { FabListInterface } from 'src/models/fabList.model';
 
 @Injectable()
 export class GetDataService {
@@ -65,6 +66,38 @@ export class GetDataService {
     const effArr = config.animateCssArr;
     const random = effArr[Math.floor(Math.random() * effArr.length)];
     return random;
+  }
+
+
+  public get FabButtonList() {
+    const arrFab: FabListInterface[] = [
+      {
+      cor: 'info',
+      icon: 'fa fa-search',
+      comando: config.FabCommand.FiltrarGrid,
+      tooltip: 'Filtre a Grid'
+    },
+    {
+      cor: 'warning',
+      icon: 'fas fa-clock',
+      comando: config.FabCommand.GoToDash,
+      tooltip: 'va para o DashBoard'
+    },
+    {
+      cor: 'success',
+      icon: 'fas fa-table',
+      comando: config.FabCommand.GoToGD,
+      tooltip: 'va para o Gerenciamento Diario'
+    },
+    {
+      cor: 'danger',
+      icon: 'fas fa-user',
+      comando: config.FabCommand.GoToUser,
+      tooltip: 'va para o Gerenciamento Diario'
+    }
+
+    ]
+    return arrFab
   }
 
 }

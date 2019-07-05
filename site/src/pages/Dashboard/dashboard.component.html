@@ -3,9 +3,22 @@
       <ag-grid-angular id='GridDimensionado' style="height: calc(100vh - 50px);width: 100%;" class="ag-theme-balham"
       [gridOptions]="gridOptions">
     </ag-grid-angular>
-    <div class="float" (click)="showModalFiltro()">
+<!--     <div class="float" (click)="showModalFiltro()">
       <i class="nb-search"></i>
-    </div>
+    </div> -->
+
+    <div class="OnFabButton">
+        <div class="float-btn-group" [class.open]="showFab">
+          <button class="btn-float btn-triger" nbButton (click)="GoForIt()">
+            <i class="fas fa-bars"></i>
+          </button>
+          <div class="btn-list">
+            <button class="btn-float" (click)="GoTo(fabObj)" *ngFor="let fabObj of FabList" nbButton hero [status]="fabObj.cor" [nbTooltip]="fabObj.tooltip" nbTooltipPlacement="top">
+              <i class="{{fabObj.icon}}"></i>
+            </button>
+          </div>
+        </div>
+      </div>
     <ng-template #ModalShowFiltro let-data let-ref="dialogRef">
       <nb-card>
         <nb-card-header>Escolha um filtro:</nb-card-header>

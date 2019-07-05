@@ -6,7 +6,7 @@ import { GDBoardComponent } from 'src/pages/GD-Board/gd-board.component';
 import { AppComponent } from './app.component';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: '/dashboard' },
+  { path: '', pathMatch: 'full', redirectTo: '/' },
   { path: 'dashboard', component: DashboardComponent,  data: {animation: 'Dashboard'}, },
   { path: 'gdboard', component: GDBoardComponent,  data: {animation: 'GDboard'}, },
 ];

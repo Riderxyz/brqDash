@@ -22,7 +22,8 @@ import {
     NbToastrModule,
     NbWindowModule,
     NbDialogModule,
-    NbListModule
+    NbListModule,
+    NbTooltipModule,
 } from '@nebular/theme';
 
 
@@ -50,7 +51,8 @@ import {
         NbToastrModule,
         NbWindowModule,
         NbDialogModule,
-        NbListModule
+        NbListModule,
+        NbTooltipModule
     ],
     declarations: [],
     exports: [
@@ -75,7 +77,8 @@ import {
         NbToastrModule,
         NbWindowModule,
         NbDialogModule,
-        NbListModule
+        NbListModule,
+        NbTooltipModule
     ]
 })
 export class NebularModule { }

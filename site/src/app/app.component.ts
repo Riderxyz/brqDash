@@ -1,3 +1,4 @@
+import { FabListInterface } from 'src/models/fabList.model';
 import { config } from './../service/config';
 import { Component, TemplateRef, ViewChild, OnInit, ElementRef } from '@angular/core';
 import * as moment from 'moment';
@@ -25,18 +26,16 @@ import { slideInAnimation } from './route.animation';
   animations: [slideInAnimation]
 })
 export class AppComponent implements OnInit {
-  esteiras: SelectItemModel[];
-  esteirasSelecionadas: any[];
   DataList: DemandaDashboardModel[] = [];
   SplashScreen = {
     show: true,
     animation: 'jello slow delay-1s'
-  }
-
+  };
+  showFab = false;
   ShowWhenSizable: boolean;
   @ViewChild('animateSplash') animationDiv: ElementRef<any>;
   isAppLoaded = false;
-  columnDefs = [];
+  FabList: FabListInterface[] = [];
   constructor(
     public dataSrv: GetDataService,
     public formatSrv: FormatDashService,
@@ -55,6 +54,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.FabList = this.dataSrv.FabButtonList;
     this.dataSrv.ListarItems.subscribe((res: DemandaDashboardModel[]) => {
       this.DataList = res;
       this.dataSrv.DataJson = res;
@@ -88,5 +88,13 @@ export class AppComponent implements OnInit {
         this.splashScreenLoadOut();
       }
     }));
+  }
+  GoForIt() {
+    this.showFab = !this.showFab;
+  }
+
+  GoTo(ev) {
+    console.log(ev);
+
   }
 }

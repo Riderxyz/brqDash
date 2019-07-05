@@ -7,13 +7,14 @@ import { NbDialogService } from '@nebular/theme';
 import { DemandaDashboardModel } from '../../models/demandaDashboard.model';
 import { GetDataService } from 'src/service/getData.service';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
-import { timer, from, of } from 'rxjs';
-import { map, debounce, delay } from 'rxjs/operators';
 import { FormatDashService } from 'src/service/formatDash.service';
 import { RemoteControlService } from 'src/service/remoteControl.service';
 import { SelectItemModel } from 'src/models/SelectItem.model';
 import { CentralRxJsService } from 'src/service/centralRxjs.service';
 import { config } from 'src/service/config';
+import { FabListInterface } from 'src/models/fabList.model';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -34,6 +35,8 @@ export class DashboardComponent implements OnInit {
   public gridOptions: GridOptions;
   columnDefs = [];
   isGridReady = false;
+  showFab = false;
+  FabList: FabListInterface[] = [];
   constructor(
     public db: AngularFireDatabase,
     public dialogService: NbDialogService,
@@ -42,12 +45,13 @@ export class DashboardComponent implements OnInit {
     public remoteControl: RemoteControlService,
     public breakpointObserver: BreakpointObserver,
     public centralRx: CentralRxJsService,
+    private route: Router
   ) {
     moment.locale('pt');
-/*     this.remoteControl.controleRemoto.subscribe((esteiras) => {
-      console.log('Controle remoto ativado');
-      this.gridApi.setRowData(this.dataSrv.filtroEsteira(esteiras));
-    }); */
+    /*     this.remoteControl.controleRemoto.subscribe((esteiras) => {
+          console.log('Controle remoto ativado');
+          this.gridApi.setRowData(this.dataSrv.filtroEsteira(esteiras));
+        }); */
   }
 
   ngOnInit() {
@@ -55,7 +59,7 @@ export class DashboardComponent implements OnInit {
       console.log('RESIZEBLE da linha 61', resizeObj);
       this.gridApi.sizeColumnsToFit();
     });
-
+    this.FabList = this.dataSrv.FabButtonList;
     this.dataSrv.ListarItems.subscribe((res: DemandaDashboardModel[]) => {
       console.log('peguei do firebase', res);
 
@@ -124,6 +128,31 @@ export class DashboardComponent implements OnInit {
     refs.close();
   }
 
+  GoForIt() {
+    console.log('Entrei no fabFunction')
+    this.showFab = !this.showFab;
+  }
+  GoTo(ev: FabListInterface) {
+    console.log(ev);
+    switch (ev.comando) {
+      case config.FabCommand.FiltrarGrid:
+        this.showModalFiltro();
+        break;
+      case config.FabCommand.GoToDash:
+        this.route.navigateByUrl('/dashboard');
+        break;
+      case config.FabCommand.GoToGD:
+        this.route.navigateByUrl('/gdboard');
+        break;
+      case config.FabCommand.GoToUser:
+        alert('Ainda será implementado');
+
+        break;
+      default:
+        break;
+    }
+
+  }
   showModalFiltro() {
     this.remoteControl.DashBoardAtivo();
     this.dialogService.open(this.Modal_Filtro);
