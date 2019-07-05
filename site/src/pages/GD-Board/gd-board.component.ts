@@ -5,6 +5,8 @@ import { GetDataService } from 'src/service/getData.service';
 import { CentralRxJsService } from 'src/service/centralRxjs.service';
 import { GDInterface } from 'src/models/gd.model';
 import { GridOptions, ColDef, ColGroupDef } from 'ag-grid-community';
+import { FabListInterface } from 'src/models/fabList.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-gd-board',
@@ -16,10 +18,13 @@ export class GDBoardComponent implements OnInit {
   public gridApi: any;
   public gridOptions: GridOptions;
   columnDefs: ColDef[] = [];
+  showFab = false;
+  FabList: FabListInterface[] = [];
   constructor(
     public dataSrv: GetDataService,
     public centralRx: CentralRxJsService,
-    public formatGDSrv: FormatGDService
+    public formatGDSrv: FormatGDService,
+    private route: Router
   ) { }
 
   ngOnInit() {
@@ -27,7 +32,7 @@ export class GDBoardComponent implements OnInit {
       console.log('RESIZEBLE da linha 61', resizeObj);
       this.gridOptions.api.sizeColumnsToFit();
     })
-
+    this.FabList = this.dataSrv.FabButtonList;
     setTimeout(() => {
       this.gridOptions.api.sizeColumnsToFit();
     }, 1500);
@@ -35,6 +40,7 @@ export class GDBoardComponent implements OnInit {
       console.log('o q vem aqui para gerenciamento?', res);
       this.esteiras = res;
       this.gridOptions.api.setRowData(this.esteiras);
+      this.gridOptions.api.sizeColumnsToFit();
     });
     this.gridOptions = {
       columnDefs: this.createColumnDefs,
@@ -47,15 +53,15 @@ export class GDBoardComponent implements OnInit {
         const comando = config.rxjsCentralKeys.GridReady;
         this.centralRx.sendData = comando;
         this.gridOptions.api.setRowData(this.esteiras);
-        /*         const comando = config.rxjsCentralKeys.GridReady;
-                this.centralRx.sendData = comando;
-                this.isGridReady = true; */
       }
     };
   }
 
 
-
+  GoForIt() {
+    console.log('Entrei no fabFunction')
+    this.showFab = !this.showFab;
+  }
   setarGrid() {
     this.gridOptions.api.setRowData(this.esteiras);
   }
@@ -179,5 +185,30 @@ export class GDBoardComponent implements OnInit {
         cellRenderer: this.formatGDSrv.formatSemana5,
       },
     ];
+  }
+
+  GoTo(ev: FabListInterface) {
+    console.log(ev);
+    switch (ev.comando) {
+      case config.FabCommand.FiltrarGrid:
+        this.showFab = false;
+        alert('Ainda será implementado');
+        break;
+      case config.FabCommand.GoToDash:
+        this.showFab = false;
+        this.route.navigateByUrl('/dashboard');
+        break;
+      case config.FabCommand.GoToGD:
+        this.showFab = false;
+        this.route.navigateByUrl('/gdboard');
+        break;
+      case config.FabCommand.GoToUser:
+        this.showFab = false;
+        alert('Ainda será implementado');
+
+        break;
+      default:
+        break;
+    }
   }
 }

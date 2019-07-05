@@ -1,7 +1,7 @@
 import { Component, TemplateRef, ViewChild, OnInit, ElementRef } from '@angular/core';
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
-import { GridOptions } from 'ag-grid-community';
+import { GridOptions, ColDef } from 'ag-grid-community';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { NbDialogService } from '@nebular/theme';
 import { DemandaDashboardModel } from '../../models/demandaDashboard.model';
@@ -33,7 +33,7 @@ export class DashboardComponent implements OnInit {
   @ViewChild('ModalShowFiltro') Modal_Filtro: TemplateRef<any>;
   public gridApi: any;
   public gridOptions: GridOptions;
-  columnDefs = [];
+  columnDefs: ColDef[] = [];
   isGridReady = false;
   showFab = false;
   FabList: FabListInterface[] = [];
@@ -68,9 +68,7 @@ export class DashboardComponent implements OnInit {
       this.dataSrv.DataJSalva = res;
       this.esteiras = this.dataSrv.listaEsteiras();
       this.gridOptions.api.setRowData(this.DataList);
-      if (this.isGridReady) {
-        this.gridOptions.api.sizeColumnsToFit();
-      }
+      this.gridOptions.api.sizeColumnsToFit();
     });
 
     this.gridOptions = {
@@ -136,22 +134,25 @@ export class DashboardComponent implements OnInit {
     console.log(ev);
     switch (ev.comando) {
       case config.FabCommand.FiltrarGrid:
+        this.showFab = false;
         this.showModalFiltro();
         break;
       case config.FabCommand.GoToDash:
+        this.showFab = false;
         this.route.navigateByUrl('/dashboard');
         break;
       case config.FabCommand.GoToGD:
+        this.showFab = false;
         this.route.navigateByUrl('/gdboard');
         break;
       case config.FabCommand.GoToUser:
+        this.showFab = false;
         alert('Ainda será implementado');
 
         break;
       default:
         break;
     }
-
   }
   showModalFiltro() {
     this.remoteControl.DashBoardAtivo();

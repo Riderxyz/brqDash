@@ -4,4 +4,19 @@
 <ag-grid-angular id='Gerenciamento' style="height: calc(100vh - 50px);width: 100%;" class="ag-theme-blue"
 [gridOptions]="gridOptions">
 </ag-grid-angular>
+
+
+
+<div class="OnFabButton">
+  <div class="float-btn-group" [class.open]="showFab">
+    <button class="btn-float btn-triger" nbButton (click)="GoForIt()">
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="btn-list">
+      <button class="btn-float" (click)="GoTo(fabObj)" *ngFor="let fabObj of FabList" nbButton hero [status]="fabObj.cor" [nbTooltip]="fabObj.tooltip" nbTooltipPlacement="top">
+        <i class="{{fabObj.icon}}"></i>
+      </button>
+    </div>
+  </div>
+</div>
 </div>
