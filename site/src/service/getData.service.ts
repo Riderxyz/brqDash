@@ -97,7 +97,7 @@ export class GetDataService {
     }
 
     ]
-    return arrFab
+    return arrFab;
   }
 
 }

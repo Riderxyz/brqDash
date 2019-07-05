@@ -44,6 +44,9 @@ const AppRoutes: Routes = [
     GDBoardComponent,
     LoginModalComponent
   ],
+  entryComponents: [
+    LoginModalComponent
+  ],
   imports: [
     RoutingModule,
     HttpClientModule,

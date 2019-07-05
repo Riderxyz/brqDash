@@ -2,7 +2,8 @@ export const config = {
   rxjsCentralKeys: {
     GridResize: 'gridResize',
     GridReady: 'gridReady',
-    ShowFilterEsteira: 'showFilterEsteira',
+    ShowFilterEsteiraDashBoard: 'showFilterEsteiraDashBoard',
+    ShowFilterEsteiraGD: 'ShowFilterEsteiraGD',
     ChangeToMobile: 'changeToMobile',
     ChangeToWeb: 'changeToWeb'
   },

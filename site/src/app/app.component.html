@@ -43,6 +43,24 @@
       </div>
     </div>
 
+
+
+
+    <ng-template #dialog let-data let-ref="dialogRef">
+     <!--  <nb-card>
+        <nb-card-header>Template Dialog</nb-card-header>
+        <nb-card-body></nb-card-body>
+        <nb-card-footer>
+          <button nbButton (click)="ref.close()">Close Dialog</button>
+        </nb-card-footer>
+      </nb-card> -->
+      <app-login-modal></app-login-modal>
+    </ng-template>
+
+
+
+
+
   </nb-layout-column>
   <nb-layout-column style="padding:.5rem;" [hidden]="!ShowWhenSizable">
     <div class="card animated slideInUp" style="text-align: center">

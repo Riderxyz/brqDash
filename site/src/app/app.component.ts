@@ -8,7 +8,6 @@ import { DemandaDashboardModel } from '../models/demandaDashboard.model';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { map } from 'rxjs/operators';
 
-
 import { GetDataService } from 'src/service/getData.service';
 import { FormatDashService } from '../service/formatDash.service';
 import { RemoteControlService } from '../service/remoteControl.service';
@@ -19,6 +18,8 @@ import { SelectItemInterface } from '../models/SelectItem.model';
 import { slideInAnimation } from './route.animation';
 import { Router } from '@angular/router';
 
+import { NbDialogService } from '@nebular/theme';
+import { LoginModalComponent } from 'src/components/login-modal/login-modal.component';
 
 @Component({
   selector: 'app-root',
@@ -35,6 +36,7 @@ export class AppComponent implements OnInit {
   showFab = false;
   ShowWhenSizable: boolean;
   @ViewChild('animateSplash') animationDiv: ElementRef<any>;
+  @ViewChild('dialog') dialog
   isAppLoaded = false;
   FabList: FabListInterface[] = [];
   constructor(
@@ -43,6 +45,7 @@ export class AppComponent implements OnInit {
     public breakpointObserver: BreakpointObserver,
     public centralRx: CentralRxJsService,
     public route: Router,
+    private dialogService: NbDialogService
   ) {
     this.centralRx.DataSended.subscribe((res) => {
       if (res === config.rxjsCentralKeys.GridReady) {
@@ -101,13 +104,17 @@ export class AppComponent implements OnInit {
   }
 
 
+
+  showLogin() {
+    this.dialogService.open(this.dialog);
+  }
   GoTo(ev) {
     console.log(ev);
     switch (ev.comando) {
       case config.FabCommand.FiltrarGrid:
         this.showFab = false;
         if (this.route.url === '/dashboard') {
-          const comando = config.rxjsCentralKeys.GridReady;
+          const comando = config.rxjsCentralKeys.ShowFilterEsteiraDashBoard;
           this.centralRx.sendData = comando;
         } else {
           alert('Ainda será implementado');
@@ -122,6 +129,7 @@ export class AppComponent implements OnInit {
         this.route.navigateByUrl('/gdboard');
         break;
       case config.FabCommand.GoToUser:
+        this.showLogin();
         this.showFab = false;
         break;
       default:

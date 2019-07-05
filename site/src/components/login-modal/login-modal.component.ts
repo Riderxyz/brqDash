@@ -6,7 +6,7 @@ import { CentralRxJsService } from 'src/service/centralRxjs.service';
   styleUrls: ['./login-modal.component.scss']
 })
 export class LoginModalComponent implements OnInit {
-
+onRegisterPage = false;
   constructor(
     public centralRx: CentralRxJsService
     ) { }

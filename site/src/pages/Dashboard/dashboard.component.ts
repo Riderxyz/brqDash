@@ -49,10 +49,11 @@ export class DashboardComponent implements OnInit {
     public router: ActivatedRoute,
   ) {
     moment.locale('pt');
-    /*     this.remoteControl.controleRemoto.subscribe((esteiras) => {
-          console.log('Controle remoto ativado');
-          this.gridApi.setRowData(this.dataSrv.filtroEsteira(esteiras));
-        }); */
+    this.centralRx.DataSended.subscribe((res) => {
+      if (res === config.rxjsCentralKeys.ShowFilterEsteiraDashBoard) {
+        this.showModalFiltro();
+      }
+    });
   }
 
   ngOnInit() {
