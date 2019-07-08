@@ -25,4 +25,9 @@ this.userObj = this.loginSrv.NewUserObj;
   onLoginClick(Form: NgForm){
 
   }
+
+
+  onRegisterClick(Form: NgForm) {
+    
+  }
 }

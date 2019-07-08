@@ -17,20 +17,19 @@ export class LoginService {
   constructor(public db: AngularFireDatabase, public afAuth: AngularFireAuth) { }
 
 
-
-
-
-
   registerNewUser() {
 
-    this.afAuth.auth.createUserWithEmailAndPassword('dsds', 1212).then((res) => {
+/*     this.afAuth.auth.createUserWithEmailAndPassword('dsds', '1212').then((res) => {
 
     })
+    this.afAuth.auth.createUserWithEmailAndPassword('dsds', '1212').then((res) => {
+
+    }) */
   }
 
 get NewUserObj(): UserObjInterface {
     return {
-      username: ' ' as string,
+      email: ' ' as string,
       password: ' ' as any,
       uuid: ' ' as string,
       nomeCompleto: ' ' as string,

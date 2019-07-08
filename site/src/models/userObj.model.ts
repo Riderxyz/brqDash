@@ -1,5 +1,5 @@
 export interface UserObjInterface {
-  username: string;
+  email: string;
   password: string | number;
   uuid: string;
   nomeCompleto: string;

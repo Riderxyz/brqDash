@@ -3,10 +3,10 @@
     <nb-card-front>
       <nb-card>
         <nb-card-header>Login</nb-card-header>
-        <nb-card-body >
-          <form class="loginForm" #LoginForm="ngForm" (ngSubmit)="LoginForm.form.valid && onLoginClick(LoginForm)">
-            <input type="text" nbInput shape="semi-round" placeholder="E-mail">
-            <input type="text" nbInput shape="semi-round" placeholder="Senha">
+        <nb-card-body>
+          <form class="loginForm" #LoginForm="ngForm" name="LoginForm" (ngSubmit)="LoginForm.form.valid && onLoginClick(LoginForm)">
+            <input type="text" [(ngModel)]="userObj.email" nbInput name="email" #LoginEmail="ngModel" shape="semi-round" placeholder="E-mail">
+            <input type="text" [(ngModel)]="userObj.password" nbInput name="password" #LoginPassword="ngModel" shape="semi-round" placeholder="Senha">
           </form>
         </nb-card-body>
         <nb-card-footer>
@@ -16,13 +16,14 @@
     </nb-card-front>
     <nb-card-back>
       <nb-card status="danger">
-        <nb-card-header>Back Card Header</nb-card-header>
+        <nb-card-header>Registro</nb-card-header>
         <nb-card-body>
-          A nebula is an interstellar cloud of dust, hydrogen,
-          helium and other ionized gases.
-          Originally, nebula was a name for
-          any diffuse astronomical object,
-          including galaxies beyond the Milky Way.
+          <form class="loginForm" #RegisterForm="ngForm" name="RegisterForm" (ngSubmit)="RegisterForm.form.valid && onRegisterClick(LoginForm)">
+            <input type="text" nbInput shape="semi-round" placeholder="E-mail">
+            <input type="password" nbInput shape="semi-round" placeholder="Senha">
+            <input type="text" nbInput shape="semi-round" placeholder="Nome completo">
+            <input type="text" nbInput shape="semi-round" placeholder="Como gostaria de ser chamado?">
+          </form>
         </nb-card-body>
         <nb-card-footer>
           <button nbButton (click)="onRegisterPage = !onRegisterPage">flipThisNigga</button>
