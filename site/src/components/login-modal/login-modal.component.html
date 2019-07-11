@@ -19,10 +19,12 @@
         <nb-card-header>Registro</nb-card-header>
         <nb-card-body>
           <form class="loginForm" #RegisterForm="ngForm" name="RegisterForm" (ngSubmit)="RegisterForm.form.valid && onRegisterClick(LoginForm)">
-            <input type="text" nbInput shape="semi-round" placeholder="E-mail">
-            <input type="password" nbInput shape="semi-round" placeholder="Senha">
-            <input type="text" nbInput shape="semi-round" placeholder="Nome completo">
-            <input type="text" nbInput shape="semi-round" placeholder="Como gostaria de ser chamado?">
+            <input type="text" nbInput shape="semi-round"  [(ngModel)]="userObj.email"placeholder="E-mail">
+            <input type="password" nbInput shape="semi-round" [(ngModel)]="userObj.password" placeholder="Senha">
+            <input type="text" nbInput shape="semi-round" [(ngModel)]="userObj.nomeCompleto" placeholder="Nome completo">
+            <nb-select hero placeholder="Selecione" [(ngModel)]="userObj.">
+              <nb-option [value]="item.value" *ngFor="let item of esteiras">{{item.label}}</nb-option>
+            </nb-select>
           </form>
         </nb-card-body>
         <nb-card-footer>

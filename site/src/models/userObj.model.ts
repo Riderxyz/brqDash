@@ -6,4 +6,5 @@ export interface UserObjInterface {
   dataNascimento: any;
   cargo: any;
   isAdm: boolean;
+  exteira: string;
 }

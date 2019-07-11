@@ -35,7 +35,8 @@ get NewUserObj(): UserObjInterface {
       nomeCompleto: ' ' as string,
       dataNascimento: ' ' as any,
       cargo: ' ' as string,
-      isAdm: false as boolean
+      isAdm: false as boolean,
+      exteira: ' ' as string
     }
 }
 

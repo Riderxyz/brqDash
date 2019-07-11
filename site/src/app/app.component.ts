@@ -59,10 +59,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-
-
-
-
     this.FabList = this.dataSrv.FabButtonList;
     this.dataSrv.ListarItems.subscribe((res: DemandaDashboardModel[]) => {
       this.DataList = res;

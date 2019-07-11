@@ -25,7 +25,7 @@
         <nb-card-body style="overflow:visible">
           <div class="p-grid">
             <div class="p-col-12">
-              <nb-select multiple placeholder="Selecione" [(ngModel)]="esteirasSelecionadas">
+              <nb-select hero multiple placeholder="Selecione" [(ngModel)]="esteirasSelecionadas">
                 <nb-option [value]="item.value" *ngFor="let item of esteiras">{{item.label}}</nb-option>
               </nb-select>
             </div>
