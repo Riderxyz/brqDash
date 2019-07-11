@@ -6,6 +6,11 @@ import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
+// Localidade
+import { registerLocaleData } from '@angular/common';
+import { LOCALE_ID } from '@angular/core';
+import localePT from '@angular/common/locales/pt';
+
 // Nebular
 import { NbSidebarModule, NbLayoutModule, NbDialogModule } from '@nebular/theme';
 import { NbThemeModule } from '@nebular/theme';
@@ -31,6 +36,9 @@ import { GDBoardComponent } from '../pages/GD-Board/gd-board.component';
 import { RoutingModule } from './app.routing';
 import { FormatGDService } from '../service/formatGD.service';
 import { LoginModalComponent } from '../components/login-modal/login-modal.component';
+
+
+registerLocaleData(localePT, 'pt');
 
 const AngularFire = [
   AngularFireModule.initializeApp(environment.firebase),
@@ -64,7 +72,7 @@ const FormModules = [
     // Angular
     AgGridModule.withComponents([]),
     // Nebular
-    NebularModule,
+    NebularModule.forRoot(),
     NbThemeModule.forRoot({ name: 'cosmic' }),
     NbLayoutModule,
     NbSidebarModule,
@@ -78,7 +86,8 @@ const FormModules = [
     FormatGDService,
     CentralRxJsService,
     RemoteControlService,
-    LoginService
+    LoginService,
+    { provide: LOCALE_ID, useValue: 'pt' }
   ],
   bootstrap: [AppComponent]
 })

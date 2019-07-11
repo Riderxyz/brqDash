@@ -1,6 +1,6 @@
 export interface UserObjInterface {
   email: string;
-  password: string | number;
+  password: any;
   uuid: string;
   nomeCompleto: string;
   dataNascimento: any;

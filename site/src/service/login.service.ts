@@ -8,35 +8,33 @@ import { Subject } from 'rxjs';
 import { config } from './config';
 import { FabListInterface } from 'src/models/fabList.model';
 import { UserObjInterface } from 'src/models/userObj.model';
-
+import * as firebase from 'firebase/app';
 @Injectable()
 export class LoginService {
 
 
   private _UserObj = {};
-  constructor(public db: AngularFireDatabase, public afAuth: AngularFireAuth) { }
+  constructor( public db: AngularFireDatabase,  public afAuth: AngularFireAuth) { }
 
 
-  registerNewUser() {
+  registerNewUser(UserObj: UserObjInterface) {
 
-/*     this.afAuth.auth.createUserWithEmailAndPassword('dsds', '1212').then((res) => {
+    this.afAuth.auth.createUserWithEmailAndPassword( UserObj.email, UserObj.password).then((res) => {
 
     })
-    this.afAuth.auth.createUserWithEmailAndPassword('dsds', '1212').then((res) => {
 
-    }) */
   }
 
 get NewUserObj(): UserObjInterface {
     return {
-      email: ' ' as string,
-      password: ' ' as any,
-      uuid: ' ' as string,
-      nomeCompleto: ' ' as string,
-      dataNascimento: ' ' as any,
-      cargo: ' ' as string,
+      email: null as string,
+      password: null as any,
+      uuid: null as string,
+      nomeCompleto: null as string,
+      dataNascimento: null as any,
+      cargo: null as string,
       isAdm: false as boolean,
-      exteira: ' ' as string
+      exteira: null as string
     }
 }
 

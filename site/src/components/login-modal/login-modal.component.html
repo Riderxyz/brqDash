@@ -4,9 +4,12 @@
       <nb-card>
         <nb-card-header>Login</nb-card-header>
         <nb-card-body>
-          <form class="loginForm" #LoginForm="ngForm" name="LoginForm" (ngSubmit)="LoginForm.form.valid && onLoginClick(LoginForm)">
-            <input type="text" [(ngModel)]="userObj.email" nbInput name="email" #LoginEmail="ngModel" shape="semi-round" placeholder="E-mail">
-            <input type="text" [(ngModel)]="userObj.password" nbInput name="password" #LoginPassword="ngModel" shape="semi-round" placeholder="Senha">
+          <form class="loginForm" #LoginForm="ngForm" name="LoginForm"
+            (ngSubmit)="LoginForm.form.valid && onLoginClick(LoginForm)">
+            <input type="text" [(ngModel)]="userObj.email" nbInput name="email" #LoginEmail="ngModel" shape="semi-round"
+              placeholder="E-mail" email required>
+            <input type="text" [(ngModel)]="userObj.password" nbInput name="password" #LoginPassword="ngModel"
+              shape="semi-round" placeholder="Senha">
           </form>
         </nb-card-body>
         <nb-card-footer>
@@ -18,17 +21,38 @@
       <nb-card status="danger">
         <nb-card-header>Registro</nb-card-header>
         <nb-card-body>
-          <form class="loginForm" #RegisterForm="ngForm" name="RegisterForm" (ngSubmit)="RegisterForm.form.valid && onRegisterClick(LoginForm)">
-            <input type="text" nbInput shape="semi-round"  [(ngModel)]="userObj.email"placeholder="E-mail">
-            <input type="password" nbInput shape="semi-round" [(ngModel)]="userObj.password" placeholder="Senha">
-            <input type="text" nbInput shape="semi-round" [(ngModel)]="userObj.nomeCompleto" placeholder="Nome completo">
-            <nb-select hero placeholder="Selecione" [(ngModel)]="userObj.">
-              <nb-option [value]="item.value" *ngFor="let item of esteiras">{{item.label}}</nb-option>
-            </nb-select>
+          <form class="loginForm" #RegisterForm="ngForm" name="RegisterForm"
+            (ngSubmit)="RegisterForm.form.valid && onRegisterClick(LoginForm)">
+            <div class="p-grid">
+
+              <div class="p-col-6">
+                <input type="text" nbInput fullWidth shape="semi-round" [(ngModel)]="userObj.email" placeholder="E-mail"
+                  name="email" email required>
+              </div>
+              <div class="p-col-6">
+                <input type="password" nbInput fullWidth shape="semi-round" [(ngModel)]="userObj.password"
+                  placeholder="Senha" name="password" required>
+              </div>
+              <div class="p-col-12">
+                <input type="text" nbInput fullWidth shape="semi-round" [(ngModel)]="userObj.nomeCompleto"
+                  placeholder="Nome completo" name="nomeCompleto" required>
+              </div>
+              <div class="p-col-6">
+                <nb-select hero placeholder="Selecione" [(ngModel)]="userObj.exteira" name="exteira">
+                  <nb-option [value]="item.value" *ngFor="let item of esteiras">{{item.label}}</nb-option>
+                </nb-select>
+              </div>
+              <div class="p-col-6">
+                <input nbInput fullWidth hero placeholder="Data Inicial" [(ngModel)]="userObj.dataNascimento"
+                  (ngModelChange)="onDate($event)" [nbDatepicker]="dataInicio" name="dataNascimento" required>
+                <nb-datepicker #dataInicio></nb-datepicker>
+              </div>
+            </div>
           </form>
         </nb-card-body>
         <nb-card-footer>
           <button nbButton (click)="onRegisterPage = !onRegisterPage">flipThisNigga</button>
+          <button nbButton type="submit">RegisterThisShit</button>
         </nb-card-footer>
       </nb-card>
     </nb-card-back>

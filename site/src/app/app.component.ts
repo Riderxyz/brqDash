@@ -96,7 +96,8 @@ export class AppComponent implements OnInit {
   }
   GoForIt() {
     console.log('LINHA 60', this.route.url);
-    this.showFab = !this.showFab;
+    /* this.showFab = !this.showFab; */
+    this.dialogService.open(this.dialog);
   }
 
 

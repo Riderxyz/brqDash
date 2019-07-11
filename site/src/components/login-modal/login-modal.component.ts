@@ -5,6 +5,7 @@ import { UserObjInterface } from 'src/models/userObj.model';
 import { LoginService } from 'src/service/login.service';
 import { SelectItemInterface } from 'src/models/SelectItem.model';
 import { GetDataService } from 'src/service/getData.service';
+import * as moment from 'moment'
 @Component({
   selector: 'app-login-modal',
   templateUrl: './login-modal.component.html',
@@ -20,7 +21,7 @@ userObj:UserObjInterface;
     public loginSrv: LoginService,
     public dataSrv: GetDataService
     ) {
-this.userObj = this.loginSrv.NewUserObj;
+ this.userObj = this.loginSrv.NewUserObj; 
 
     }
 
@@ -33,6 +34,13 @@ this.userObj = this.loginSrv.NewUserObj;
 
 
   onRegisterClick(Form: NgForm) {
+    this.loginSrv.registerNewUser(this.userObj)
+  }
+
+  onDate(event) {
+    console.log(moment(this.userObj.dataNascimento).format('YYYY/M/DD'));
+     //this.dataSrv.userData.dataInicio = moment(this.usurObj.dataInicio).format('YYYY/M/DD');
+    // this.dataSrv.userData.dataFinal = moment(this.usurObj.dataFinal).format('YYYY/M/DD');
     
   }
 }
