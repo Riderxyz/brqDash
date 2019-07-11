@@ -17,5 +17,9 @@
                 margin-bottom: 1em;
             }
         }
+        nb-card-footer {
+          display: flex;
+          justify-content: space-between;
+        }
     }
 }
