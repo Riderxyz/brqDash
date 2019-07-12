@@ -3,22 +3,20 @@ import { config } from './../service/config';
 import { Component, TemplateRef, ViewChild, OnInit, ElementRef } from '@angular/core';
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
-import { AngularFireDatabase } from '@angular/fire/database';
 import { DemandaDashboardModel } from '../models/demandaDashboard.model';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
-import { map } from 'rxjs/operators';
 
 import { GetDataService } from 'src/service/getData.service';
 import { FormatDashService } from '../service/formatDash.service';
 import { RemoteControlService } from '../service/remoteControl.service';
 import { CentralRxJsService } from '../service/centralRxjs.service';
 
-import { SelectItemInterface } from '../models/SelectItem.model';
-
 import { slideInAnimation } from './route.animation';
 import { Router } from '@angular/router';
 
 import { NbDialogService } from '@nebular/theme';
+import { NbToastrService } from '@nebular/theme';
+
 import { LoginModalComponent } from 'src/components/login-modal/login-modal.component';
 
 @Component({
@@ -45,7 +43,8 @@ export class AppComponent implements OnInit {
     public breakpointObserver: BreakpointObserver,
     public centralRx: CentralRxJsService,
     public route: Router,
-    private dialogService: NbDialogService
+    private dialogService: NbDialogService,
+    private toastrService: NbToastrService
   ) {
     this.centralRx.DataSended.subscribe((res) => {
       if (res === config.rxjsCentralKeys.GridReady) {
@@ -96,11 +95,13 @@ export class AppComponent implements OnInit {
   }
   GoForIt() {
     console.log('LINHA 60', this.route.url);
-    /* this.showFab = !this.showFab; */
-    this.dialogService.open(this.dialog);
+     this.showFab = !this.showFab;
+ /*    this.dialogService.open(this.dialog); */
+
+/*  */
+  
+
   }
-
-
 
   showLogin() {
     this.dialogService.open(this.dialog);

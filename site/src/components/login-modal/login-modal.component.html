@@ -13,7 +13,7 @@
           </form>
         </nb-card-body>
         <nb-card-footer>
-          <button nbButton (click)="onRegisterPage = !onRegisterPage">flipThisNigga</button>
+          <button nbButton (click)="onRegisterPage = !onRegisterPage">Registrar</button>
         </nb-card-footer>
       </nb-card>
     </nb-card-front>
@@ -21,10 +21,9 @@
       <nb-card status="danger">
         <nb-card-header>Registro</nb-card-header>
         <nb-card-body>
-          <form class="loginForm" #RegisterForm="ngForm" name="RegisterForm"
+          <form class="loginForm animated delay-s" [class.zoomIn]="onRegisterPage" #RegisterForm="ngForm" name="RegisterForm"
             (ngSubmit)="RegisterForm.form.valid && onRegisterClick(LoginForm)">
             <div class="p-grid">
-
               <div class="p-col-6">
                 <input type="text" nbInput fullWidth shape="semi-round" [(ngModel)]="userObj.email" placeholder="E-mail"
                   name="email" email required>
@@ -51,8 +50,8 @@
           </form>
         </nb-card-body>
         <nb-card-footer>
-          <button nbButton (click)="onRegisterPage = !onRegisterPage">flipThisNigga</button>
-          <button nbButton type="submit">RegisterThisShit</button>
+          <button nbButton (click)="onRegisterPage = !onRegisterPage">Cancelar</button>
+          <button nbButton hero [status]="teste" type="submit" (mouseover)="teste = 'success'" (mouseleave)="teste = 'primary'">Registrar usuario</button>
         </nb-card-footer>
       </nb-card>
     </nb-card-back>

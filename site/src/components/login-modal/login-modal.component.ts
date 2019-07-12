@@ -15,6 +15,7 @@ export class LoginModalComponent implements OnInit {
 onRegisterPage = false;
 esteiras: SelectItemInterface[] = [];
 esteirasSelecionadas: any;
+teste = 'primary'
 userObj:UserObjInterface;
   constructor(
     public centralRx: CentralRxJsService,
@@ -34,11 +35,15 @@ userObj:UserObjInterface;
 
 
   onRegisterClick(Form: NgForm) {
+    console.log('chamando o serviço', Form);
+    
     this.loginSrv.registerNewUser(this.userObj)
   }
 
   onDate(event) {
-    console.log(moment(this.userObj.dataNascimento).format('YYYY/M/DD'));
+    console.log(moment(this.userObj.dataNascimento).format('DD/MM/YYYY'));
+    console.log('o que temos aqui?',this.userObj.dataNascimento);
+    
      //this.dataSrv.userData.dataInicio = moment(this.usurObj.dataInicio).format('YYYY/M/DD');
     // this.dataSrv.userData.dataFinal = moment(this.usurObj.dataFinal).format('YYYY/M/DD');
     
