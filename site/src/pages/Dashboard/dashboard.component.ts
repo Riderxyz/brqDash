@@ -29,8 +29,8 @@ export class DashboardComponent implements OnInit {
     animation: 'jello slow delay-1s'
   }
   ShowWhenSizable: boolean;
-  @ViewChild('animateSplash') animationDiv: ElementRef<any>;
-  @ViewChild('ModalShowFiltro') Modal_Filtro: TemplateRef<any>;
+  @ViewChild('animateSplash', {static: true}) animationDiv: ElementRef<any>;
+  @ViewChild('ModalShowFiltro', {static: true}) Modal_Filtro: TemplateRef<any>;
   public gridApi: any;
   public gridOptions: GridOptions;
   columnDefs: ColDef[] = [];

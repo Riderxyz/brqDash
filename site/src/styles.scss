@@ -1,10 +1,20 @@
-/* You can add global styles to this file, and also import other style files */
+
+@import '~@nebular/theme/styles/globals';
+
 @import "~ag-grid-community/dist/styles/ag-grid.css";
 @import "~ag-grid-community/dist/styles/ag-theme-balham.css";
 @import "~ag-grid-community/dist/styles/ag-theme-blue.css";
+@import "~animate.css/animate.min.css";
 
+@import './scss/themes';
 @import "./scss/DashBoardStyle";
 @import "./scss/GDgridStyle";
 @import "./scss/FabButton";
 @import "./scss/flipCard";
 @import "./scss/primeFlex";
+
+
+@include nb-install() {
+  @include nb-theme-global();
+};
+/* You can add global styles to this file, and also import other style files */

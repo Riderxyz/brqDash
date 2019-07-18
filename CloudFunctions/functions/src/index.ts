@@ -309,3 +309,45 @@ export const CalculoSaldoGD = functions.database.ref('/brq-sla/gerenciamentoDiar
 
         }
     })
+
+export const onBlackDemanda = functions.database.ref('/brq-sla/ONS').onWrite(
+    async (snapshot, context) => {
+        try {
+
+            interface DemandaDashboardModel {
+                area: string;
+                criticidade: string;
+                data: string;
+                dataFormatada: string;
+                datafim: string;
+                esteira: string;
+                sistema: string;
+                status: string;
+                tfs: string;
+                tiposla: string;
+                titulo: string;
+            }
+            interface Notification {
+                title: string;
+                body: string;
+                data: object;
+                click_action: string;
+                icon: string;
+            }
+
+            let arrOfNotification: Notification[] = [];
+            let arrOfUsuariosObj = [];
+            const sendPush = (async () => {
+                const arrDemandas = await admin.database().ref('/brq-sla/ons').once('value');
+                const arrUsuarios = await admin.database().ref('/brq-sla/usuario').once('value');
+                arrOfNotification = arrDemandas.val();
+                arrOfUsuariosObj = arrDemandas.val();
+                arrOfNotification.forEach((element: DemandaDashboardModel) => {
+
+                });
+            })
+
+        } catch (error) {
+
+        }
+    })  

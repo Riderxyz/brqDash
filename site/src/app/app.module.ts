@@ -15,6 +15,8 @@ import localePT from '@angular/common/locales/pt';
 import { NbSidebarModule, NbLayoutModule, NbDialogModule } from '@nebular/theme';
 import { NbThemeModule } from '@nebular/theme';
 import { NebularModule } from 'src/Modules/Nebular.module';
+/* import { NbEvaIconsModule } from '@nebular/eva-icons'; */
+
 // Ag-Grid
 import { AgGridModule } from 'ag-grid-angular';
 
@@ -23,12 +25,7 @@ import { environment } from './../environments/environment';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFireAuthModule } from '@angular/fire/auth';
-// Service
-import { GetDataService } from '../service/getData.service';
-import { FormatDashService } from '../service/formatDash.service';
-import { RemoteControlService } from '../service/remoteControl.service';
-import { CentralRxJsService } from '../service/centralRxjs.service';
-import { LoginService } from '../service/login.service';
+import { AngularFireMessagingModule } from '@angular/fire/messaging';
 
 // Paginas
 import { DashboardComponent } from '../pages/Dashboard/dashboard.component';
@@ -37,13 +34,22 @@ import { RoutingModule } from './app.routing';
 import { FormatGDService } from '../service/formatGD.service';
 import { LoginModalComponent } from '../components/login-modal/login-modal.component';
 
+// Service
+import { GetDataService } from '../service/getData.service';
+import { FormatDashService } from '../service/formatDash.service';
+import { RemoteControlService } from '../service/remoteControl.service';
+import { CentralRxJsService } from '../service/centralRxjs.service';
+import { LoginService } from '../service/login.service';
+import { ServiceWorkerModule } from '@angular/service-worker';
+
 
 registerLocaleData(localePT, 'pt');
 
 const AngularFire = [
   AngularFireModule.initializeApp(environment.firebase),
 AngularFireDatabaseModule,
-AngularFireAuthModule
+AngularFireAuthModule,
+AngularFireMessagingModule
 ]
 
 const FormModules = [
@@ -62,10 +68,12 @@ const FormModules = [
     LoginModalComponent
   ],
   imports: [
+    BrowserModule,
     RoutingModule,
     HttpClientModule,
     ...FormModules,
     // CDK
+    BrowserAnimationsModule,
     LayoutModule,
     // AngularFire
     ...AngularFire,
@@ -74,11 +82,9 @@ const FormModules = [
     // Nebular
     NebularModule.forRoot(),
     NbThemeModule.forRoot({ name: 'cosmic' }),
-    NbLayoutModule,
-    NbSidebarModule,
     NbDialogModule.forRoot(),
-    BrowserModule,
-    BrowserAnimationsModule
+    // PWA
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [
     GetDataService,

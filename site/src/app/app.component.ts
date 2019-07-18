@@ -18,7 +18,7 @@ import { NbDialogService } from '@nebular/theme';
 import { NbToastrService } from '@nebular/theme';
 
 import { LoginModalComponent } from 'src/components/login-modal/login-modal.component';
-
+import { AngularFireMessaging } from '@angular/fire/messaging';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -26,6 +26,7 @@ import { LoginModalComponent } from 'src/components/login-modal/login-modal.comp
   animations: [slideInAnimation]
 })
 export class AppComponent implements OnInit {
+  title = 'centralDev';
   DataList: DemandaDashboardModel[] = [];
   SplashScreen = {
     show: true,
@@ -33,8 +34,8 @@ export class AppComponent implements OnInit {
   };
   showFab = false;
   ShowWhenSizable: boolean;
-  @ViewChild('animateSplash') animationDiv: ElementRef<any>;
-  @ViewChild('dialog') dialog
+  @ViewChild('animateSplash', { static: true }) animationDiv: ElementRef<any>;
+  @ViewChild('dialog', { static: true }) dialog
   isAppLoaded = false;
   FabList: FabListInterface[] = [];
   constructor(
@@ -44,7 +45,8 @@ export class AppComponent implements OnInit {
     public centralRx: CentralRxJsService,
     public route: Router,
     private dialogService: NbDialogService,
-    private toastrService: NbToastrService
+    private toastrService: NbToastrService,
+    private afMessaging: AngularFireMessaging
   ) {
     this.centralRx.DataSended.subscribe((res) => {
       if (res === config.rxjsCentralKeys.GridReady) {
@@ -55,6 +57,14 @@ export class AppComponent implements OnInit {
     });
 
     moment.locale('pt');
+
+
+    this.afMessaging.messages
+      .subscribe((message) => { console.log(message); });
+
+
+
+
   }
 
   ngOnInit() {
@@ -95,12 +105,7 @@ export class AppComponent implements OnInit {
   }
   GoForIt() {
     console.log('LINHA 60', this.route.url);
-     this.showFab = !this.showFab;
- /*    this.dialogService.open(this.dialog); */
-
-/*  */
-  
-
+    this.showFab = !this.showFab;
   }
 
   showLogin() {
@@ -135,4 +140,15 @@ export class AppComponent implements OnInit {
     }
 
   }
+  teste() {
+    this.afMessaging.requestPermission.subscribe((res) => {
+      console.log('resultado do pedido: ', res)
+    })
+    this.afMessaging.requestToken
+      .subscribe(
+        (token) => { console.log('Permission granted! Save to the server!', token); },
+        (error) => { console.error(error); },
+      );
+  }
+
 }
