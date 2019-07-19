@@ -10,6 +10,8 @@ import { FabListInterface } from 'src/models/fabList.model';
 import { UserObjInterface } from 'src/models/userObj.model';
 import * as firebase from 'firebase/app';
 import { NbToastrService } from '@nebular/theme';
+import { CentralRxJsService } from './centralRxjs.service';
+import * as moment from 'moment'
 @Injectable()
 export class LoginService {
 
@@ -20,29 +22,37 @@ export class LoginService {
   constructor(
     public db: AngularFireDatabase,
     public afAuth: AngularFireAuth,
-    private toastrService: NbToastrService) {
-    const refreshToken = localStorage.getItem(config.localStorageKeys.userRefreshToken)
-    if (refreshToken !== undefined || refreshToken !== '' || refreshToken !== null) {
+    private toastrService: NbToastrService,
+    private centralRxjs: CentralRxJsService) {
+    const refreshToken = localStorage.getItem('sdd')
+    console.log(refreshToken);
+    if (refreshToken !== null) {
       this.afAuth.auth.signInWithCustomToken(refreshToken)
         .then((res) => {
           localStorage.setItem(config.localStorageKeys.userRefreshToken, res.user.refreshToken);
           this.getUserDataFromLocal(res.user.displayName, res.user.uid)
+        }).catch((err) => {
+          console.log(err);
+
         })
     } else {
       console.log('linha 32 de loginservice');
-      
+
     }
   }
 
 
   registerNewUser(UserObj: UserObjInterface) {
+    console.log('antes da conversão', UserObj);
 
-    this.afAuth.auth.createUserWithEmailAndPassword(UserObj.email, UserObj.password).then((res) => {
+    const dataEmUnix = UserObj.dataNascimento.format('x');
+    UserObj.dataNascimento = Number(dataEmUnix);
+    console.log('dentro do loginService', dataEmUnix);
+     this.afAuth.auth.createUserWithEmailAndPassword(UserObj.email, UserObj.password).then((res) => {
       console.log(res.user.uid);
       res.user.updateProfile({
         displayName: UserObj.nomeCompleto
       }).then(() => { })
-
       UserObj.uuid = res.user.uid;
       localStorage.setItem(config.localStorageKeys.userRefreshToken, res.user.refreshToken);
       res.user.refreshToken;
@@ -51,7 +61,7 @@ export class LoginService {
     })
       .catch((err) => {
         console.log(err);
-      })
+      }) 
   }
 
   saveNewUserToDB(UserObj: UserObjInterface) {
@@ -63,9 +73,12 @@ export class LoginService {
           `This is toast number: Who Cares?`,
           {
             destroyByClick: true,
-            icon: 'fas fa-check'
+            icon: 'fas fa-check',
           });
+        const comando = config.rxjsCentralKeys.onRegisterUserSucess;
+        this.centralRxjs.sendData = comando;
       }).catch((err) => {
+
         console.log(err);
 
       })
@@ -79,7 +92,8 @@ export class LoginService {
       dataNascimento: null as any,
       cargo: null as string,
       isAdm: false as boolean,
-      exteira: null as string
+      exteira: null as string,
+      tokenForPush: []
     }
   }
 
@@ -87,6 +101,7 @@ export class LoginService {
     this.Envio = 'Usuarios/' + displayName + ' - ' + uuid;
     const dbUser: any = await this.db.object(this.Envio).valueChanges().toPromise();
     this.UserObj = dbUser;
+
   }
   get UserObj() {
     return this._UserObj;

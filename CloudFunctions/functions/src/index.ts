@@ -152,7 +152,7 @@ export const pushNotification = functions.database.ref('/brq-sla/ONS').onWrite(
                         SendPush('#ff0000')
                         break;
                     case 'crazy':
-                        // envia cor Vermelha
+                        // envia cor Preta
                         SendPush('#000000')
                         break;
                     default:
@@ -340,12 +340,31 @@ export const onBlackDemanda = functions.database.ref('/brq-sla/ONS').onWrite(
             const sendPush = (async () => {
                 const arrDemandas = await admin.database().ref('/brq-sla/ons').once('value');
                 const arrUsuarios = await admin.database().ref('/brq-sla/usuario').once('value');
-                arrOfNotification = arrDemandas.val();
-                arrOfUsuariosObj = arrDemandas.val();
-                arrOfNotification.forEach((element: DemandaDashboardModel) => {
-
+                // arrOfNotification = arrDemandas.val();
+                arrOfUsuariosObj = arrUsuarios.val();
+                arrDemandas.forEach((element: DemandaDashboardModel) => {
+                    const minutos = hourToMin(element.data);
+                    if (minutos <= 120) {
+                        
+                    }
                 });
             })
+
+
+
+            const hourToMin = ((hh: string) => {
+                const arrayHora = hh.split(':');
+                return (Number(arrayHora[0]) * 60) + Number(arrayHora[1]);
+            })
+
+            const sendDangerNotification = ((element: DemandaDashboardModel,usuarios:any )=> {
+
+            })
+            const sendCrazyNotification = ((element: DemandaDashboardModel )=> {
+                admin.messaging().sendMulticast
+                
+            })
+
 
         } catch (error) {
 

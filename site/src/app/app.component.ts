@@ -14,7 +14,7 @@ import { CentralRxJsService } from '../service/centralRxjs.service';
 import { slideInAnimation } from './route.animation';
 import { Router } from '@angular/router';
 
-import { NbDialogService } from '@nebular/theme';
+import { NbDialogService, NbDialogRef } from '@nebular/theme';
 import { NbToastrService } from '@nebular/theme';
 
 import { LoginModalComponent } from 'src/components/login-modal/login-modal.component';
@@ -35,7 +35,7 @@ export class AppComponent implements OnInit {
   showFab = false;
   ShowWhenSizable: boolean;
   @ViewChild('animateSplash', { static: false }) animationDiv: ElementRef<any>;
-  @ViewChild('dialog', { static: false }) dialog
+  @ViewChild('dialog', { static: false }) dialog;
   isAppLoaded = false;
   FabList: FabListInterface[] = [];
   constructor(
@@ -49,10 +49,17 @@ export class AppComponent implements OnInit {
     private afMessaging: AngularFireMessaging
   ) {
     this.centralRx.DataSended.subscribe((res) => {
-      if (res === config.rxjsCentralKeys.GridReady) {
-        if (!this.isAppLoaded) {
-          this.splashScreenLoadOut();
-        }
+      switch (res) {
+        case config.rxjsCentralKeys.GridReady:
+          if (!this.isAppLoaded) {
+            this.splashScreenLoadOut();
+          }
+          break;
+        case config.rxjsCentralKeys.onRegisterUserSucess:
+          this.dialog.close()
+          break;
+        default:
+          break;
       }
     });
 
@@ -60,7 +67,10 @@ export class AppComponent implements OnInit {
 
 
     this.afMessaging.messages
-      .subscribe((message) => { console.log(message); });
+      .subscribe((message) => {
+        console.log(message);
+
+      });
 
 
 
@@ -104,9 +114,10 @@ export class AppComponent implements OnInit {
     }));
   }
   GoForIt() {
-   /*  console.log('LINHA 60', this.route.url);
-    this.showFab = !this.showFab; */
-    this.dialogService.open(this.dialog);
+    /*  console.log('LINHA 60', this.route.url);
+     this.showFab = !this.showFab; */
+     /* LoginModalComponent */
+    this.dialogService.open(LoginModalComponent);
   }
 
   showLogin() {

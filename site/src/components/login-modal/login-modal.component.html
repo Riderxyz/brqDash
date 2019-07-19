@@ -38,7 +38,7 @@
               </div>
               <div class="p-col-6">
                 <nb-select hero placeholder="Selecione" [(ngModel)]="userObj.exteira" name="exteira">
-                  <nb-option [value]="item.value" *ngFor="let item of esteiras">{{item.label}}</nb-option>
+                  <nb-option [value]="item.value.name" *ngFor="let item of esteiras">{{item.label}}</nb-option>
                 </nb-select>
               </div>
               <div class="p-col-6">

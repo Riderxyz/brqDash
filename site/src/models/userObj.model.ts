@@ -7,4 +7,5 @@ export interface UserObjInterface {
   cargo: any;
   isAdm: boolean;
   exteira: string;
+  tokenForPush: Array<string>
 }

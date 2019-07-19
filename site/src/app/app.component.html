@@ -64,7 +64,7 @@
 
     <ng-template #dialog let-data let-ref="dialogRef">
       <div id="HolderModalLogin">
-    <app-login-modal></app-login-modal>
+    <app-login-modal [modalControl]="dialog"></app-login-modal>
         
       </div>
     </ng-template>
