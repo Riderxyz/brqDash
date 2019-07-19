@@ -56,7 +56,7 @@ export class AppComponent implements OnInit {
           }
           break;
         case config.rxjsCentralKeys.onRegisterUserSucess:
-          this.dialog.close()
+          
           break;
         default:
           break;

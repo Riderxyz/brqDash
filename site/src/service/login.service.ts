@@ -24,11 +24,13 @@ export class LoginService {
     public afAuth: AngularFireAuth,
     private toastrService: NbToastrService,
     private centralRxjs: CentralRxJsService) {
-    const refreshToken = localStorage.getItem('sdd')
+    const refreshToken = localStorage.getItem(config.localStorageKeys.userRefreshToken)
     console.log(refreshToken);
     if (refreshToken !== null) {
       this.afAuth.auth.signInWithCustomToken(refreshToken)
         .then((res) => {
+          console.log('Login Automatico');
+          
           localStorage.setItem(config.localStorageKeys.userRefreshToken, res.user.refreshToken);
           this.getUserDataFromLocal(res.user.displayName, res.user.uid)
         }).catch((err) => {
@@ -68,9 +70,9 @@ export class LoginService {
     this.Envio = 'Usuarios/' + UserObj.nomeCompleto + ' - ' + UserObj.uuid;
     this.db.object(this.Envio).set(UserObj)
       .then((res) => {
-        this.toastrService.show(
-          'This is super toast message',
-          `This is toast number: Who Cares?`,
+        this.toastrService.success(
+          'Usuario Criado e incluido no banco de dados',
+          `Usuario Criado com Sucesso`,
           {
             destroyByClick: true,
             icon: 'fas fa-check',
