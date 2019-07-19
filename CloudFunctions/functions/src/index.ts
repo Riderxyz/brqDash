@@ -327,16 +327,44 @@ export const onBlackDemanda = functions.database.ref('/brq-sla/ONS').onWrite(
                 tiposla: string;
                 titulo: string;
             }
-            interface Notification {
-                title: string;
-                body: string;
-                data: object;
-                click_action: string;
-                icon: string;
+            /*             interface Notification {
+                            title: string;
+                            body: string;
+                            data?: object;
+                            click_action?: string;
+                            icon: string;
+                            color: string;
+                            badge?: string;
+                            tag?: string;
+                        } */
+            interface PayLoadInterface {
+                notification: {
+                    title: string;
+                    body: string;
+                    click_action?: string;
+                    icon: string;
+                    color: string;
+                    badge?: string;
+                    tap: boolean;
+                    tag?: string;
+                }
+                data?: object;
+            }
+
+            interface UserObjInterface {
+                email: string;
+                password: any;
+                uuid: string;
+                nomeCompleto: string;
+                dataNascimento: any;
+                cargo: any;
+                isAdm: boolean;
+                exteira: string;
+                tokenForPush: Array<string>
             }
 
             let arrOfNotification: Notification[] = [];
-            let arrOfUsuariosObj = [];
+            let arrOfUsuariosObj: UserObjInterface[] = [];
             const sendPush = (async () => {
                 const arrDemandas = await admin.database().ref('/brq-sla/ons').once('value');
                 const arrUsuarios = await admin.database().ref('/brq-sla/usuario').once('value');
@@ -345,7 +373,7 @@ export const onBlackDemanda = functions.database.ref('/brq-sla/ONS').onWrite(
                 arrDemandas.forEach((element: DemandaDashboardModel) => {
                     const minutos = hourToMin(element.data);
                     if (minutos <= 120) {
-                        
+                        sendCrazyNotification(element);
                     }
                 });
             })
@@ -357,12 +385,31 @@ export const onBlackDemanda = functions.database.ref('/brq-sla/ONS').onWrite(
                 return (Number(arrayHora[0]) * 60) + Number(arrayHora[1]);
             })
 
-            const sendDangerNotification = ((element: DemandaDashboardModel,usuarios:any )=> {
+            const sendDangerNotification = ((element: DemandaDashboardModel, usuarios: any) => {
 
             })
-            const sendCrazyNotification = ((element: DemandaDashboardModel )=> {
-                admin.messaging().sendMulticast
-                
+            const sendCrazyNotification = ((demandaObj: DemandaDashboardModel) => {
+                arrOfUsuariosObj.forEach((element) => {
+                    if (element.exteira === demandaObj.esteira) {
+                        const x: PayLoadInterface = {
+                            notification: {
+                                title: 'Demanda de ' + demandaObj.esteira + '!!!',
+                                tap: true,
+                                body: 'A demanda ' + demandaObj.tfs + ' - ' + demandaObj.titulo + ' esta com menos de duras horas de duração!',
+                                icon: 'https://firebasestorage.googleapis.com/v0/b/brq-sla.appspot.com/o/iconsForNotification%2Ffire.png?alt=media&token=67f703d1-024b-4ccb-a9f8-e36029ace1b2',
+                                color: '#000000'
+                            }
+                        }
+                        const payload: any = x
+                        admin.messaging().sendToDevice(element.tokenForPush[1], payload)
+                            .then((onPushEnd) => {
+                                console.log(onPushEnd);
+                            })
+                            .catch((err) => {
+                                console.log('Deu erro', err)
+                            })
+                    }
+                })
             })
 
 
