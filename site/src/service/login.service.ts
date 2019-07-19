@@ -14,25 +14,63 @@ import { NbToastrService } from '@nebular/theme';
 export class LoginService {
 
 
-  private _UserObj = {};
-  constructor(public db: AngularFireDatabase,  public afAuth: AngularFireAuth, private toastrService: NbToastrService) { }
+
+  private _UserObj: UserObjInterface;
+  Envio: string;
+  constructor(
+    public db: AngularFireDatabase,
+    public afAuth: AngularFireAuth,
+    private toastrService: NbToastrService) {
+    const refreshToken = localStorage.getItem(config.localStorageKeys.userRefreshToken)
+    if (refreshToken !== undefined || refreshToken !== '' || refreshToken !== null) {
+      this.afAuth.auth.signInWithCustomToken(refreshToken)
+        .then((res) => {
+          localStorage.setItem(config.localStorageKeys.userRefreshToken, res.user.refreshToken);
+          this.getUserDataFromLocal(res.user.displayName, res.user.uid)
+        })
+    } else {
+      console.log('linha 32 de loginservice');
+      
+    }
+  }
 
 
   registerNewUser(UserObj: UserObjInterface) {
 
-    this.afAuth.auth.createUserWithEmailAndPassword( UserObj.email, UserObj.password).then((res) => {
-      console.log(res);
+    this.afAuth.auth.createUserWithEmailAndPassword(UserObj.email, UserObj.password).then((res) => {
+      console.log(res.user.uid);
+      res.user.updateProfile({
+        displayName: UserObj.nomeCompleto
+      }).then(() => { })
 
-      this.toastrService.show(
-        'This is super toast message',
-        `This is toast number: Who Cares?`,
-        { destroyByClick: true,
-        icon:'fas fa-check' });
+      UserObj.uuid = res.user.uid;
+      localStorage.setItem(config.localStorageKeys.userRefreshToken, res.user.refreshToken);
+      res.user.refreshToken;
+
+      this.saveNewUserToDB(UserObj);
     })
-
+      .catch((err) => {
+        console.log(err);
+      })
   }
 
-get NewUserObj(): UserObjInterface {
+  saveNewUserToDB(UserObj: UserObjInterface) {
+    this.Envio = 'Usuarios/' + UserObj.nomeCompleto + ' - ' + UserObj.uuid;
+    this.db.object(this.Envio).set(UserObj)
+      .then((res) => {
+        this.toastrService.show(
+          'This is super toast message',
+          `This is toast number: Who Cares?`,
+          {
+            destroyByClick: true,
+            icon: 'fas fa-check'
+          });
+      }).catch((err) => {
+        console.log(err);
+
+      })
+  }
+  get NewUserObj(): UserObjInterface {
     return {
       email: null as string,
       password: null as any,
@@ -43,7 +81,20 @@ get NewUserObj(): UserObjInterface {
       isAdm: false as boolean,
       exteira: null as string
     }
-}
+  }
+
+  async getUserDataFromLocal(displayName: string, uuid: string) {
+    this.Envio = 'Usuarios/' + displayName + ' - ' + uuid;
+    const dbUser: any = await this.db.object(this.Envio).valueChanges().toPromise();
+    this.UserObj = dbUser;
+  }
+  get UserObj() {
+    return this._UserObj;
+  }
+
+  set UserObj(value: UserObjInterface) {
+    this._UserObj = value;
+  }
 
 }
 

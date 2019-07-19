@@ -5,7 +5,11 @@ export const config = {
     ShowFilterEsteiraDashBoard: 'showFilterEsteiraDashBoard',
     ShowFilterEsteiraGD: 'ShowFilterEsteiraGD',
     ChangeToMobile: 'changeToMobile',
-    ChangeToWeb: 'changeToWeb'
+    ChangeToWeb: 'changeToWeb',
+    onRegisterUserSucess: 'onRegisterUserSucessonRegisterUserSucess'
+  },
+  localStorageKeys:{
+    userRefreshToken:'userRefreshToken'
   },
   animateCssArr: ['bounceIn', 'bounceInDown',
     'bounceInLeft', 'bounceInRight', 'bounceInUp', 'bounceOut',

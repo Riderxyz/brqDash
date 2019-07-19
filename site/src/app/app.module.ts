@@ -12,9 +12,10 @@ import { LOCALE_ID } from '@angular/core';
 import localePT from '@angular/common/locales/pt';
 
 // Nebular
-import { NbSidebarModule, NbLayoutModule, NbDialogModule } from '@nebular/theme';
-import { NbThemeModule } from '@nebular/theme';
-import { NebularModule } from 'src/Modules/Nebular.module';
+
+import { NbThemeModule, NbDialogModule } from '@nebular/theme';
+import { NbMomentDateModule } from '@nebular/moment';
+import { NebularModule } from '../Modules/Nebular.module';
 /* import { NbEvaIconsModule } from '@nebular/eva-icons'; */
 
 // Ag-Grid
@@ -56,6 +57,12 @@ const FormModules = [
   ReactiveFormsModule,
   FormsModule
 ]
+const Nebular = [
+  NebularModule.forRoot(),
+  NbThemeModule.forRoot({ name: 'cosmic' }),
+  NbDialogModule.forRoot(),
+  NbMomentDateModule
+]
 
 @NgModule({
   declarations: [
@@ -77,12 +84,10 @@ const FormModules = [
     LayoutModule,
     // AngularFire
     ...AngularFire,
-    // Angular
+    // Grid
     AgGridModule.withComponents([]),
     // Nebular
-    NebularModule.forRoot(),
-    NbThemeModule.forRoot({ name: 'cosmic' }),
-    NbDialogModule.forRoot(),
+    ...Nebular,
     // PWA
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],

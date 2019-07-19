@@ -6,6 +6,7 @@ import { LoginService } from 'src/service/login.service';
 import { SelectItemInterface } from 'src/models/SelectItem.model';
 import { GetDataService } from 'src/service/getData.service';
 import * as moment from 'moment'
+import { config } from '../../service/config';
 @Component({
   selector: 'app-login-modal',
   templateUrl: './login-modal.component.html',
@@ -23,7 +24,10 @@ userObj:UserObjInterface;
     public dataSrv: GetDataService
     ) {
  this.userObj = this.loginSrv.NewUserObj; 
-
+ this.centralRx.DataSended.subscribe((res) => {
+  if (res === config.rxjsCentralKeys.onRegisterUserSucess) {
+  }
+});
     }
 
   ngOnInit() {
@@ -36,12 +40,20 @@ userObj:UserObjInterface;
 
   onRegisterClick(Form: NgForm) {
     console.log('chamando o serviço', Form);
-    
-    this.loginSrv.registerNewUser(this.userObj)
+    console.log('chamando o log', this.userObj);
+    const UserObjFormated = this.userObj;
+    UserObjFormated.dataNascimento = Number(moment(this.userObj.dataNascimento).format('x'));
+     this.loginSrv.registerNewUser(UserObjFormated);
   }
 
   onDate(event) {
+    console.clear()
     console.log(moment(this.userObj.dataNascimento).format('DD/MM/YYYY'));
+    console.log(moment(this.userObj.dataNascimento).format('x'));
+
+    const teste = Number(moment(this.userObj.dataNascimento).format('x'))
+    console.log(teste)
+   // console.log(moment(Number(teste)).format('DD/MM/YYYY'))
     console.log('o que temos aqui?',this.userObj.dataNascimento);
     
      //this.dataSrv.userData.dataInicio = moment(this.usurObj.dataInicio).format('YYYY/M/DD');

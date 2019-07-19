@@ -9,4 +9,10 @@ if (environment.production) {
 }
 
 platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.error(err));
+.then(()=>{
+  if ('serviceWorker' in navigator){
+  navigator.serviceWorker.register('/ngsw-worker.js')
+  console.log('Registered as service worker');
+  }
+})
+  .catch(err => console.error('erro no mainTS',err));

@@ -20,9 +20,9 @@
     <nb-card-back>
       <nb-card status="danger">
         <nb-card-header>Registro</nb-card-header>
-        <nb-card-body>
-          <form class="loginForm animated delay-s" [class.zoomIn]="onRegisterPage" #RegisterForm="ngForm" name="RegisterForm"
-            (ngSubmit)="RegisterForm.form.valid && onRegisterClick(LoginForm)">
+        <form class="loginForm animated delay-s" [class.zoomIn]="onRegisterPage" #RegisterForm="ngForm"
+          name="RegisterForm" (ngSubmit)="onRegisterClick(RegisterForm)">
+          <nb-card-body>
             <div class="p-grid">
               <div class="p-col-6">
                 <input type="text" nbInput fullWidth shape="semi-round" [(ngModel)]="userObj.email" placeholder="E-mail"
@@ -44,15 +44,16 @@
               <div class="p-col-6">
                 <input nbInput fullWidth hero placeholder="Data Inicial" [(ngModel)]="userObj.dataNascimento"
                   (ngModelChange)="onDate($event)" [nbDatepicker]="dataInicio" name="dataNascimento" required>
-                <nb-datepicker #dataInicio></nb-datepicker>
+                <nb-datepicker #dataInicio format="LL"></nb-datepicker>
               </div>
             </div>
-          </form>
-        </nb-card-body>
-        <nb-card-footer>
-          <button nbButton (click)="onRegisterPage = !onRegisterPage">Cancelar</button>
-          <button nbButton hero [status]="teste" type="submit" (mouseover)="teste = 'success'" (mouseleave)="teste = 'primary'">Registrar usuario</button>
-        </nb-card-footer>
+          </nb-card-body>
+          <nb-card-footer>
+            <button nbButton (click)="onRegisterPage = !onRegisterPage">Cancelar</button>
+            <button nbButton hero [status]="teste" type="submit" (mouseover)="teste = 'success'"
+              (mouseleave)="teste = 'primary'">Registrar usuario</button>
+          </nb-card-footer>
+        </form>
       </nb-card>
     </nb-card-back>
   </nb-flip-card>

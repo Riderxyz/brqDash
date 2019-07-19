@@ -1,9 +1,10 @@
 {
-  "name": "centralDev",
-  "short_name": "centralDev",
+  "name": "Brq DashBoard",
+  "short_name": "brqDash",
   "theme_color": "#8a59ff",
   "background_color": "#fafafa",
   "display": "standalone",
+  "orientation": "portrait",
   "scope": "/",
   "start_url": "/",
   "icons": [

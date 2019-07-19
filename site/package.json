@@ -24,6 +24,7 @@
     "@angular/router": "~8.1.2",
     "@angular/service-worker": "~8.1.2",
     "@fortawesome/fontawesome-free": "^5.9.0",
+    "@nebular/moment": "^4.1.2",
     "@nebular/theme": "^3.6.1",
     "ag-grid-angular": "^21.1.0",
     "ag-grid-community": "^21.1.0",

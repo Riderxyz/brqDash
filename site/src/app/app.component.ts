@@ -34,8 +34,8 @@ export class AppComponent implements OnInit {
   };
   showFab = false;
   ShowWhenSizable: boolean;
-  @ViewChild('animateSplash', { static: true }) animationDiv: ElementRef<any>;
-  @ViewChild('dialog', { static: true }) dialog
+  @ViewChild('animateSplash', { static: false }) animationDiv: ElementRef<any>;
+  @ViewChild('dialog', { static: false }) dialog
   isAppLoaded = false;
   FabList: FabListInterface[] = [];
   constructor(
@@ -104,8 +104,9 @@ export class AppComponent implements OnInit {
     }));
   }
   GoForIt() {
-    console.log('LINHA 60', this.route.url);
-    this.showFab = !this.showFab;
+   /*  console.log('LINHA 60', this.route.url);
+    this.showFab = !this.showFab; */
+    this.dialogService.open(this.dialog);
   }
 
   showLogin() {
