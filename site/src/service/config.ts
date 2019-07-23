@@ -34,5 +34,20 @@ export const config = {
     GoToGD: 'GoToGD',
     GoToUser: 'GoToUser',
   },
-  
+  errsLabelForToast: {
+input: {
+  nome: {
+    title: 'O seu nome não foi informado',
+    subtitle: 'O campo é obrigatório'
+  },
+  emailVazio: {
+    title: 'Email não informado',
+    subtitle: 'O campo é obrigatório'
+  },
+  emailInvalido: {
+    title: 'Email informado é invalido',
+    subtitle: 'inclua um email valido no campo'
+  }
+}
+  }
 }
