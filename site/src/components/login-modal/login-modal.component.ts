@@ -53,7 +53,7 @@ userObj:UserObjInterface;
     UserObjFormated.dataNascimento = Number(moment(this.userObj.dataNascimento).format('x'));
     console.log('item 2', UserObjFormated);  */
     
-   this.loginSrv.registerNewUser(this.userObj);
+   // this.loginSrv.registerNewUser(this.userObj);
   }
 
   onDate(event) {

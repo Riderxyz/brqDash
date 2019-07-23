@@ -28,10 +28,11 @@ export const config = {
     'zoomOutDown', 'zoomOutLeft', 'zoomOutRight', 'zoomOutUp',
     'slideInDown', 'slideInLeft', 'slideInRight', 'slideInUp',
     'slideOutDown', 'slideOutLeft', 'slideOutRight', 'slideOutUp'],
-  FabCommand: {
+  fabCommand: {
     FiltrarGrid: 'FiltrarGrid',
     GoToDash: 'GoToDash',
     GoToGD: 'GoToGD',
     GoToUser: 'GoToUser',
-  }
+  },
+  
 }

@@ -126,7 +126,7 @@ export class AppComponent implements OnInit {
   GoTo(ev) {
     console.log(ev);
     switch (ev.comando) {
-      case config.FabCommand.FiltrarGrid:
+      case config.fabCommand.FiltrarGrid:
         this.showFab = false;
         if (this.route.url === '/dashboard') {
           const comando = config.rxjsCentralKeys.ShowFilterEsteiraDashBoard;
@@ -135,15 +135,15 @@ export class AppComponent implements OnInit {
           alert('Ainda será implementado');
         }
         break;
-      case config.FabCommand.GoToDash:
+      case config.fabCommand.GoToDash:
         this.showFab = false;
         this.route.navigateByUrl('/dashboard');
         break;
-      case config.FabCommand.GoToGD:
+      case config.fabCommand.GoToGD:
         this.showFab = false;
         this.route.navigateByUrl('/gdboard');
         break;
-      case config.FabCommand.GoToUser:
+      case config.fabCommand.GoToUser:
         this.showLogin();
         this.showFab = false;
         break;

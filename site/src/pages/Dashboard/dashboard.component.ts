@@ -135,19 +135,19 @@ export class DashboardComponent implements OnInit {
   GoTo(ev: FabListInterface) {
     console.log(ev);
     switch (ev.comando) {
-      case config.FabCommand.FiltrarGrid:
+      case config.fabCommand.FiltrarGrid:
         this.showFab = false;
         this.showModalFiltro();
         break;
-      case config.FabCommand.GoToDash:
+      case config.fabCommand.GoToDash:
         this.showFab = false;
         this.route.navigateByUrl('/dashboard');
         break;
-      case config.FabCommand.GoToGD:
+      case config.fabCommand.GoToGD:
         this.showFab = false;
         this.route.navigateByUrl('/gdboard');
         break;
-      case config.FabCommand.GoToUser:
+      case config.fabCommand.GoToUser:
         this.showFab = false;
         alert('Ainda será implementado');
 

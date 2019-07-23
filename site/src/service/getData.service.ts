@@ -74,25 +74,25 @@ export class GetDataService {
       {
       cor: 'info',
       icon: 'fa fa-search',
-      comando: config.FabCommand.FiltrarGrid,
+      comando: config.fabCommand.FiltrarGrid,
       tooltip: 'Buscar'
     },
     {
       cor: 'warning',
       icon: 'fas fa-clock',
-      comando: config.FabCommand.GoToDash,
+      comando: config.fabCommand.GoToDash,
       tooltip: 'DashBoard'
     },
     {
       cor: 'success',
       icon: 'fas fa-table',
-      comando: config.FabCommand.GoToGD,
+      comando: config.fabCommand.GoToGD,
       tooltip: 'Gerenciamento Diario'
     },
     {
       cor: 'danger',
       icon: 'fas fa-user',
-      comando: config.FabCommand.GoToUser,
+      comando: config.fabCommand.GoToUser,
       tooltip: 'Log in'
     }
 

@@ -37,7 +37,7 @@
                   placeholder="Nome completo" name="nomeCompleto" required>
               </div>
               <div class="p-col-6">
-                <nb-select hero placeholder="Selecione" [(ngModel)]="userObj.exteira" name="exteira">
+                <nb-select hero placeholder="Selecione" [(ngModel)]="userObj.exteira" name="exteira" required>
                   <nb-option [value]="item.value.name" *ngFor="let item of esteiras">{{item.label}}</nb-option>
                 </nb-select>
               </div>
