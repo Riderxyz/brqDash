@@ -21,7 +21,7 @@ export class NotificationService {
         }
         
         listenToMessages() {
-            return this.afMessaging.messaging
+            return this.afMessaging.messages
         
         }
 }
