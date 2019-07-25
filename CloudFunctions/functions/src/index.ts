@@ -38,13 +38,44 @@ export const pushNotification = functions.database.ref('/brq-sla/ONS').onWrite(
                 [key: string]: any | undefined;
               }; */
 
+        interface DemandaDashboardModel {
+            area: string;
+            criticidade: string;
+            data: string;
+            dataFormatada: string;
+            datafim: string;
+            esteira: string;
+            sistema: string;
+            status: string;
+            tfs: string;
+            tiposla: string;
+            titulo: string;
+        }
+
         interface PayLoadInterface {
             notification: {
-                body: string
-                tap: string
-                color: string
-                title: string
+                title: string;
+                body: string;
+                click_action?: string;
+                icon: string;
+                color: string;
+                badge?: string;
+                tap: 'false' | 'true';
+                tag?: string;
             }
+            data?: any
+        }
+
+        interface UserObjInterface {
+            email: string;
+            password: any;
+            uuid: string;
+            nomeCompleto: string;
+            dataNascimento: any;
+            cargo: any;
+            isAdm: boolean;
+            exteira: string;
+            tokenForPush: Array<string>
         }
         try {
             const limites = {
@@ -52,121 +83,101 @@ export const pushNotification = functions.database.ref('/brq-sla/ONS').onWrite(
                 danger: 360,
                 crazy: 120
             }
-            const dataValue = snapshot.after.val();
-            const colorHexFull = '#' + (Math.random() * 0xFFFFFF << 0).toString(16);
-            console.log('FUNCIONA!!!!', colorHexFull);
-            const allTokens = await admin.database().ref('/DeviceId').once('value');
-            const tokensPos = Object.keys(allTokens.val());
-            const GerarBody = () => {
-                let exteiras = ''
-                dataValue.forEach((element: any) => {
-                    exteiras += element.esteira + ' - ' + element.tfs + '    '
-                });
-                return exteiras
-            }
+
+            let arrDemandasObj: DemandaDashboardModel[] = [];
+            let arrOfUsuariosObj: UserObjInterface[] = [];
+            let arrTokensForCrazyNotifications: any[] = [];
+            let arrTokensForDangerNotifications: any[] = [];
+            let arrTokensForWarningNotifications: any[] = [];
+
+            const ArrayDeDemandas = await admin.database().ref('/brq-sla/ons').once('value');
+            const ArrayDeUsuarios = await admin.database().ref('/brq-sla/usuario').once('value');
+
+            arrOfUsuariosObj = ArrayDeDemandas.val();
+            arrOfUsuariosObj.forEach((element) => {
+                arrTokensForCrazyNotifications.concat(element.tokenForPush)
+            })
+            arrDemandasObj = ArrayDeUsuarios.val();
+
+
+
+            arrDemandasObj.forEach((element: DemandaDashboardModel) => {
+                const minutos = hourToMinute(element.data);
+                if (minutos <= limites.crazy) {
+                    CreateCrazyNotification(element);
+                }
+            });
             const hourToMinute = (hh: string): number => {
                 const arrayHora = hh.split(':');
                 return (Number(arrayHora[0]) * 60) + Number(arrayHora[1]);
             }
-
-            //Limpar Lista de Tokens
-            const LimparTokenList = (response: any, tokens: any) => {
-                // For each notification we check if there was an error.
-                const tokensToRemove: any = {};
-                response.results.forEach((result: any, index: any) => {
-                    const error = result.error;
-                    if (error) {
-                        console.log('o q vem dentro do codigo de erro?', error.code)
-                        // Cleanup the tokens who are not registered anymore.
-                        if (error.code === 'messaging/invalid-registration-token' ||
-                            error.code === 'messaging/registration-token-not-registered') {
-                            console.log('O que sera removido', tokensToRemove[`/deviceId/${tokens[index]}`]);
-                            tokensToRemove[`/deviceId/${tokens[index]}`] = null;
-                        }
-                    }
-                });
-                return admin.database().ref().update(tokensToRemove);
-            }
-            //Escolhe o Tipo de Notificação
-            const pushType = (time: string): string => {
-                let retorno = '';
-                const minutos = hourToMinute(time);
-                if ((minutos >= limites.danger) && (minutos <= limites.warning)) {
-                    retorno = 'warning';
-                } else {
-                    if ((minutos >= limites.crazy) && (minutos <= limites.danger)) {
-                        retorno = 'danger';
-                    } else {
-                        if (minutos <= limites.crazy) {
-                            retorno = 'crazy';
-                        } else {
-                            retorno = 'normal';
-                        }
-                    }
-                }
-                return retorno;
-            }
             // Enviar notificação
-            const SendPush = (pushColor: string) => {
+            const CreateCrazyNotification = (demandaObj: DemandaDashboardModel) => {
 
                 const payload: PayLoadInterface = {
                     notification: {
-                        body: GerarBody(),
-                        tap: "true",
-                        color: '',
-                        title: "Funciona!",
+                        title: 'Demanda de ' + demandaObj.esteira + '!!!',
+                        tap: 'true',
+                        body: 'A demanda ' + demandaObj.tfs + ' - ' + demandaObj.titulo + ' esta com menos de duras horas de duração!',
+                        icon: 'https://firebasestorage.googleapis.com/v0/b/brq-sla.appspot.com/o/iconsForNotification%2Ffire.png?alt=media&token=67f703d1-024b-4ccb-a9f8-e36029ace1b2',
+                        color: '#000000'
                     }
                 }
-                allTokens.val().forEach((element: any) => {
-                    payload.notification.color = pushColor
+                SendPushNotification(arrTokensForCrazyNotifications, payload)
+            }
+
+
+
+            const CreateDangerNotification = (demandaObj: DemandaDashboardModel) => {
+                arrOfUsuariosObj.forEach((element) => {
+                    arrTokensForCrazyNotifications.concat(element.tokenForPush)
+                    if (element.exteira === demandaObj.esteira) {
+                        const payload: PayLoadInterface = {
+                            notification: {
+                                title: 'Demanda de ' + demandaObj.esteira + '!!!',
+                                tap: 'true',
+                                body: 'A demanda ' + demandaObj.tfs + ' - ' + demandaObj.titulo + ' esta com menos de duras horas de duração!',
+                                icon: 'https://firebasestorage.googleapis.com/v0/b/brq-sla.appspot.com/o/iconsForNotification%2Ffire.png?alt=media&token=67f703d1-024b-4ccb-a9f8-e36029ace1b2',
+                                color: '#000000'
+                            }
+                        }
+
+                    }
+                })
+            }
+
+            const CreateWarningNotification = (demandaObj: DemandaDashboardModel) => {
+                arrOfUsuariosObj.forEach((element) => {
+                    arrTokensForCrazyNotifications.concat(element.tokenForPush)
+                    if (element.exteira === demandaObj.esteira) {
+                        const payload: PayLoadInterface = {
+                            notification: {
+                                title: 'Demanda de ' + demandaObj.esteira + '!!!',
+                                tap: 'true',
+                                body: 'A demanda ' + demandaObj.tfs + ' - ' + demandaObj.titulo + ' esta com menos de duras horas de duração!',
+                                icon: 'https://firebasestorage.googleapis.com/v0/b/brq-sla.appspot.com/o/iconsForNotification%2Ffire.png?alt=media&token=67f703d1-024b-4ccb-a9f8-e36029ace1b2',
+                                color: '#000000'
+                            }
+                        }
+
+                    }
+                })
+            }
+
+
+
+            const SendPushNotification = ((token: Array<string>, payload: PayLoadInterface) => {
+                token.forEach(element => {
                     admin.messaging().sendToDevice(element, payload).then((res) => {
                         console.log('Enviei as notificações', res);
-                        LimparTokenList(res, tokensPos).then((final) => {
-                            console.log('O que a limpeza retornou?', final);
-                        }).catch((err) => {
-                            console.error('Erro na Limpeza', err)
-                        })
                     }).catch((err) => {
                         console.error('Erro no envio', err)
                     })
-                    console.log('Notifications have been sent')
                 });
-            }
-
-
-            const dataFromPush = {
-                tokenList: allTokens.val(),
-                Posicao_Token: tokensPos
-            }
-            console.log('Eu preciso disso =>!!!!', dataFromPush);
-            dataValue.forEach((element: any) => {
-                pushType(element.data)
-
-                switch (pushType(element.data)) {
-                    case 'warning':
-                        // envia cor amarela
-                        SendPush('#ffff00')
-                        break;
-                    case 'danger':
-                        // envia cor Vermelha
-                        SendPush('#ff0000')
-                        break;
-                    case 'crazy':
-                        // envia cor Preta
-                        SendPush('#000000')
-                        break;
-                    default:
-                        break;
-                }
-            });
-
-
-
+            })
 
 
             //const push = await admin.messaging().sendToDevice(iox, payload);
-            console.log('O body gerado para o Payload', GerarBody());
-
             //const promises = [];
             // Listing all device tokens to send a notification to.
             // Get the list of device tokens.
@@ -345,7 +356,7 @@ export const onBlackDemanda = functions.database.ref('/brq-sla/ONS').onWrite(
                     icon: string;
                     color: string;
                     badge?: string;
-                    tap: boolean;
+                    tap: 'false' | 'true';
                     tag?: string;
                 }
                 data?: object;

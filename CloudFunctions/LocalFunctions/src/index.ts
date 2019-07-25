@@ -49,11 +49,11 @@ let GDEmGeral: GDInterface[] = [];
 const getGD = (async () => {
   const result = await admin.database().ref('/brq-sla/gerenciamentoDiario').once('value');
   GDEmGeral = result.val()
-//   console.log(GDEmGeral);
+  //   console.log(GDEmGeral);
 
 
-  GDEmGeral.forEach((element:GDInterface) => {
-    const MetaCumprida = (element.dados.metas.horasEntregues/element.dados.metas.prodMensal) * 100
+  GDEmGeral.forEach((element: GDInterface) => {
+    const MetaCumprida = (element.dados.metas.horasEntregues / element.dados.metas.prodMensal) * 100
     element.dados.metas.metaCumprida = Math.round(MetaCumprida)
 
     let Saldo: any = (element.dados.metas.prodMensal - element.dados.metas.horasEntregues)
@@ -66,18 +66,43 @@ const getGD = (async () => {
     }
   });
 
-console.log('Vindo da linha 70',JSON.stringify(GDEmGeral[0]));
+  console.log('Vindo da linha 70', JSON.stringify(GDEmGeral[0]));
 
-concluirPush(GDEmGeral);
+  concluirPush(GDEmGeral);
 })
-getGD()
+// getGD()
+
+const token = 'dNzp47c-cO8:APA91bGLVwFoNcGlc8G_MzZcZPwj2q9pdRC_ktyXsgpYyn0H4DW0ZByIPqbAEi6QPI265GbC444f7RDAdrHEtWxZqDX10xFNx_-bUu1RrF6JzVOfDuNux_J0o3pXaYJzcdATLrOLdj3a';
 
 
-const concluirPush = ((arrModificado:GDInterface[]) => {
+
+
+const x = {
+  notification: {
+    title: 'Demanda de ' + 'demandaObj.esteira ' + '!!!',
+    tap: "true",
+    body: 'A demanda ' + 'demandaObj.tfs' + ' - ' + 'demandaObj.titulo' + ' esta com menos de duras horas de duração!',
+    icon: 'https://firebasestorage.googleapis.com/v0/b/brq-sla.appspot.com/o/iconsForNotification%2Ffire.png?alt=media&token=67f703d1-024b-4ccb-a9f8-e36029ace1b2',
+    color: '#000000',
+    click_action : "https://brqdash.netlify.com/"
+  }
+}
+const payload: any = x
+
+admin.messaging().sendToDevice(token, payload)
+  .then((onPushEnd) => {
+    console.log(onPushEnd);
+  })
+  .catch((err) => {
+    console.log('Deu erro', err)
+  })
+console.log('Vindo da linha 74', 322322222);
+
+const concluirPush = ((arrModificado: GDInterface[]) => {
   admin.database().ref('/brq-sla/gerenciamentoDiario').set(arrModificado, ((res) => {
     console.log(res);
   }))
-console.log('Vindo da linha 79', arrModificado[0]);
+  console.log('Vindo da linha 79', arrModificado[0]);
 
 
 })

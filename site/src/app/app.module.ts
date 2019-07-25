@@ -43,6 +43,7 @@ import { CentralRxJsService } from '../service/centralRxjs.service';
 import { LoginService } from '../service/login.service';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { ToastService } from 'src/service/toast.service';
+import { NotificationService } from 'src/service/notification.service';
 
 
 registerLocaleData(localePT, 'pt');
@@ -100,6 +101,7 @@ const Nebular = [
     RemoteControlService,
     LoginService,
     ToastService,
+    NotificationService,
     { provide: LOCALE_ID, useValue: 'pt' }
   ],
   bootstrap: [AppComponent]

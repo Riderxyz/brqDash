@@ -71,13 +71,13 @@ export class LoginModalComponent implements OnInit {
 
   onErrorInputFromRegister(registerErrorObj: ControlsInputRegister) {
     let errorObj = {
-      title:'',
+      title: '',
       subtitle: ''
     }
     if (registerErrorObj.email.errors.required) {
       errorObj.title = config.errsLabelForToast.input.emailVazio.title
       errorObj.subtitle = config.errsLabelForToast.input.emailVazio.subtitle
-this.toastSrv.sendErrorToast(errorObj);
+      this.toastSrv.sendErrorToast(errorObj);
     }
   }
   onDate(event) {

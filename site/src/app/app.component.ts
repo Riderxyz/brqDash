@@ -19,6 +19,7 @@ import { NbToastrService } from '@nebular/theme';
 
 import { LoginModalComponent } from 'src/components/login-modal/login-modal.component';
 import { AngularFireMessaging } from '@angular/fire/messaging';
+import { NotificationService } from 'src/service/notification.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -46,6 +47,7 @@ export class AppComponent implements OnInit {
     public route: Router,
     private dialogService: NbDialogService,
     private toastrService: NbToastrService,
+    public notificationSrv: NotificationService,
     private afMessaging: AngularFireMessaging
   ) {
     this.centralRx.DataSended.subscribe((res) => {
@@ -64,20 +66,10 @@ export class AppComponent implements OnInit {
     });
 
     moment.locale('pt');
-
-
-    this.afMessaging.messages
-      .subscribe((message) => {
-        console.log(message);
-
-      });
-
-
-
-
   }
 
   ngOnInit() {
+    this.teste();
     this.FabList = this.dataSrv.FabButtonList;
     this.dataSrv.ListarItems.subscribe((res: DemandaDashboardModel[]) => {
       this.DataList = res;
