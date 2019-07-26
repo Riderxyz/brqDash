@@ -83,6 +83,11 @@ export const pushNotification = functions.database.ref('/brq-sla/ONS').onWrite(
                 danger: 360,
                 crazy: 120
             }
+            const iconForPush = {
+                warning: 'https://firebasestorage.googleapis.com/v0/b/brq-sla.appspot.com/o/iconsForNotification%2FWarning.png?alt=media&token=38cd68a8-be35-4f97-a9dc-339407c63144',
+                danger: 'https://firebasestorage.googleapis.com/v0/b/brq-sla.appspot.com/o/iconsForNotification%2FDanger.png?alt=media&token=8216d705-5455-43e9-99af-20e92f281487',
+                crazy: 'https://firebasestorage.googleapis.com/v0/b/brq-sla.appspot.com/o/iconsForNotification%2FCrazy.png?alt=media&token=27637168-af0e-49a7-bb2a-805911b2eee9'
+            }
 
             let arrDemandasObj: DemandaDashboardModel[] = [];
             let arrOfUsuariosObj: UserObjInterface[] = [];
@@ -94,15 +99,19 @@ export const pushNotification = functions.database.ref('/brq-sla/ONS').onWrite(
             const ArrayDeUsuarios = await admin.database().ref('/brq-sla/usuario').once('value');
 
             arrOfUsuariosObj = ArrayDeDemandas.val();
-            arrOfUsuariosObj.forEach((element) => {
+            await arrOfUsuariosObj.forEach((element) => {
                 arrTokensForCrazyNotifications.concat(element.tokenForPush)
             })
             arrDemandasObj = ArrayDeUsuarios.val();
 
-
-
             arrDemandasObj.forEach((element: DemandaDashboardModel) => {
                 const minutos = hourToMinute(element.data);
+                if (minutos <= limites.warning) {
+                    CreateWarningNotification(element);
+                }
+                if (minutos <= limites.danger) {
+                    CreateDangerNotification(element);
+                }
                 if (minutos <= limites.crazy) {
                     CreateCrazyNotification(element);
                 }
@@ -111,15 +120,32 @@ export const pushNotification = functions.database.ref('/brq-sla/ONS').onWrite(
                 const arrayHora = hh.split(':');
                 return (Number(arrayHora[0]) * 60) + Number(arrayHora[1]);
             }
-            // Enviar notificação
-            const CreateCrazyNotification = (demandaObj: DemandaDashboardModel) => {
 
+
+
+            // Gerar Body 
+
+            const gerarBody = ((minutos: number, demandaObj: DemandaDashboardModel) => {
+                let retornoText = '';
+                if (minutos <= limites.warning) {
+                    retornoText = 'A demanda ' + demandaObj.tfs + ' - ' + demandaObj.titulo + ' esta com menos de 10 horas de duração!';
+                }
+                if (minutos <= limites.danger) {
+                    retornoText = 'A demanda ' + demandaObj.tfs + ' - ' + demandaObj.titulo + ' esta com menos de 5 horas de duração!'
+                }
+                if (minutos <= limites.crazy) {
+                    retornoText = 'A demanda ' + demandaObj.tfs + ' - ' + demandaObj.titulo + ' esta com menos de 2 horas de duração!'
+                }
+                return retornoText
+            })
+            // Enviar notificação Negra
+            const CreateCrazyNotification = (demandaObj: DemandaDashboardModel) => {
                 const payload: PayLoadInterface = {
                     notification: {
                         title: 'Demanda de ' + demandaObj.esteira + '!!!',
                         tap: 'true',
-                        body: 'A demanda ' + demandaObj.tfs + ' - ' + demandaObj.titulo + ' esta com menos de duras horas de duração!',
-                        icon: 'https://firebasestorage.googleapis.com/v0/b/brq-sla.appspot.com/o/iconsForNotification%2Ffire.png?alt=media&token=67f703d1-024b-4ccb-a9f8-e36029ace1b2',
+                        body: gerarBody(limites.crazy, demandaObj),
+                        icon: iconForPush.crazy,
                         color: '#000000'
                     }
                 }
@@ -127,44 +153,43 @@ export const pushNotification = functions.database.ref('/brq-sla/ONS').onWrite(
             }
 
 
-
+            // Enviar notificação Vermelha
             const CreateDangerNotification = (demandaObj: DemandaDashboardModel) => {
                 arrOfUsuariosObj.forEach((element) => {
-                    arrTokensForCrazyNotifications.concat(element.tokenForPush)
                     if (element.exteira === demandaObj.esteira) {
+                        arrTokensForDangerNotifications = element.tokenForPush;
                         const payload: PayLoadInterface = {
                             notification: {
-                                title: 'Demanda de ' + demandaObj.esteira + '!!!',
+                                title: 'Demanda de ' + demandaObj.esteira + '.',
                                 tap: 'true',
-                                body: 'A demanda ' + demandaObj.tfs + ' - ' + demandaObj.titulo + ' esta com menos de duras horas de duração!',
-                                icon: 'https://firebasestorage.googleapis.com/v0/b/brq-sla.appspot.com/o/iconsForNotification%2Ffire.png?alt=media&token=67f703d1-024b-4ccb-a9f8-e36029ace1b2',
+                                body: 'A demanda ' + demandaObj.tfs + ' - ' + demandaObj.titulo + ' esta com menos de 5 horas de duração!',
+                                icon: iconForPush.danger,
                                 color: '#000000'
                             }
                         }
-
+                        // SendPushNotification(arrTokensForDangerNotifications, payload)
                     }
                 })
             }
-
+            // Enviar notificação Amarela
             const CreateWarningNotification = (demandaObj: DemandaDashboardModel) => {
                 arrOfUsuariosObj.forEach((element) => {
                     arrTokensForCrazyNotifications.concat(element.tokenForPush)
                     if (element.exteira === demandaObj.esteira) {
+                        arrTokensForWarningNotifications = element.tokenForPush;
                         const payload: PayLoadInterface = {
                             notification: {
-                                title: 'Demanda de ' + demandaObj.esteira + '!!!',
+                                title: 'Demanda de ' + demandaObj.esteira + '.',
                                 tap: 'true',
-                                body: 'A demanda ' + demandaObj.tfs + ' - ' + demandaObj.titulo + ' esta com menos de duras horas de duração!',
-                                icon: 'https://firebasestorage.googleapis.com/v0/b/brq-sla.appspot.com/o/iconsForNotification%2Ffire.png?alt=media&token=67f703d1-024b-4ccb-a9f8-e36029ace1b2',
+                                body: 'A demanda ' + demandaObj.tfs + ' - ' + demandaObj.titulo + ' esta com menos de 10 horas de duração!',
+                                icon: iconForPush.warning,
                                 color: '#000000'
                             }
                         }
-
+                       // SendPushNotification(arrTokensForWarningNotifications, payload)
                     }
                 })
             }
-
-
 
             const SendPushNotification = ((token: Array<string>, payload: PayLoadInterface) => {
                 token.forEach(element => {
@@ -176,15 +201,6 @@ export const pushNotification = functions.database.ref('/brq-sla/ONS').onWrite(
                 });
             })
 
-
-            //const push = await admin.messaging().sendToDevice(iox, payload);
-            //const promises = [];
-            // Listing all device tokens to send a notification to.
-            // Get the list of device tokens.
-            // Send notifications to all tokens.
-            // const response = await admin.messaging().sendToDevice(tokens, payload);
-            // await LimparTokenList(response, tokens);
-            // console.log('Notifications have been sent and tokens cleaned up.', response)
         }
         catch (error) {
             console.log('O que deu errado aqui?', error);
@@ -320,111 +336,3 @@ export const CalculoSaldoGD = functions.database.ref('/brq-sla/gerenciamentoDiar
 
         }
     })
-
-export const onBlackDemanda = functions.database.ref('/brq-sla/ONS').onWrite(
-    async (snapshot, context) => {
-        try {
-
-            interface DemandaDashboardModel {
-                area: string;
-                criticidade: string;
-                data: string;
-                dataFormatada: string;
-                datafim: string;
-                esteira: string;
-                sistema: string;
-                status: string;
-                tfs: string;
-                tiposla: string;
-                titulo: string;
-            }
-            /*             interface Notification {
-                            title: string;
-                            body: string;
-                            data?: object;
-                            click_action?: string;
-                            icon: string;
-                            color: string;
-                            badge?: string;
-                            tag?: string;
-                        } */
-            interface PayLoadInterface {
-                notification: {
-                    title: string;
-                    body: string;
-                    click_action?: string;
-                    icon: string;
-                    color: string;
-                    badge?: string;
-                    tap: 'false' | 'true';
-                    tag?: string;
-                }
-                data?: object;
-            }
-
-            interface UserObjInterface {
-                email: string;
-                password: any;
-                uuid: string;
-                nomeCompleto: string;
-                dataNascimento: any;
-                cargo: any;
-                isAdm: boolean;
-                exteira: string;
-                tokenForPush: Array<string>
-            }
-
-            let arrOfNotification: Notification[] = [];
-            let arrOfUsuariosObj: UserObjInterface[] = [];
-            const sendPush = (async () => {
-                const arrDemandas = await admin.database().ref('/brq-sla/ons').once('value');
-                const arrUsuarios = await admin.database().ref('/brq-sla/usuario').once('value');
-                // arrOfNotification = arrDemandas.val();
-                arrOfUsuariosObj = arrUsuarios.val();
-                arrDemandas.forEach((element: DemandaDashboardModel) => {
-                    const minutos = hourToMin(element.data);
-                    if (minutos <= 120) {
-                        sendCrazyNotification(element);
-                    }
-                });
-            })
-
-
-
-            const hourToMin = ((hh: string) => {
-                const arrayHora = hh.split(':');
-                return (Number(arrayHora[0]) * 60) + Number(arrayHora[1]);
-            })
-
-            const sendDangerNotification = ((element: DemandaDashboardModel, usuarios: any) => {
-
-            })
-            const sendCrazyNotification = ((demandaObj: DemandaDashboardModel) => {
-                arrOfUsuariosObj.forEach((element) => {
-                    if (element.exteira === demandaObj.esteira) {
-                        const x: PayLoadInterface = {
-                            notification: {
-                                title: 'Demanda de ' + demandaObj.esteira + '!!!',
-                                tap: true,
-                                body: 'A demanda ' + demandaObj.tfs + ' - ' + demandaObj.titulo + ' esta com menos de duras horas de duração!',
-                                icon: 'https://firebasestorage.googleapis.com/v0/b/brq-sla.appspot.com/o/iconsForNotification%2Ffire.png?alt=media&token=67f703d1-024b-4ccb-a9f8-e36029ace1b2',
-                                color: '#000000'
-                            }
-                        }
-                        const payload: any = x
-                        admin.messaging().sendToDevice(element.tokenForPush[1], payload)
-                            .then((onPushEnd) => {
-                                console.log(onPushEnd);
-                            })
-                            .catch((err) => {
-                                console.log('Deu erro', err)
-                            })
-                    }
-                })
-            })
-
-
-        } catch (error) {
-
-        }
-    })  
