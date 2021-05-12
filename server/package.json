@@ -20,7 +20,7 @@
     "mssql-plus": "^1.1.0",
     "mysql": "^2.13.0",
     "nexmo": "^2.1.1",
-    "nodemailer": "^4.4.2",
+    "nodemailer": "^6.4.16",
     "npm": "^6.4.1",
     "readdir": "0.1.0",
     "request": "^2.81.0",
